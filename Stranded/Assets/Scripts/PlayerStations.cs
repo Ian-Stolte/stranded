@@ -17,11 +17,11 @@ public class PlayerStations : MonoBehaviour
     
     [SerializeField] GameObject thrusterFire;
     GameObject ship;
+    Spaceship shipScript;
 
     //[SerializeField] GameObject buttonPrefab;
     GameObject buttons;
 
-    [SerializeField] float rotateSpeed;
     public InputAction steering;
 
     void OnEnable()
@@ -43,6 +43,7 @@ public class PlayerStations : MonoBehaviour
         //buttons.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => SetStation(station.THRUSTERS));
         //buttons.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate {SetStation(station.STEERING); });
         ship = GameObject.Find("Spaceship");
+        shipScript = ship.GetComponent<Spaceship>();
     }
 
     void Update()
@@ -64,7 +65,8 @@ public class PlayerStations : MonoBehaviour
         if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
         {
             thrusterFire.SetActive(true);
-            //add force
+            Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
+            ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.thrustSpeed, Mathf.Sin(rot.z)*shipScript.thrustSpeed), ForceMode2D.Force);
         }
         else {
             thrusterFire.SetActive(false);
@@ -72,7 +74,7 @@ public class PlayerStations : MonoBehaviour
         //Steering
         if (currentStation == "steering")
         {
-            ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*rotateSpeed);
+            ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*shipScript.turnSpeed);
         }
     }
 

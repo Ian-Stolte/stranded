@@ -303,6 +303,8 @@ GameObject:
   m_Component:
   - component: {fileID: 412612937}
   - component: {fileID: 412612936}
+  - component: {fileID: 412612939}
+  - component: {fileID: 412612938}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -379,6 +381,49 @@ Transform:
   - {fileID: 2025912900}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &412612938
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412612935}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &412612939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412612935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7626b75d996db24db66012ac0b12daa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnSpeed: 0.3
+  thrustSpeed: 4
+  decelSpeed: 0.005
+  maxSpeed: 10
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +436,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -485,7 +531,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -516,6 +562,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04bc9595056785f4b8f9c3388a7cce43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followSpeed: 40
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +955,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentStation: 
   thrusterFire: {fileID: 2025912899}
-  rotateSpeed: 0.2
   steering:
     m_Name: Steering
     m_Type: 0
@@ -1035,6 +1093,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 407631692}
     m_Modifications:
+    - target: {fileID: 1423458655872365058, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -847
+      objectReference: {fileID: 0}
+    - target: {fileID: 1423458655872365058, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 412
+      objectReference: {fileID: 0}
+    - target: {fileID: 3337603551120837054, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -693.99994
+      objectReference: {fileID: 0}
+    - target: {fileID: 3337603551120837054, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 415
+      objectReference: {fileID: 0}
     - target: {fileID: 4117076319511684776, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
       propertyPath: m_Name
       value: Spaceship Buttons
