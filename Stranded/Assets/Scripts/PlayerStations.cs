@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class PlayerStations : MonoBehaviour
+public class PlayerStations : NetworkBehaviour
 {
     /*public enum station
     {
@@ -15,12 +16,12 @@ public class PlayerStations : MonoBehaviour
     public station currentStation;*/
     public string currentStation;
     
-    [SerializeField] GameObject thrusterFire;
+    GameObject thrusterFire;
     GameObject ship;
     Spaceship shipScript;
 
-    //[SerializeField] GameObject buttonPrefab;
-    GameObject buttons;
+    [SerializeField] GameObject buttonPrefab;
+    public GameObject buttons;
 
     public InputAction steering;
 
@@ -36,18 +37,39 @@ public class PlayerStations : MonoBehaviour
 
     void Start()
     {
+//TODO: fix naming players
+        if (IsOwner)
+            name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
+
         currentStation = "none";
         buttons = GameObject.Find("Spaceship Buttons");
-        //buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
-        //buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
-        //buttons.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => SetStation(station.THRUSTERS));
-        //buttons.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(delegate {SetStation(station.STEERING); });
+        buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
+        buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+        buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
+        buttons.GetComponent<Buttons>().target = gameObject;
+
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
+        thrusterFire = ship.transform.GetChild(1).gameObject;
     }
 
     void Update()
     {
+        //Hide incorrect buttons
+        if (IsOwner)
+        {
+            GameObject[] allButtons = GameObject.FindGameObjectsWithTag("Buttons");
+            foreach (GameObject g in allButtons)
+            {
+                if (g != buttons)
+                {
+//TODO: fix not disabling Buttons (2) correctly
+                    Debug.Log("Disabling!");
+                    g.SetActive(false);
+                }
+            }
+        }
+
         //Exit station
         if (currentStation != "none" && Input.GetKeyDown(KeyCode.Escape))
         {
@@ -76,10 +98,5 @@ public class PlayerStations : MonoBehaviour
         {
             ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*shipScript.turnSpeed);
         }
-    }
-
-    public void SetStation(string s)
-    {
-        currentStation = s;
     }
 }
