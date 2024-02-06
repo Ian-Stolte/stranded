@@ -16,7 +16,6 @@ public class Buttons : MonoBehaviour
             bool inUse = false;
             foreach (GameObject p in players)
             {
-                Debug.Log("Other player's station: " + p.GetComponent<PlayerNetwork>().station.Value);
                 if (child.name.ToLower() == p.GetComponent<PlayerNetwork>().station.Value)
                 {
                     child.GetComponent<Button>().interactable = false;

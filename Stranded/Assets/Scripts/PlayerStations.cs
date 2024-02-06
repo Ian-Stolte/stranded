@@ -25,6 +25,8 @@ public class PlayerStations : NetworkBehaviour
 
     public InputAction steering;
 
+    Sync sync;
+
     void OnEnable()
     {
         steering.Enable();
@@ -37,9 +39,8 @@ public class PlayerStations : NetworkBehaviour
 
     void Start()
     {
-//TODO: fix naming players
-        if (IsOwner)
-            name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
+//TODO: fix naming players (works on host, not on client --- all spawn at same time)
+        name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
 
         currentStation = "none";
         buttons = GameObject.Find("Spaceship Buttons");
@@ -51,6 +52,8 @@ public class PlayerStations : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
+
+        sync = GameObject.Find("Sync Object").GetComponent<Sync>();
     }
 
     void Update()
@@ -68,35 +71,36 @@ public class PlayerStations : NetworkBehaviour
                     g.SetActive(false);
                 }
             }
-        }
 
-        //Exit station
-        if (currentStation != "none" && Input.GetKeyDown(KeyCode.Escape))
-        {
-            currentStation = "none";
-        }
-        //Buttons
-        if (currentStation == "none") {
-            buttons.SetActive(true);
-        }
-        else {
-            buttons.SetActive(false);
-        }
+            //Exit station
+            if (currentStation != "none" && Input.GetKeyDown(KeyCode.Escape))
+            {
+                currentStation = "none";
+            }
+            //Buttons
+            if (currentStation == "none" && IsOwner) {
+                buttons.SetActive(true);
+            }
+            else {
+                buttons.SetActive(false);
+            }
 
-        //Thrusters
-        if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
-        {
-            thrusterFire.SetActive(true);
-            Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
-            ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.thrustSpeed, Mathf.Sin(rot.z)*shipScript.thrustSpeed), ForceMode2D.Force);
-        }
-        else {
-            thrusterFire.SetActive(false);
-        }
-        //Steering
-        if (currentStation == "steering")
-        {
-            ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*shipScript.turnSpeed);
+            //Thrusters
+            sync.WriteShipPosServerRpc(ship.transform.position);
+            if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
+            {
+                thrusterFire.SetActive(true);
+                Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
+                ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.thrustSpeed, Mathf.Sin(rot.z)*shipScript.thrustSpeed), ForceMode2D.Force);
+            }
+            else {
+                thrusterFire.SetActive(false);
+            }
+            //Steering
+            if (currentStation == "steering")
+            {
+                ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*shipScript.turnSpeed);
+            }
         }
     }
 }

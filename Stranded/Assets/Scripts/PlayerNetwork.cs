@@ -6,7 +6,7 @@ using Unity.Collections;
 
 public class PlayerNetwork : NetworkBehaviour
 {
-    [HideInInspector] public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     GameObject ship;
     Sync sync;
 
@@ -18,7 +18,7 @@ public class PlayerNetwork : NetworkBehaviour
 
     void Update()
     {
-        if (IsOwner)
+        /*if (IsOwner)
         {
             station.Value = GetComponent<PlayerStations>().currentStation;
 
@@ -42,6 +42,6 @@ public class PlayerNetwork : NetworkBehaviour
         else
         {
             GetComponent<PlayerStations>().currentStation = "" + station.Value;
-        }
+        }*/
     }
 }
