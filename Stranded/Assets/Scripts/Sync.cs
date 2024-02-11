@@ -5,27 +5,40 @@ using Unity.Netcode;
 
 public class Sync : NetworkBehaviour
 {
-//TODO: Change to velocity & fix inability of client to properly accelerate the ship
     public NetworkVariable<Vector3> shipPos = new NetworkVariable<Vector3>();
+    public NetworkVariable<Vector3> shipVel = new NetworkVariable<Vector3>();
     //public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
     
     GameObject ship;
+    PlayerStations player;
 
     void Start()
     {
+//TODO: find better way to identify client player
+        /*foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (g.GetComponent<PlayerStations>().IsOwner) {
+                player = g.GetComponent<PlayerStations>();
+                Debug.Log("Found player: " + g.name);
+            }
+        }*/
         ship = GameObject.Find("Spaceship");
     }
 
     [Rpc(SendTo.Server)]
-    public void WriteShipPosServerRpc(Vector3 newPos)
+    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos)
     {
         ship.transform.position = newPos;
-        ReadShipPosClientRpc(newPos);
+        ship.GetComponent<Rigidbody2D>().velocity = newVel;
+        ReadShipMoveClientRpc(newVel, newPos);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ReadShipPosClientRpc(Vector3 newPos)
+    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos)
     {
-        ship.transform.position = newPos;
+        //if (player.currentStation != "thrusters") {
+            ship.transform.position = newPos;
+            ship.GetComponent<Rigidbody2D>().velocity = newVel;
+        //}
     }
 }
