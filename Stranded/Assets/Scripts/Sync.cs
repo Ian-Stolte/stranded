@@ -10,24 +10,29 @@ public class Sync : NetworkBehaviour
     public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
     
     GameObject ship;
+    GameObject thrusterFire;
     public PlayerStations player;
 
     void Start()
     {
         ship = GameObject.Find("Spaceship");
+        thrusterFire = ship.transform.GetChild(1).gameObject;
     }
 
     //THRUSTER SYNC
     [Rpc(SendTo.Server)]
-    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos)
+    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool fire)
     {
+//Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
-        ReadShipMoveClientRpc(newVel, newPos);
+        Debug.Log(fire);
+        thrusterFire.SetActive(fire);
+        ReadShipMoveClientRpc(newVel, newPos, fire);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos)
+    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool fire)
     {
         if (player != null)
         {
@@ -37,6 +42,7 @@ public class Sync : NetworkBehaviour
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
+        thrusterFire.SetActive(fire);
     }
 
     //STEERING SYNC

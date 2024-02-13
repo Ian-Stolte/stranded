@@ -12,6 +12,7 @@ public class PlayerStations : NetworkBehaviour
     public string currentStation;
     
     GameObject thrusterFire;
+    bool thrustersOn;
     GameObject ship;
     Spaceship shipScript;
 
@@ -46,7 +47,7 @@ public class PlayerStations : NetworkBehaviour
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
-        thrusterFire = ship.transform.GetChild(1).gameObject;
+        //thrusterFire = ship.transform.GetChild(1).gameObject;
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -97,16 +98,18 @@ public class PlayerStations : NetworkBehaviour
             //Thrusters
             if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
             {
-                thrusterFire.SetActive(true);
+                //thrusterFire.SetActive(true);
+                thrustersOn = true;
                 Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
                 ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.thrustSpeed, Mathf.Sin(rot.z)*shipScript.thrustSpeed), ForceMode2D.Force);
             }
             else {
-                thrusterFire.SetActive(false);
+                thrustersOn = false;
+                //thrusterFire.SetActive(false);
             }
             //Write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttons.transform.GetChild(1).GetComponent<Button>().interactable)) {
-                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position);
+                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn);
             }
         }
         else {
