@@ -47,8 +47,10 @@ public class PlayerStations : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
-
+        
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
+        if (IsOwner)
+            sync.player = this;
     }
 
     void Update()
@@ -80,7 +82,18 @@ public class PlayerStations : NetworkBehaviour
             else {
                 buttons.SetActive(false);
             }
-                
+
+            //Steering
+            if (currentStation == "steering")
+            {
+                ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>() * shipScript.turnSpeed);
+            }
+            //Write ship rotation
+            if (currentStation == "steering" || (IsServer && buttons.transform.GetChild(0).GetComponent<Button>().interactable))
+            {
+                sync.WriteShipRotServerRpc(ship.transform.rotation);
+            }
+
             //Thrusters
             if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
             {
@@ -94,12 +107,6 @@ public class PlayerStations : NetworkBehaviour
             //Write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttons.transform.GetChild(1).GetComponent<Button>().interactable)) {
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position);
-            }
-
-            //Steering
-            if (currentStation == "steering")
-            {
-                ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*shipScript.turnSpeed);
             }
         }
         else {

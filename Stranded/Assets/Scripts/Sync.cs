@@ -7,24 +7,17 @@ public class Sync : NetworkBehaviour
 {
     public NetworkVariable<Vector3> shipPos = new NetworkVariable<Vector3>();
     public NetworkVariable<Vector3> shipVel = new NetworkVariable<Vector3>();
-    //public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
+    public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
     
     GameObject ship;
-    PlayerStations player;
+    public PlayerStations player;
 
     void Start()
     {
-//TODO: find better way to identify client player
-        /*foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (g.GetComponent<PlayerStations>().IsOwner) {
-                player = g.GetComponent<PlayerStations>();
-                Debug.Log("Found player: " + g.name);
-            }
-        }*/
         ship = GameObject.Find("Spaceship");
     }
 
+    //THRUSTER SYNC
     [Rpc(SendTo.Server)]
     public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos)
     {
@@ -36,9 +29,33 @@ public class Sync : NetworkBehaviour
     [Rpc(SendTo.NotServer)]
     public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos)
     {
-        //if (player.currentStation != "thrusters") {
-            ship.transform.position = newPos;
-            ship.GetComponent<Rigidbody2D>().velocity = newVel;
-        //}
+        if (player != null)
+        {
+            if (player.currentStation != "thrusters")
+            {
+                ship.transform.position = newPos;
+                ship.GetComponent<Rigidbody2D>().velocity = newVel;
+            }
+        }
+    }
+
+    //STEERING SYNC
+    [Rpc(SendTo.Server)]
+    public void WriteShipRotServerRpc(Quaternion newAngle)
+    {
+        ship.transform.rotation = newAngle;
+        ReadShipRotClientRpc(newAngle);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void ReadShipRotClientRpc(Quaternion newAngle)
+    {
+        if (player != null)
+        {
+            if (player.currentStation != "steering")
+            {
+                ship.transform.rotation = newAngle;
+            }
+        }
     }
 }
