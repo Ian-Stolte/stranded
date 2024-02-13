@@ -18,14 +18,14 @@ public class PlayerMovement : MonoBehaviour
         if (Physics2D.OverlapBox(b.center, b.extents*2, 0, LayerMask.GetMask("Layer1")))
         {
             Debug.Log("There is an object on Layer1 next to us!");
-            StartCoroutine(ChangeScene());
+            StartCoroutine(ChangeScene("Multiplayer"));
         }
     }
 
-    IEnumerator ChangeScene()
+    IEnumerator ChangeScene(string scene)
     {
         GameObject.Find("Fader").GetComponent<Animator>().Play("FadeToBlack");
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("Multiplayer");
+        SceneManager.LoadScene(scene);
     }
 }

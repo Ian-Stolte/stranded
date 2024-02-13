@@ -80,12 +80,6 @@ public class PlayerStations : NetworkBehaviour
             else {
                 buttons.SetActive(false);
             }
-
-            //Update ship pos
-            if (currentStation == "thrusters" || (IsServer && buttons.transform.GetChild(1).GetComponent<Button>().interactable)) {
-                Debug.Log("Updating ship position");
-                sync.WriteShipPosServerRpc(ship.transform.position);
-            }
                 
             //Thrusters
             if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
@@ -97,6 +91,11 @@ public class PlayerStations : NetworkBehaviour
             else {
                 thrusterFire.SetActive(false);
             }
+            //Write ship position & velocity
+            if (currentStation == "thrusters" || (IsServer && buttons.transform.GetChild(1).GetComponent<Button>().interactable)) {
+                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position);
+            }
+
             //Steering
             if (currentStation == "steering")
             {
