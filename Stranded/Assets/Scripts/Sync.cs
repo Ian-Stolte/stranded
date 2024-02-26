@@ -26,7 +26,6 @@ public class Sync : NetworkBehaviour
 //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
-        Debug.Log(fire);
         thrusterFire.SetActive(fire);
         ReadShipMoveClientRpc(newVel, newPos, fire);
     }
