@@ -35,7 +35,7 @@ public class PlayerStations : NetworkBehaviour
 
     void Start()
     {
-//TODO: fix naming players (works on host, not on client --- all spawn at same time)
+// TODO: fix naming players (works on host, not on client --- all spawn at same time)
         name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
 
         currentStation = "none";
