@@ -9,6 +9,7 @@ public class Spaceship : MonoBehaviour
     public float thrustSpeed;
     public float decelSpeed;
     public float maxSpeed;
+    public int shipDamage;
 
     [SerializeField] GameObject coordText;
     [SerializeField] GameObject speedText;
@@ -29,5 +30,15 @@ public class Spaceship : MonoBehaviour
         //show coordinates
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("Entered collision with " + collision.gameObject.name);
+        if (collision.gameObject.name == "Asteroid(Clone)")
+            {
+                shipDamage++;
+                Debug.Log(shipDamage);
+            }
     }
 }
