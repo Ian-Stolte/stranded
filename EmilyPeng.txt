@@ -1,6 +1,0 @@
-hello!
-
-this is my test file for git
-
-have a nice day
-emily
