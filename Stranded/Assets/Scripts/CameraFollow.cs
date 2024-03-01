@@ -18,11 +18,9 @@ public class CameraFollow : MonoBehaviour
         if (pastPos != ship.transform.position)
         {
             offset = new Vector2(ship.transform.position.x - pastPos.x, ship.transform.position.y - pastPos.y)*60;
-            Debug.Log(Vector3.Magnitude(offset));
             if (Vector3.Magnitude(offset) > 6)
             {
                 offset *= Mathf.Pow(Vector3.Magnitude(offset)-6, 1.5f)/30;
-                print("New magnitude: " + Vector3.Magnitude(offset));
             }
             else
             {
@@ -36,7 +34,5 @@ public class CameraFollow : MonoBehaviour
         {
             GetComponent<Camera>().orthographicSize = 15 + Mathf.Pow((speed - 5), 2)/5;
         }
-//TODO: reduce shaking
-//TODO: have camera move ahead of ship after a certain time/velocity
     }
 }
