@@ -32,13 +32,14 @@ public class Spaceship : MonoBehaviour
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
     }
 
+    //collision
     void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Entered collision with " + collision.gameObject.name);
         if (collision.gameObject.name == "Asteroid(Clone)")
-            {
-                shipDamage++;
-                Debug.Log(shipDamage);
-            }
+        {
+            shipDamage++;
+            Debug.Log(shipDamage);
+        }
     }
 }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class AsteroidBehavior : MonoBehaviour
+public class AsteroidBehavior : NetworkBehaviour
 {
-    public float speed;
-    public Vector3 direction;
+    public NetworkVariable<float> speed;
+    public NetworkVariable<Vector3> direction;
     [SerializeField] float despawnDistance;
 
     GameObject ship;
@@ -17,10 +18,10 @@ public class AsteroidBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.position += speed*direction*Time.deltaTime;
-        if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance)
+        transform.position += speed.Value * direction.Value * Time.deltaTime;
+        if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
         {
-            Destroy(gameObject);
+            GetComponent<NetworkObject>().Despawn(true);
         }
     }
 }

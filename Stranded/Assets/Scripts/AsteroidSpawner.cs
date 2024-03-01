@@ -29,14 +29,14 @@ public class AsteroidSpawner : NetworkBehaviour
                 distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
                 GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation, GameObject.Find("Asteroids").transform);
                 //Set asteroid values
-                AsteroidBehavior ast = obj.GetComponent<AsteroidBehavior>();
-                ast.speed = Random.Range(minSpeed, maxSpeed);
                 obj.transform.localScale = new Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), 1);
                 var euler = transform.eulerAngles;
                 euler.z = Random.Range(0, 360);
                 obj.transform.eulerAngles = euler;
-                ast.direction = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-                ast.direction = Vector3.Normalize(ast.direction);
+                AsteroidBehavior ast = obj.GetComponent<AsteroidBehavior>();
+                ast.speed.Value = Random.Range(minSpeed, maxSpeed);
+                ast.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+                ast.direction.Value = Vector3.Normalize(ast.direction.Value);
                 obj.GetComponent<NetworkObject>().Spawn();
             }
         }
