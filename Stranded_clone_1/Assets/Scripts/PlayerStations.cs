@@ -72,7 +72,7 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Exit station
-            if (currentStation != "none" && Input.GetKeyDown(KeyCode.Escape))
+            if (currentStation != "none" && Input.GetKeyDown(KeyCode.Q))
             {
                 currentStation = "none";
             }
