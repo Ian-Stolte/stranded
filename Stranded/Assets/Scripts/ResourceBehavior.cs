@@ -34,7 +34,7 @@ public class ResourceBehavior : NetworkBehaviour
         transform.position += speed.Value * direction.Value * Time.deltaTime;
         if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
         {
-            GetComponent<NetworkObject>().Despawn(true);
+            //GetComponent<NetworkObject>().Despawn(true);
         }
     }
 }

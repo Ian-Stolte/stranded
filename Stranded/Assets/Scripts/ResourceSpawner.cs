@@ -29,11 +29,12 @@ public class ResourceSpawner : NetworkBehaviour
                 distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
                 GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation, GameObject.Find("Resources").transform);
                 //Set Resource values
-                ResourceBehavior ast = obj.GetComponent<ResourceBehavior>();
-                ast.speed.Value = Random.Range(minSpeed, maxSpeed);
-                ast.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-                ast.direction.Value = Vector3.Normalize(ast.direction.Value);
+                ResourceBehavior res = obj.GetComponent<ResourceBehavior>();
+                res.speed.Value = Random.Range(minSpeed, maxSpeed);
+                res.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+                res.direction.Value = Vector3.Normalize(res.direction.Value);
                 obj.GetComponent<NetworkObject>().Spawn();
+                Debug.Log("spawned");
             }
         }
     }
