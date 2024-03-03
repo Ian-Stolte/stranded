@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,11 @@ public class Spaceship : MonoBehaviour
     public float maxSpeed;
     public int shipHealth;
     public int resourcesCollected;
+    public int fuelAmount;
+    public int depletionRate = 1; // Rate at which fuel depletes per second
+    public float depletionInterval = 3f; // Interval between each depletion
+
+
 
     [SerializeField] GameObject coordText;
     [SerializeField] GameObject speedText;
@@ -20,6 +26,9 @@ public class Spaceship : MonoBehaviour
     {
         resourcesCollected = 0;
         shipHealth = 10;
+        fuelAmount = 20;
+
+        StartCoroutine(DepleteOverTime());
     }
 
     void Update()
@@ -49,14 +58,39 @@ public class Spaceship : MonoBehaviour
         {
             GameObject damageBar = GameObject.Find("Ship Damage Bar");
             shipHealth--;
-            Debug.Log(shipHealth);
+            // Debug.Log(shipHealth);
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth);
         }
         if (collision.gameObject.name == "Resource(Clone)")
         {
             resourcesCollected++;
             Debug.Log(resourcesCollected);
-            // resourceBarTracker.ChangeResourceToAmount(resourcesCollected);
+
+            GameObject fuelBar = GameObject.Find("Fuel Bar");
+            fuelAmount++;
+            Debug.Log(fuelAmount);
+            fuelBar.GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount);
+
+        }
+    }
+
+    IEnumerator DepleteOverTime()
+    {
+        while (fuelAmount > 0)
+        {
+            GameObject fuelBar = GameObject.Find("Fuel Bar");
+            yield return new WaitForSeconds(depletionInterval); // Wait
+            fuelAmount --;
+            fuelAmount = Mathf.Max(fuelAmount, 0);
+            fuelBar.GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount);
+            Debug.Log("Depleting...");
+            Debug.Log(fuelAmount);
+            yield return null;
+        }
+
+        if (fuelAmount <= 0)
+        {
+            // Game over
         }
     }
 }

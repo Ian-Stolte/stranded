@@ -16,21 +16,7 @@ public class ResourceBar : MonoBehaviour
     // [SerializeField] private int resourceAbsoluteMax = 1000;
     [Space]
     [SerializeField] private bool overkillPossible;
-    // [SerializeField] private ShapeType shapeOfBar;
 
-    // public enum ShapeType
-    // {
-    //     [InspectorName("Rectangle (Horizontal)")]
-    //     RectangleHorizontal,
-    //     [InspectorName("Rectangle (Vertical)")]
-    //     RectangleVertical,
-    //     [InspectorName("Circle")] 
-    //     Circle,
-    //     Arc
-    // }
-    
-    // [Header("Arc Settings")]
-    // [SerializeField, Range(0, 360)] private int endDegreeValue = 360;
     
     // [Header("Animation Speed")]
     // [SerializeField, Range(0,0.5f)] private float _animationTime = 0.25f;
@@ -63,6 +49,7 @@ public class ResourceBar : MonoBehaviour
     {
         UpdateBarAndResourceText();
     }
+
 
     private void UpdateBarAndResourceText()
     {
