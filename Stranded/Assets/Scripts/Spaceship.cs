@@ -60,15 +60,19 @@ public class Spaceship : MonoBehaviour
             // Debug.Log(shipHealth);
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
         }
-        if (collision.gameObject.name == "Resource(Clone)")
+    }
+
+    //resource enters trigger collider
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if(collider.gameObject.name == "Resource(Clone)")
         {
             ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
             resourcesCollected++;
-            fuelAmount += collision.gameObject.GetComponent<ResourceBehavior>().value.Value;
+            fuelAmount += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
             fuelAmount = Mathf.Min(fuelAmount, fuelMax);
             Debug.Log("Resource pickup: " + fuelAmount);
             barScript.ChangeResourceToAmount(fuelAmount, fuelMax);
-
         }
     }
 

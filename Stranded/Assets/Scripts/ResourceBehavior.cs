@@ -18,10 +18,10 @@ public class ResourceBehavior : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collider)
     {
         //despawn on collision
-        if (collision.gameObject.name == "Spaceship")
+        if (collider.gameObject.name == "Spaceship")
         { 
             GetComponent<NetworkObject>().Despawn(true);
         }
