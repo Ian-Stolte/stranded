@@ -22,7 +22,7 @@ public class ResourceBehavior : NetworkBehaviour
     {
         //despawn on collision
         if (collision.gameObject.name == "Spaceship")
-        
+        { 
             GetComponent<NetworkObject>().Despawn(true);
         }
     }
