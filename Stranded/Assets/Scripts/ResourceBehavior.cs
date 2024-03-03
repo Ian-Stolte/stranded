@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using TMPro;
+using UnityEngine.UI;
 
 public class ResourceBehavior : NetworkBehaviour
 {
     public NetworkVariable<float> speed;
     public NetworkVariable<Vector3> direction;
     [SerializeField] float despawnDistance;
-    //public float resourcesCollected = 0;
-    //public TMP_Text resourcesText;
+
 
     GameObject ship;
 
@@ -21,12 +20,17 @@ public class ResourceBehavior : NetworkBehaviour
 
     void Update()
     {
-        //resourcesText.SetText("Resources Collected:" + resourcesCollected);
+        //Debug.Log("Amt collected:" + resourcesCollected);
     }
 
-    void OnCollisionEnter2D()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        //resourcesCollected = resourcesCollected + 1;
+        if (collision.gameObject.name == "Spaceship")
+        {
+            //resourcesCollected = resourcesCollected + 1;
+            //Debug.Log("Amt collected:" + resourcesCollected);
+            GetComponent<NetworkObject>().Despawn(true);
+        }
     }
 
     void FixedUpdate()

@@ -10,9 +10,16 @@ public class Spaceship : MonoBehaviour
     public float decelSpeed;
     public float maxSpeed;
     public int shipDamage;
+    public float resourcesCollected;
 
     [SerializeField] GameObject coordText;
     [SerializeField] GameObject speedText;
+    [SerializeField] GameObject resourceText;
+
+    void Start()
+    {
+        resourcesCollected = 0;
+    }
 
     void Update()
     {
@@ -30,6 +37,7 @@ public class Spaceship : MonoBehaviour
         //show coordinates
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + resourcesCollected;
     }
 
     //collision
@@ -40,6 +48,11 @@ public class Spaceship : MonoBehaviour
         {
             shipDamage++;
             Debug.Log(shipDamage);
+        }
+        if (collision.gameObject.name == "Resource(Clone)")
+        {
+            resourcesCollected++;
+            Debug.Log(resourcesCollected);
         }
     }
 }
