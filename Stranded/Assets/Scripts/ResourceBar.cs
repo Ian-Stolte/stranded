@@ -11,11 +11,10 @@ public class ResourceBar : MonoBehaviour
 {
     [Header("Core Settings")]
     [SerializeField] private Image bar;
-    [SerializeField] private int resourceCurrent = 10;
-    [SerializeField] private int resourceMax = 10;
+
     // [SerializeField] private int resourceAbsoluteMax = 1000;
-    [Space]
-    [SerializeField] private bool overkillPossible;
+    //[Space]
+    //[SerializeField] private bool overkillPossible;
 
     
     // [Header("Animation Speed")]
@@ -44,33 +43,15 @@ public class ResourceBar : MonoBehaviour
     
     // [Header("Test mode")] 
     // [SerializeField] private bool enableTesting;
-    
-    private void Start()
+
+    public void GameOver() //probably only needed if we do a game over UI on the bar
     {
-        UpdateBarAndResourceText();
+        //add game over UI
+        bar.fillAmount = 0;
     }
 
-
-    private void UpdateBarAndResourceText()
+    public void ChangeResourceToAmount(float current, float max)
     {
-        if (resourceMax <= 0)
-        {
-            bar.fillAmount = 0;
-            return;
-        }
-
-        float fillAmount = (float) resourceCurrent/resourceMax;
-
-        bar.fillAmount = fillAmount;
-    }
-
-    public void ChangeResourceToAmount(int amount)
-    {
-        resourceCurrent = amount;
-        resourceCurrent = Mathf.Clamp(value: resourceCurrent, min: 0, resourceMax);
-
-        bar.fillAmount = (float) resourceCurrent / resourceMax;
-
-        return;
+        bar.fillAmount = current / max;
     }
 }

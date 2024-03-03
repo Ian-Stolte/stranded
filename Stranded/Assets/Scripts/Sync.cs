@@ -9,8 +9,8 @@ public class Sync : NetworkBehaviour
     public NetworkVariable<Vector3> shipVel = new NetworkVariable<Vector3>();
     public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
     
-    GameObject ship;
-    GameObject thrusterFire;
+    private GameObject ship;
+    private GameObject thrusterFire;
     public PlayerStations player;
 
     void Start()

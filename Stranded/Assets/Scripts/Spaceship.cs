@@ -11,23 +11,22 @@ public class Spaceship : MonoBehaviour
     public float decelSpeed;
     public float maxSpeed;
     public int shipHealth;
+    public int shipHealthMax;
     public int resourcesCollected;
-    public int fuelAmount;
-    public int depletionRate = 1; // Rate at which fuel depletes per second
-    public float depletionInterval = 3f; // Interval between each depletion
+    public float fuelAmount;
+    public float fuelMax;
+    [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
+    [Tooltip("How much fuel depletes each interval")] [SerializeField] private float depletionAmount;
 
-
-
-    [SerializeField] GameObject coordText;
-    [SerializeField] GameObject speedText;
-    [SerializeField] GameObject resourceText;
+    [SerializeField] private GameObject coordText;
+    [SerializeField] private GameObject speedText;
+    [SerializeField] private GameObject resourceText;
 
     void Start()
     {
+        shipHealth = shipHealthMax;
         resourcesCollected = 0;
-        shipHealth = 10;
-        fuelAmount = 20;
-
+        fuelAmount = fuelMax;
         StartCoroutine(DepleteOverTime());
     }
 
@@ -59,38 +58,37 @@ public class Spaceship : MonoBehaviour
             GameObject damageBar = GameObject.Find("Ship Damage Bar");
             shipHealth--;
             // Debug.Log(shipHealth);
-            damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth);
+            damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
         }
         if (collision.gameObject.name == "Resource(Clone)")
         {
+            ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
             resourcesCollected++;
-            Debug.Log(resourcesCollected);
-
-            GameObject fuelBar = GameObject.Find("Fuel Bar");
-            fuelAmount++;
-            Debug.Log(fuelAmount);
-            fuelBar.GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount);
+            fuelAmount += collision.gameObject.GetComponent<ResourceBehavior>().value.Value;
+            fuelAmount = Mathf.Min(fuelAmount, fuelMax);
+            Debug.Log("Resource pickup: " + fuelAmount);
+            barScript.ChangeResourceToAmount(fuelAmount, fuelMax);
 
         }
     }
 
+    //deplete fuel
     IEnumerator DepleteOverTime()
     {
         while (fuelAmount > 0)
-        {
-            GameObject fuelBar = GameObject.Find("Fuel Bar");
+        {   
             yield return new WaitForSeconds(depletionInterval); // Wait
-            fuelAmount --;
+            fuelAmount -= depletionAmount;
             fuelAmount = Mathf.Max(fuelAmount, 0);
-            fuelBar.GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount);
-            Debug.Log("Depleting...");
-            Debug.Log(fuelAmount);
-            yield return null;
+            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount, fuelMax);
+            Debug.Log("Depleting... " + fuelAmount);
         }
 
+        // Game over
         if (fuelAmount <= 0)
         {
-            // Game over
+            Debug.Log("Game Over!");
+            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
         }
     }
 }

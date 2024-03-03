@@ -5,16 +5,16 @@ using Unity.Netcode;
 
 public class AsteroidSpawner : NetworkBehaviour
 {
-    [SerializeField] GameObject prefab;
-    [SerializeField] float minDelay;
-    [SerializeField] float maxDelay;
-    [SerializeField] float minDistance;
-    [SerializeField] float maxDistance;
-    [SerializeField] float minSpeed;
-    [SerializeField] float maxSpeed;
-    [SerializeField] float minSize;
-    [SerializeField] float maxSize;
-    float timer;
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private float minDelay;
+    [SerializeField] private float maxDelay;
+    [SerializeField] private float minDistance;
+    [SerializeField] private float maxDistance;
+    [SerializeField] private float minSpeed;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float minSize;
+    [SerializeField] private float maxSize;
+    private float timer;
 
     void Update()
     {
@@ -27,7 +27,7 @@ public class AsteroidSpawner : NetworkBehaviour
                 timer = Random.Range(minDelay, maxDelay);
                 Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
                 distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
-                GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation, GameObject.Find("Asteroids").transform);
+                GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Asteroids").transform*/);
                 //Set asteroid values
                 obj.transform.localScale = new Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), 1);
                 var euler = transform.eulerAngles;

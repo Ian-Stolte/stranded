@@ -599,9 +599,12 @@ MonoBehaviour:
   decelSpeed: 0.001
   maxSpeed: 10
   shipHealth: 0
+  shipHealthMax: 10
   resourcesCollected: 0
   fuelAmount: 0
-  depletionRate: 1
+  fuelMax: 10
+  depletionInterval: 3
+  depletionAmount: 0.5
   coordText: {fileID: 736649308}
   speedText: {fileID: 1631926231}
   resourceText: {fileID: 197393918}
@@ -1296,7 +1299,7 @@ GameObject:
   - component: {fileID: 1053010500}
   - component: {fileID: 1053010501}
   m_Layer: 0
-  m_Name: ResourceSpawner
+  m_Name: Resource Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1351,14 +1354,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 7698982669609692162, guid: e32e76c7e584b114681a5d11185f2911, type: 3}
-  minDelay: 1
+  minDelay: 2
   maxDelay: 8
-  minDistance: 5
-  maxDistance: 20
+  minDistance: 10
+  maxDistance: 30
   minSpeed: 0.5
   maxSpeed: 3
-  minSize: 1
-  maxSize: 10
+  resourceValue: 2
 --- !u!1 &1344879308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,7 +1460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1361559819
 Transform:
   m_ObjectHideFlags: 0
@@ -1657,7 +1659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1631109220
 Transform:
   m_ObjectHideFlags: 0
@@ -1667,7 +1669,7 @@ Transform:
   m_GameObject: {fileID: 1631109219}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.223407, y: 3.3665433, z: 0.6503386}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

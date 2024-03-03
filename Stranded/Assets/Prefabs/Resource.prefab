@@ -196,8 +196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee7d35f05522deb4497f7346215c3b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  value:
+    m_InternalValue: 0
   speed:
     m_InternalValue: 0
   direction:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  despawnDistance: 0
+  despawnDistance: 100

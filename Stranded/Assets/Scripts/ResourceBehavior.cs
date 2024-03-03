@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class ResourceBehavior : NetworkBehaviour
 {
+    [Tooltip ("How much fuel this resource restores")] public NetworkVariable<float> value;
     public NetworkVariable<float> speed;
     public NetworkVariable<Vector3> direction;
-    [SerializeField] float despawnDistance;
-
+    [SerializeField] private float despawnDistance;
 
     GameObject ship;
 
@@ -32,7 +32,7 @@ public class ResourceBehavior : NetworkBehaviour
         transform.position += speed.Value * direction.Value * Time.deltaTime;
         if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
         {
-            //GetComponent<NetworkObject>().Despawn(true);
+            GetComponent<NetworkObject>().Despawn(true);
         }
     }
 }
