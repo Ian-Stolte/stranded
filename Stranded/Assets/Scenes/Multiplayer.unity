@@ -597,11 +597,12 @@ MonoBehaviour:
   thrustSpeed: 1
   decelSpeed: 0.001
   maxSpeed: 10
-  shipDamage: 0
+  shipHealth: 0
   resourcesCollected: 0
   coordText: {fileID: 736649308}
   speedText: {fileID: 1631926231}
   resourceText: {fileID: 197393918}
+  resourceBarTracker: {fileID: 0}
 --- !u!58 &412612940
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1238,6 +1239,7 @@ GameObject:
   - component: {fileID: 1147166502}
   - component: {fileID: 1147166504}
   - component: {fileID: 1147166503}
+  - component: {fileID: 1147166505}
   m_Layer: 5
   m_Name: Ship Damage Bar
   m_TagString: Untagged
@@ -1302,6 +1304,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147166501}
   m_CullTransparentMesh: 1
+--- !u!114 &1147166505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147166501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0527532abf66b6b4992a1b3570dcdf7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bar: {fileID: 1147166503}
+  resourceCurrent: 10
+  resourceMax: 10
+  overkillPossible: 1
 --- !u!1 &1344879308
 GameObject:
   m_ObjectHideFlags: 0

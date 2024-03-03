@@ -9,16 +9,18 @@ public class Spaceship : MonoBehaviour
     public float thrustSpeed;
     public float decelSpeed;
     public float maxSpeed;
-    public int shipDamage;
-    public float resourcesCollected;
+    public int shipHealth;
+    public int resourcesCollected;
 
     [SerializeField] GameObject coordText;
     [SerializeField] GameObject speedText;
     [SerializeField] GameObject resourceText;
+    [SerializeField] private ShipDamage resourceBarTracker;
 
     void Start()
     {
         resourcesCollected = 0;
+        shipHealth = 10;
     }
 
     void Update()
@@ -46,13 +48,17 @@ public class Spaceship : MonoBehaviour
         Debug.Log("Entered collision with " + collision.gameObject.name);
         if (collision.gameObject.name == "Asteroid(Clone)")
         {
-            shipDamage++;
-            Debug.Log(shipDamage);
+            GameObject damageBar = GameObject.Find("Ship Damage Bar");
+            shipHealth--;
+            Debug.Log(shipHealth);
+            damageBar.GetComponent<ShipDamage>().ChangeResourceToAmount(shipHealth);
+            // resourceBarTracker.ChangeResourceToAmount(shipDamage);
         }
         if (collision.gameObject.name == "Resource(Clone)")
         {
             resourcesCollected++;
             Debug.Log(resourcesCollected);
+            resourceBarTracker.ChangeResourceToAmount(resourcesCollected);
         }
     }
 }
