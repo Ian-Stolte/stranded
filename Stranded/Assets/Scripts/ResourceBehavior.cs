@@ -18,17 +18,11 @@ public class ResourceBehavior : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
     }
 
-    void Update()
-    {
-        //Debug.Log("Amt collected:" + resourcesCollected);
-    }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
+        //despawn on collision
         if (collision.gameObject.name == "Spaceship")
-        {
-            //resourcesCollected = resourcesCollected + 1;
-            //Debug.Log("Amt collected:" + resourcesCollected);
+        
             GetComponent<NetworkObject>().Despawn(true);
         }
     }
