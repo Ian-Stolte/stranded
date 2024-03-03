@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ShipDamage : MonoBehaviour
+public class ResourceBar : MonoBehaviour
 {
     [Header("Core Settings")]
     [SerializeField] private Image bar;

@@ -15,7 +15,6 @@ public class Spaceship : MonoBehaviour
     [SerializeField] GameObject coordText;
     [SerializeField] GameObject speedText;
     [SerializeField] GameObject resourceText;
-    [SerializeField] private ShipDamage resourceBarTracker;
 
     void Start()
     {
@@ -51,14 +50,13 @@ public class Spaceship : MonoBehaviour
             GameObject damageBar = GameObject.Find("Ship Damage Bar");
             shipHealth--;
             Debug.Log(shipHealth);
-            damageBar.GetComponent<ShipDamage>().ChangeResourceToAmount(shipHealth);
-            // resourceBarTracker.ChangeResourceToAmount(shipDamage);
+            damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth);
         }
         if (collision.gameObject.name == "Resource(Clone)")
         {
             resourcesCollected++;
             Debug.Log(resourcesCollected);
-            resourceBarTracker.ChangeResourceToAmount(resourcesCollected);
+            // resourceBarTracker.ChangeResourceToAmount(resourcesCollected);
         }
     }
 }
