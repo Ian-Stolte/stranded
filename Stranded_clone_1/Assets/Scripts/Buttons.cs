@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Buttons : MonoBehaviour
 {
     public GameObject target;
-    GameObject[] players;
+    private GameObject[] players;
 
     void Update()
     {

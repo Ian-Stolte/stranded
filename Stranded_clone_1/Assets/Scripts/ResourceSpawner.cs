@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class AsteroidSpawner : NetworkBehaviour
+public class ResourceSpawner : NetworkBehaviour
 {
     [SerializeField] private GameObject prefab;
     [SerializeField] private float minDelay;
@@ -12,8 +12,7 @@ public class AsteroidSpawner : NetworkBehaviour
     [SerializeField] private float maxDistance;
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
-    [SerializeField] private float minSize;
-    [SerializeField] private float maxSize;
+    [SerializeField] private float resourceValue;
     private float timer;
 
     void Update()
@@ -27,16 +26,13 @@ public class AsteroidSpawner : NetworkBehaviour
                 timer = Random.Range(minDelay, maxDelay);
                 Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
                 distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
-                GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Asteroids").transform*/);
-                //Set asteroid values
-                obj.transform.localScale = new Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), 1);
-                var euler = transform.eulerAngles;
-                euler.z = Random.Range(0, 360);
-                obj.transform.eulerAngles = euler;
-                AsteroidBehavior ast = obj.GetComponent<AsteroidBehavior>();
-                ast.speed.Value = Random.Range(minSpeed, maxSpeed);
-                ast.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-                ast.direction.Value = Vector3.Normalize(ast.direction.Value);
+                GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Resources").transform*/);
+                //Set Resource values
+                ResourceBehavior res = obj.GetComponent<ResourceBehavior>();
+                res.value.Value = resourceValue; //could randomize this between a range
+                res.speed.Value = Random.Range(minSpeed, maxSpeed);
+                res.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+                res.direction.Value = Vector3.Normalize(res.direction.Value);
                 obj.GetComponent<NetworkObject>().Spawn();
             }
         }

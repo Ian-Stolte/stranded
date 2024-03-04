@@ -11,17 +11,17 @@ public class PlayerStations : NetworkBehaviour
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     public string currentStation;
     
-    GameObject thrusterFire;
-    bool thrustersOn;
-    GameObject ship;
-    Spaceship shipScript;
+    private GameObject thrusterFire;
+    private bool thrustersOn;
+    private GameObject ship;
+    private Spaceship shipScript;
 
-    [SerializeField] GameObject buttonPrefab;
+    [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
 
     public InputAction steering;
 
-    Sync sync;
+    private Sync sync;
 
     void OnEnable()
     {
