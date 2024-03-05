@@ -10,6 +10,7 @@ public class Spaceship : MonoBehaviour
     public float thrustSpeed;
     public float decelSpeed;
     public float maxSpeed;
+    public float speedDecrease;
     public int shipHealth;
     public int shipHealthMax;
     public int resourcesCollected;
@@ -55,10 +56,13 @@ public class Spaceship : MonoBehaviour
         Debug.Log("Entered collision with " + collision.gameObject.name);
         if (collision.gameObject.name == "Asteroid(Clone)")
         {
+            // Updates the health bar
             GameObject damageBar = GameObject.Find("Ship Damage Bar");
             shipHealth--;
-            // Debug.Log(shipHealth);
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
+
+            // Slows down the ship's maximum speed
+            maxSpeed -= speedDecrease;
         }
     }
 
