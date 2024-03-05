@@ -10,6 +10,8 @@ using System.Net.Sockets;
 public class GameManager : NetworkBehaviour
 {
 	private bool pcAssigned;
+	private bool isGameOver;
+	private int health;
 
 	[SerializeField] TextMeshProUGUI ipText;
 	[SerializeField] TMP_InputField ipInput;
@@ -23,6 +25,11 @@ public class GameManager : NetworkBehaviour
 		SetIpAddress(); //Set the Ip to the above address
 		pcAssigned = false;
 		//InvokeRepeating("assignPlayerController", 0.1f, 0.1f);
+	}
+
+	void Update()
+	{
+		//Debug.Log(GameObject.Find("Spaceship").GetComponent<"Ship Health">());
 	}
 
 	// To Host a game

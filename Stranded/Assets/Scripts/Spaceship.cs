@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Spaceship : MonoBehaviour
 {
@@ -93,6 +94,7 @@ public class Spaceship : MonoBehaviour
         {
             Debug.Log("Game Over!");
             GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
+            SceneManager.LoadScene("Game Over");
         }
     }
 }
