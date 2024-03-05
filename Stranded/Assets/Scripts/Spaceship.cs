@@ -7,10 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class Spaceship : MonoBehaviour
 {
+    // Speed variables
+    [Header("Speed Variables")]
     public float turnSpeed;
     public float thrustSpeed;
     public float decelSpeed;
     public float maxSpeed;
+    public float speedDecrease;
+    public float stunDuration = 1f; // Duration of the stun in seconds
+    private bool isStunned = false; // Indicates if the player is stunned
+    public float maxSpeedRecord;
+
+
+    // Resource variables
+    [Header("Resource Variables")]
     public int shipHealth;
     public int shipHealthMax;
     public int resourcesCollected;
@@ -19,6 +29,8 @@ public class Spaceship : MonoBehaviour
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
     [Tooltip("How much fuel depletes each interval")] [SerializeField] private float depletionAmount;
 
+    // Text variables
+    [Header("Text Variables")]
     [SerializeField] private GameObject coordText;
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
@@ -56,14 +68,20 @@ public class Spaceship : MonoBehaviour
         Debug.Log("Entered collision with " + collision.gameObject.name);
         if (collision.gameObject.name == "Asteroid(Clone)")
         {
+            // Updates the health bar
             GameObject damageBar = GameObject.Find("Ship Damage Bar");
             shipHealth--;
-            // Debug.Log(shipHealth);
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
+
+            // Stuns
+            Stun();
+
+            // Slows down the ship's maximum speed
+            maxSpeed -= speedDecrease;
         }
     }
 
-    //resource enters trigger collider
+    // Resource enters trigger collider
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.name == "Resource(Clone)")
@@ -96,5 +114,25 @@ public class Spaceship : MonoBehaviour
             GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
             SceneManager.LoadScene("Game Over");
         }
+    }
+
+    // Stun
+    public void Stun()
+    {
+        if (!isStunned)
+        {
+            isStunned = true;
+            maxSpeedRecord = maxSpeed; // Remembers the current speed
+            maxSpeed = 0;
+            // GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+
+            Invoke("EndStun", stunDuration); // Ends stun after duration
+        }
+    }
+
+    private void EndStun()
+    {
+        isStunned = false;
+        maxSpeed = maxSpeedRecord;
     }
 }
