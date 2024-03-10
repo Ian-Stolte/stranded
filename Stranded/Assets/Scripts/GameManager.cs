@@ -29,14 +29,14 @@ public class GameManager : NetworkBehaviour
 	public void StartHost()
 	{
 		NetworkManager.Singleton.StartHost();
-		if (IsServer)
-			GetLocalIPAddress();
+		GetLocalIPAddress();
 	}
 
 	// To Join a game
 	public void StartClient()
 	{
 		ipAddress = ipInput.text;
+		ipText.text = ipAddress;
 		SetIpAddress();
 		NetworkManager.Singleton.StartClient();
 	}
