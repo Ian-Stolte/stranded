@@ -56,7 +56,11 @@ public class Spaceship : MonoBehaviour
 
         //reduce to max speed
         float speed = Mathf.Sqrt(Mathf.Pow(vel.x, 2) + Mathf.Pow(vel.y, 2));
-        if (speed > maxSpeed)
+        if (maxSpeed <= 0)
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+        }
+        else if (speed > maxSpeed)
         {
             float decel = Mathf.Sqrt(Mathf.Pow(maxSpeed, 2) / Mathf.Pow(speed, 2));
             GetComponent<Rigidbody2D>().velocity *= decel;
@@ -78,13 +82,13 @@ public class Spaceship : MonoBehaviour
             shipHealth--;
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
 
+            // Slows down the ship's maximum speed
+            if (slowSpeed)
+                maxSpeed -= speedDecrease;
+
             // Stuns
             if (stun)
                 Stun();
-
-            // Slows down the ship's maximum speed
-            if (slowSpeed)
-               maxSpeed -= speedDecrease;
 
             if (destroyAsteroid)
                 collision.gameObject.GetComponent<NetworkObject>().Despawn(true);
@@ -100,7 +104,6 @@ public class Spaceship : MonoBehaviour
             resourcesCollected++;
             fuelAmount += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
             fuelAmount = Mathf.Min(fuelAmount, fuelMax);
-            Debug.Log("Resource pickup: " + fuelAmount);
             barScript.ChangeResourceToAmount(fuelAmount, fuelMax);
         }
     }
@@ -114,7 +117,6 @@ public class Spaceship : MonoBehaviour
             fuelAmount -= depletionAmount;
             fuelAmount = Mathf.Max(fuelAmount, 0);
             GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount, fuelMax);
-            Debug.Log("Depleting... " + fuelAmount);
         }
 
         // Game over
