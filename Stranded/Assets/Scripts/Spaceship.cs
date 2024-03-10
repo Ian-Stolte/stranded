@@ -4,9 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class Spaceship : MonoBehaviour
 {
+    //To test
+    [Header("Test Behaviors")]
+    [SerializeField] private bool stun;
+    [SerializeField] private bool slowSpeed;
+    [SerializeField] private bool destroyAsteroid;
+
     // Speed variables
     [Header("Speed Variables")]
     public float turnSpeed;
@@ -14,10 +21,9 @@ public class Spaceship : MonoBehaviour
     public float decelSpeed;
     public float maxSpeed;
     public float speedDecrease;
-    public float stunDuration = 1f; // Duration of the stun in seconds
-    private bool isStunned = false; // Indicates if the player is stunned
-    public float maxSpeedRecord;
-
+    public float stunDuration; // Duration of the stun in seconds
+    public bool isStunned; // Indicates if the player is stunned
+    float maxSpeedRecord;
 
     // Resource variables
     [Header("Resource Variables")]
@@ -65,7 +71,6 @@ public class Spaceship : MonoBehaviour
     //collision
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Entered collision with " + collision.gameObject.name);
         if (collision.gameObject.name == "Asteroid(Clone)")
         {
             // Updates the health bar
@@ -74,10 +79,15 @@ public class Spaceship : MonoBehaviour
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
 
             // Stuns
-            Stun();
+            if (stun)
+                Stun();
 
             // Slows down the ship's maximum speed
-            maxSpeed -= speedDecrease;
+            if (slowSpeed)
+               maxSpeed -= speedDecrease;
+
+            if (destroyAsteroid)
+                collision.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
     }
 
@@ -122,6 +132,7 @@ public class Spaceship : MonoBehaviour
         if (!isStunned)
         {
             isStunned = true;
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             maxSpeedRecord = maxSpeed; // Remembers the current speed
             maxSpeed = 0;
             // GetComponent<Rigidbody2D>().velocity = Vector2.zero;
