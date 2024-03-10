@@ -85,7 +85,7 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Steering
-            if (currentStation == "steering")
+            if (currentStation == "steering" && !shipScript.isStunned)
             {
                 ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>() * shipScript.turnSpeed);
             }
@@ -96,7 +96,7 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Thrusters
-            if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space))
+            if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space) && !shipScript.isStunned)
             {
                 //thrusterFire.SetActive(true);
                 thrustersOn = true;
