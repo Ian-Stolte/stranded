@@ -33,7 +33,7 @@ public class ResourceSpawner : NetworkBehaviour
                 res.speed.Value = Random.Range(minSpeed, maxSpeed);
                 res.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
                 res.direction.Value = Vector3.Normalize(res.direction.Value);
-                obj.GetComponent<NetworkObject>().Spawn();
+                obj.GetComponent<NetworkObject>().Spawn(true);
             }
         }
     }

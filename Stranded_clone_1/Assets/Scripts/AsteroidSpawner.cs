@@ -37,7 +37,7 @@ public class AsteroidSpawner : NetworkBehaviour
                 ast.speed.Value = Random.Range(minSpeed, maxSpeed);
                 ast.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
                 ast.direction.Value = Vector3.Normalize(ast.direction.Value);
-                obj.GetComponent<NetworkObject>().Spawn();
+                obj.GetComponent<NetworkObject>().Spawn(true);
             }
         }
     }

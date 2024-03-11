@@ -7,7 +7,7 @@ using TMPro;
 using System.Net;
 using System.Net.Sockets;
 
-public class GameManager : NetworkBehaviour
+public class LANManager : NetworkBehaviour
 {
 	private bool pcAssigned;
 

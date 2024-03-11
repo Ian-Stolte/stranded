@@ -122,9 +122,9 @@ public class Spaceship : MonoBehaviour
         // Game over
         if (fuelAmount <= 0)
         {
-            Debug.Log("Game Over!");
             GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
-            SceneManager.LoadScene("Game Over");
+            Destroy(GameObject.Find("Player 1"));
+            NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
         }
     }
 
