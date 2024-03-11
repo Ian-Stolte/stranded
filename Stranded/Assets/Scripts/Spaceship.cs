@@ -82,6 +82,12 @@ public class Spaceship : MonoBehaviour
             shipHealth--;
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
 
+            if (shipHealth <= 0){
+                Debug.Log("Game Over! Your ship broke down...");
+                GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().GameOver();
+                SceneManager.LoadScene("Game Over");
+            }
+
             // Slows down the ship's maximum speed
             if (slowSpeed)
                 maxSpeed -= speedDecrease;
