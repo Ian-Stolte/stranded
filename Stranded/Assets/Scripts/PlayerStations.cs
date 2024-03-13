@@ -59,7 +59,7 @@ public class PlayerStations : NetworkBehaviour
 
         steerInstruction = GameObject.Find("Steering Instructions");
         thrusterInstruction = GameObject.Find("Thruster Instructions");
-        Debug.Log(steerInstruction.name);
+
         steerInstruction.SetActive(false);
         thrusterInstruction.SetActive(false);
         buttonCircles.SetActive(true);
