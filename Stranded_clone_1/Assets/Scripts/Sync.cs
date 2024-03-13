@@ -19,6 +19,27 @@ public class Sync : NetworkBehaviour
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
 
+    //RESOURCE SYNC
+    /*[Rpc(SendTo.Server)]
+    public void ChangeFuelServerRpc(float toAdd, float max)
+    {
+        NetworkVariable<float> fuel = ship.GetComponent<Spaceship>().fuelAmount;
+        fuel.Value += toAdd;
+        fuel.Value = Mathf.Min(fuel.Value, max);
+        fuel.Value = Mathf.Max(fuel.Value, 0);
+        ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
+        barScript.ChangeResourceToAmount(fuel.Value, max);
+        ChangeFuelServerRpc(fuel.Value, max);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void ChangeFuelClientRpc(float currentValue, float max)
+    {
+        ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
+        barScript.ChangeResourceToAmount(currentValue, max);
+    }*/
+
+
     //THRUSTER SYNC
     [Rpc(SendTo.Server)]
     public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool fire)

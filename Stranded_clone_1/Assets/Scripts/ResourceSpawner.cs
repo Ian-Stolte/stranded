@@ -27,7 +27,7 @@ public class ResourceSpawner : NetworkBehaviour
                 Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
                 distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
                 GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Resources").transform*/);
-                //Set Resource values
+                //Set resource values
                 ResourceBehavior res = obj.GetComponent<ResourceBehavior>();
                 res.value.Value = resourceValue; //could randomize this between a range
                 res.speed.Value = Random.Range(minSpeed, maxSpeed);

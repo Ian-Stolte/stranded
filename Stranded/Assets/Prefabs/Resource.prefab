@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7288928412679573535}
   - component: {fileID: 3278533292078065650}
   - component: {fileID: -324880121415167337}
-  - component: {fileID: 4688094268433281338}
   - component: {fileID: -1648764634423113571}
+  - component: {fileID: 4688094268433281338}
   m_Layer: 0
   m_Name: Resource
   m_TagString: Untagged
@@ -153,10 +153,29 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
+  SceneMigrationSynchronization: 0
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &-1648764634423113571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7698982669609692162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7d35f05522deb4497f7346215c3b95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value:
+    m_InternalValue: 0
+  speed:
+    m_InternalValue: 0
+  direction:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  despawnDistance: 100
 --- !u!50 &4688094268433281338
 Rigidbody2D:
   serializedVersion: 4
@@ -184,22 +203,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-1648764634423113571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7698982669609692162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee7d35f05522deb4497f7346215c3b95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value:
-    m_InternalValue: 0
-  speed:
-    m_InternalValue: 0
-  direction:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  despawnDistance: 100
