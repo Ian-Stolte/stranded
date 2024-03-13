@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public class Spaceship : MonoBehaviour
+public class Spaceship : NetworkBehaviour
 {
     //To test
     [Header("Test Behaviors")]
@@ -27,10 +27,10 @@ public class Spaceship : MonoBehaviour
 
     // Resource variables
     [Header("Resource Variables")]
-    public int shipHealth;
+    public NetworkVariable<int> shipHealth;
     public int shipHealthMax;
     public int resourcesCollected;
-    public float fuelAmount;
+    public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
     [Tooltip("How much fuel depletes each interval")] [SerializeField] private float depletionAmount;
@@ -41,12 +41,16 @@ public class Spaceship : MonoBehaviour
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
 
+    //References
+    private Sync sync;
+
     void Start()
     {
-        shipHealth = shipHealthMax;
+        shipHealth.Value = shipHealthMax;
         resourcesCollected = 0;
-        fuelAmount = fuelMax;
+        fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
+        sync = GameObject.Find("Sync Object").GetComponent<Sync>();
     }
 
     void Update()
@@ -79,13 +83,13 @@ public class Spaceship : MonoBehaviour
         {
             // Updates the health bar
             GameObject damageBar = GameObject.Find("Ship Damage Bar");
-            shipHealth--;
-            damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth, shipHealthMax);
+            shipHealth.Value--;
+            damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
 
-            if (shipHealth <= 0){
+            if (shipHealth.Value <= 0){
                 Debug.Log("Game Over! Your ship broke down...");
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().GameOver();
-                SceneManager.LoadScene("Game Over");
+                GameOver();
             }
 
             // Slows down the ship's maximum speed
@@ -96,7 +100,7 @@ public class Spaceship : MonoBehaviour
             if (stun)
                 Stun();
 
-            if (destroyAsteroid)
+            if (destroyAsteroid && IsServer)
                 collision.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
     }
@@ -106,32 +110,43 @@ public class Spaceship : MonoBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
-            ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
             resourcesCollected++;
-            fuelAmount += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
-            fuelAmount = Mathf.Min(fuelAmount, fuelMax);
-            barScript.ChangeResourceToAmount(fuelAmount, fuelMax);
+            //sync.ChangeFuelServerRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, fuelMax);
+            if (IsServer)
+                fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+                fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
+            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuel.Value, max);
         }
     }
 
     //deplete fuel
     IEnumerator DepleteOverTime()
     {
-        while (fuelAmount > 0)
+        while (fuelAmount.Value > 0)
         {   
             yield return new WaitForSeconds(depletionInterval); // Wait
-            fuelAmount -= depletionAmount;
-            fuelAmount = Mathf.Max(fuelAmount, 0);
-            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount, fuelMax);
+            //sync.ChangeFuelServerRpc(-depletionAmount, fuelMax);
+            if (IsServer)
+                fuelAmount.Value -= depletionAmount;
+                fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
+            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
         }
 
         // Game over
-        if (fuelAmount <= 0)
+        if (fuelAmount.Value <= 0)
         {
             GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
-            Destroy(GameObject.Find("Player 1"));
-            NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
+            GameOver();
         }
+    }
+
+    void GameOver()
+    {
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            Destroy(g);
+        }
+        NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
     }
 
     // Stun
