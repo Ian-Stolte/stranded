@@ -138,6 +138,7 @@ MonoBehaviour:
   currentStation: 
   buttonPrefab: {fileID: 4117076319511684776, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
   buttons: {fileID: 0}
+  buttonCircles: {fileID: 0}
   steering:
     m_Name: Steering
     m_Type: 0
@@ -171,3 +172,5 @@ MonoBehaviour:
       m_Action: Steering
       m_Flags: 8
     m_Flags: 0
+  steerInstruction: {fileID: 0}
+  thrusterInstruction: {fileID: 0}

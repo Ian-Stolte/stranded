@@ -18,10 +18,13 @@ public class PlayerStations : NetworkBehaviour
 
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
+    public GameObject buttonCircles;
 
     public InputAction steering;
 
     private Sync sync;
+    private GameObject steerInstruction;
+    private GameObject thrusterInstruction;
 
     void OnEnable()
     {
@@ -43,7 +46,8 @@ public class PlayerStations : NetworkBehaviour
         buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
         buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
         buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
-        buttons.GetComponent<Buttons>().target = gameObject;
+        buttonCircles = buttons.transform.GetChild(0).gameObject;
+        buttonCircles.GetComponent<Buttons>().target = gameObject;
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
@@ -52,6 +56,13 @@ public class PlayerStations : NetworkBehaviour
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
             sync.player = this;
+
+        steerInstruction = GameObject.Find("Steering Instructions");
+        thrusterInstruction = GameObject.Find("Thruster Instructions");
+        Debug.Log(steerInstruction.name);
+        steerInstruction.SetActive(false);
+        thrusterInstruction.SetActive(false);
+        buttonCircles.SetActive(true);
     }
 
     void Update()
@@ -75,27 +86,38 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation != "none" && Input.GetKeyDown(KeyCode.Q))
             {
                 currentStation = "none";
+                steerInstruction.SetActive(false);
+                thrusterInstruction.SetActive(false);
             }
             //Buttons
             if (currentStation == "none" && IsOwner) {
-                buttons.SetActive(true);
+                buttonCircles.SetActive(true);
             }
             else {
-                buttons.SetActive(false);
+                buttonCircles.SetActive(false);
             }
 
             //Steering
+            if (currentStation == "steering")
+            {
+                steerInstruction.SetActive(true);
+            }
             if (currentStation == "steering" && !shipScript.isStunned)
             {
                 ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>() * shipScript.turnSpeed);
             }
             //Write ship rotation
-            if (currentStation == "steering" || (IsServer && buttons.transform.GetChild(0).GetComponent<Button>().interactable))
+            if (currentStation == "steering" || (IsServer && buttonCircles.transform.GetChild(0).GetComponent<Button>().interactable))
             {
                 sync.WriteShipRotServerRpc(ship.transform.rotation);
             }
 
             //Thrusters
+            if (currentStation == "thrusters")
+            {
+                thrusterInstruction.SetActive(true);
+            }
+            
             if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space) && !shipScript.isStunned)
             {
                 //thrusterFire.SetActive(true);
@@ -108,7 +130,7 @@ public class PlayerStations : NetworkBehaviour
                 //thrusterFire.SetActive(false);
             }
             //Write ship position & velocity
-            if (currentStation == "thrusters" || (IsServer && buttons.transform.GetChild(1).GetComponent<Button>().interactable)) {
+            if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable)) {
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn);
             }
         }

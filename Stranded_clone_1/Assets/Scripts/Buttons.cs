@@ -11,22 +11,25 @@ public class Buttons : MonoBehaviour
     void Update()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (Transform child in transform)
-        {
-            bool inUse = false;
-            foreach (GameObject p in players)
-            {
-                if (child.name.ToLower() == p.GetComponent<PlayerStations>().station.Value)
+        CheckInUse(transform.GetChild(0));
+        CheckInUse(transform.GetChild(1));
+    }
+    
+    public void CheckInUse(Transform child)
+    {
+        bool inUse = false;
+                foreach (GameObject p in players)
                 {
-                    child.GetComponent<Button>().interactable = false;
-                    inUse = true;
+                    if (child.name.ToLower() == p.GetComponent<PlayerStations>().station.Value)
+                    {
+                        child.GetComponent<Button>().interactable = false;
+                        inUse = true;
+                    }
                 }
-            }
-            if (!inUse)
-            {
-                child.GetComponent<Button>().interactable = true;
-            }
-        }
+                if (!inUse)
+                {
+                    child.GetComponent<Button>().interactable = true;
+                }
     }
 
     public void SetStation(string s)
