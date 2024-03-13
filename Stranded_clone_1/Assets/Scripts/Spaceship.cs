@@ -86,7 +86,7 @@ public class Spaceship : NetworkBehaviour
             shipHealth.Value--;
             damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
 
-            if (shipHealth.Value <= 0){
+            if (shipHealth.Value <= 0) {
                 Debug.Log("Game Over! Your ship broke down...");
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().GameOver();
                 GameOver();
@@ -113,9 +113,11 @@ public class Spaceship : NetworkBehaviour
             resourcesCollected++;
             //sync.ChangeFuelServerRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, fuelMax);
             if (IsServer)
+            {
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
-            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuel.Value, max);
+            }
+            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
         }
     }
 
@@ -127,8 +129,10 @@ public class Spaceship : NetworkBehaviour
             yield return new WaitForSeconds(depletionInterval); // Wait
             //sync.ChangeFuelServerRpc(-depletionAmount, fuelMax);
             if (IsServer)
+            {
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
+            }
             GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
         }
 

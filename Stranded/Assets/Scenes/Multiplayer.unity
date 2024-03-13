@@ -805,6 +805,7 @@ GameObject:
   m_Component:
   - component: {fileID: 412612937}
   - component: {fileID: 412612936}
+  - component: {fileID: 412612942}
   - component: {fileID: 412612939}
   - component: {fileID: 412612938}
   - component: {fileID: 412612940}
@@ -936,10 +937,12 @@ MonoBehaviour:
   speedDecrease: 1
   stunDuration: 1
   isStunned: 0
-  shipHealth: 0
+  shipHealth:
+    m_InternalValue: 0
   shipHealthMax: 10
   resourcesCollected: 0
-  fuelAmount: 0
+  fuelAmount:
+    m_InternalValue: 0
   fuelMax: 10
   depletionInterval: 3
   depletionAmount: 2
@@ -1016,6 +1019,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.65
+--- !u!114 &412612942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412612935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3893058268
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &422363263
 GameObject:
   m_ObjectHideFlags: 0
