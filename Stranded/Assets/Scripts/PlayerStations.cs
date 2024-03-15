@@ -28,6 +28,8 @@ public class PlayerStations : NetworkBehaviour
     private Sync sync;
     private GameObject steerInstruction;
     private GameObject thrusterInstruction;
+    private GameObject shieldInstruction;
+
 
     void OnEnable()
     {
@@ -66,9 +68,11 @@ public class PlayerStations : NetworkBehaviour
 
         steerInstruction = GameObject.Find("Steering Instructions");
         thrusterInstruction = GameObject.Find("Thruster Instructions");
+        shieldInstruction = GameObject.Find("Shield Instructions");
 
         steerInstruction.SetActive(false);
         thrusterInstruction.SetActive(false);
+        shieldInstruction.SetActive(false);
         buttonCircles.SetActive(true);
     }
 
@@ -95,6 +99,7 @@ public class PlayerStations : NetworkBehaviour
                 currentStation = "none";
                 steerInstruction.SetActive(false);
                 thrusterInstruction.SetActive(false);
+                shieldInstruction.SetActive(false);
             }
             //Buttons
             if (currentStation == "none" && IsOwner) {
@@ -142,6 +147,10 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Shields
+            if (currentStation == "shields")
+            {
+                shieldInstruction.SetActive(true);
+            }
             if (currentStation == "shields" && Input.GetKey(KeyCode.A))
             { 
                 shield.transform.RotateAround(ship.transform.localPosition, Vector3.forward, shieldVelocity);
