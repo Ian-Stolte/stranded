@@ -20,24 +20,18 @@ public class Sync : NetworkBehaviour
     }
 
     //RESOURCE SYNC
-    /*[Rpc(SendTo.Server)]
-    public void ChangeFuelServerRpc(float toAdd, float max)
+    [Rpc(SendTo.Server)]
+    public void ChangeFuelServerRpc(float value, float max)
     {
-        NetworkVariable<float> fuel = ship.GetComponent<Spaceship>().fuelAmount;
-        fuel.Value += toAdd;
-        fuel.Value = Mathf.Min(fuel.Value, max);
-        fuel.Value = Mathf.Max(fuel.Value, 0);
-        ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
-        barScript.ChangeResourceToAmount(fuel.Value, max);
-        ChangeFuelServerRpc(fuel.Value, max);
+        GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
+        ChangeFuelClientRpc(value, max);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ChangeFuelClientRpc(float currentValue, float max)
+    public void ChangeFuelClientRpc(float value, float max)
     {
-        ResourceBar barScript = GameObject.Find("Fuel Bar").GetComponent<ResourceBar>();
-        barScript.ChangeResourceToAmount(currentValue, max);
-    }*/
+        GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
+    }
 
 
     //THRUSTER SYNC

@@ -111,13 +111,12 @@ public class Spaceship : NetworkBehaviour
         if(collider.gameObject.name == "Resource(Clone)")
         {
             resourcesCollected++;
-            //sync.ChangeFuelServerRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, fuelMax);
             if (IsServer)
             {
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
+                sync.ChangeFuelServerRpc(fuelAmount.Value, fuelMax);
             }
-            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
         }
     }
 
@@ -126,14 +125,13 @@ public class Spaceship : NetworkBehaviour
     {
         while (fuelAmount.Value > 0)
         {   
-            yield return new WaitForSeconds(depletionInterval); // Wait
-            //sync.ChangeFuelServerRpc(-depletionAmount, fuelMax);
+            yield return new WaitForSeconds(depletionInterval); // wait
             if (IsServer)
             {
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
+                sync.ChangeFuelServerRpc(fuelAmount.Value, fuelMax);
             }
-            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
         }
 
         // Game over
