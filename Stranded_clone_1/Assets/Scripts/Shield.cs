@@ -5,20 +5,20 @@ using Unity.Netcode;
 
 public class Shield : MonoBehaviour
 {
-    public GameObject anchor;
-    public float velocity;
+   
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.RotateAround(anchor.transform.localPosition, Vector3.forward, velocity);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.RotateAround(anchor.transform.localPosition, Vector3.back, velocity);
-        }
+        
+   
+        
     }
 
     void OnTriggerEnter2D(Collider2D collider)
