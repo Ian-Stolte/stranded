@@ -15,6 +15,9 @@ public class PlayerStations : NetworkBehaviour
     private bool thrustersOn;
     private GameObject ship;
     private Spaceship shipScript;
+    
+    private GameObject shield;
+    private int shieldVelocity;
 
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
@@ -52,6 +55,10 @@ public class PlayerStations : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
         //thrusterFire = ship.transform.GetChild(1).gameObject;
+
+        //shield set up
+        shield = GameObject.Find("Shield");
+        shieldVelocity = 5;
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -132,6 +139,16 @@ public class PlayerStations : NetworkBehaviour
             //Write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable)) {
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn);
+            }
+
+            //Shields
+            if (currentStation == "shields" && Input.GetKey(KeyCode.A))
+            { 
+                shield.transform.RotateAround(ship.transform.localPosition, Vector3.forward, shieldVelocity);
+            }
+            if (currentStation == "shields" && Input.GetKey(KeyCode.D))
+            { 
+                shield.transform.RotateAround(ship.transform.localPosition, Vector3.back, shieldVelocity);
             }
         }
         else {
