@@ -41,12 +41,16 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
 
+    //References
+    private Sync sync;
+
     void Start()
     {
         shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
         resourcesCollected = 0;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
+        sync = GameObject.Find("Sync Object").GetComponent<Sync>();
     }
 
     void Update()
@@ -82,7 +86,7 @@ public class Spaceship : NetworkBehaviour
             {
                 shipHealth.Value--;
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
-                ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
+                sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
             }
 
             if (shipHealth.Value <= 0) {
@@ -115,7 +119,7 @@ public class Spaceship : NetworkBehaviour
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
-                ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
+                sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
         }
     }
@@ -131,7 +135,7 @@ public class Spaceship : NetworkBehaviour
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
-                ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
+                sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
         }
 
@@ -172,18 +176,5 @@ public class Spaceship : NetworkBehaviour
     {
         isStunned = false;
         maxSpeed = maxSpeedRecord;
-    }
-
-    //RPCs
-    [Rpc(SendTo.NotServer)]
-    public void ChangeFuelClientRpc(float value, float max)
-    {
-        GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
-    }
-
-    [Rpc(SendTo.NotServer)]
-    public void ChangeHealthClientRpc(float value, float max)
-    {
-        GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
     }
 }
