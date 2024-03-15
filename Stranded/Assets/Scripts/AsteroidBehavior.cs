@@ -5,6 +5,7 @@ using Unity.Netcode;
 
 public class AsteroidBehavior : NetworkBehaviour
 {
+    public NetworkVariable<Vector3> position;
     public NetworkVariable<float> speed;
     public NetworkVariable<Vector3> direction;
     [SerializeField] float despawnDistance;
@@ -18,10 +19,21 @@ public class AsteroidBehavior : NetworkBehaviour
 
     void FixedUpdate()
     {
-        transform.position += speed.Value * direction.Value * Time.deltaTime;
-        if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
+        if (IsServer)
         {
-            GetComponent<NetworkObject>().Despawn(true);
+            transform.position += speed.Value * direction.Value * Time.deltaTime;
+            position.Value = transform.position;
+            AsteroidPosClientRpc();
+            if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance)
+            {
+                GetComponent<NetworkObject>().Despawn(true);
+            }
         }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void AsteroidPosClientRpc()
+    {
+        transform.position = position.Value;
     }
 }

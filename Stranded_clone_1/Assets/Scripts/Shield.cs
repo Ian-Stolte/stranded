@@ -23,8 +23,9 @@ public class Shield : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.name == "AsteroidClone")
+        if (collider.gameObject.tag == "Asteroid")
         {
+            Debug.Log("Hit Asteroid with Shield");
             collider.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
     }

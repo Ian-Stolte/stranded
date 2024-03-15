@@ -15,6 +15,7 @@ public class AsteroidSpawner : NetworkBehaviour
     [SerializeField] private float minSize;
     [SerializeField] private float maxSize;
     private float timer;
+    private float astNumber;
 
     void Update()
     {
@@ -28,6 +29,8 @@ public class AsteroidSpawner : NetworkBehaviour
                 Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
                 distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
                 GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Asteroids").transform*/);
+                //obj.name = "Asteroid " + astNumber;
+                //astNumber++;
                 //Set asteroid values
                 obj.transform.localScale = new Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), 1);
                 var euler = transform.eulerAngles;

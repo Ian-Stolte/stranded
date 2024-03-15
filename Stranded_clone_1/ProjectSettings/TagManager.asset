@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Buttons
+  - Asteroid
   layers:
   - Default
   - TransparentFX
