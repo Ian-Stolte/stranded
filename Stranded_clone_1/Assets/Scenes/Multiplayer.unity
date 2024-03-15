@@ -826,7 +826,7 @@ MonoBehaviour:
     m_InternalValue: 0
   fuelMax: 10
   depletionInterval: 3
-  depletionAmount: 2
+  depletionAmount: 0
   coordText: {fileID: 736649308}
   speedText: {fileID: 1631926231}
   resourceText: {fileID: 197393918}

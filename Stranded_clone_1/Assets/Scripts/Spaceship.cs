@@ -46,7 +46,7 @@ public class Spaceship : NetworkBehaviour
 
     void Start()
     {
-        shipHealth.Value = shipHealthMax;
+        shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
         resourcesCollected = 0;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
@@ -82,9 +82,12 @@ public class Spaceship : NetworkBehaviour
         if (collision.gameObject.name == "Asteroid(Clone)")
         {
             // Updates the health bar
-            GameObject damageBar = GameObject.Find("Ship Damage Bar");
-            shipHealth.Value--;
-            damageBar.GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
+            if (IsServer)
+            {
+                shipHealth.Value--;
+                GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
+                sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
+            }
 
             if (shipHealth.Value <= 0) {
                 Debug.Log("Game Over! Your ship broke down...");
@@ -115,7 +118,8 @@ public class Spaceship : NetworkBehaviour
             {
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
-                sync.ChangeFuelServerRpc(fuelAmount.Value, fuelMax);
+                GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
+                sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
         }
     }
@@ -130,7 +134,8 @@ public class Spaceship : NetworkBehaviour
             {
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
-                sync.ChangeFuelServerRpc(fuelAmount.Value, fuelMax);
+                GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
+                sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
         }
 
@@ -148,7 +153,8 @@ public class Spaceship : NetworkBehaviour
         {
             Destroy(g);
         }
-        NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
+        if (IsServer)
+            NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
     }
 
     // Stun

@@ -19,20 +19,18 @@ public class Sync : NetworkBehaviour
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
 
-    //RESOURCE SYNC
-    [Rpc(SendTo.Server)]
-    public void ChangeFuelServerRpc(float value, float max)
-    {
-        GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
-        ChangeFuelClientRpc(value, max);
-    }
-
+    //RESOURCE/FUEL SYNC
     [Rpc(SendTo.NotServer)]
     public void ChangeFuelClientRpc(float value, float max)
     {
         GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
     }
 
+    [Rpc(SendTo.NotServer)]
+    public void ChangeHealthClientRpc(float value, float max)
+    {
+        GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
+    }
 
     //THRUSTER SYNC
     [Rpc(SendTo.Server)]
