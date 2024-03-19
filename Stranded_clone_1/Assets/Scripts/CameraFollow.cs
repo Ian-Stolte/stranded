@@ -16,7 +16,9 @@ public class CameraFollow : MonoBehaviour
         ship = GameObject.Find("Spaceship");
     }
 
-    void Update()
+    /*void Update()
+    {*/
+    public void UpdateCamera()
     {
         speed = Mathf.Sqrt(Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.x, 2) + Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.y, 2));
         if (speed - pastSpeed < -1)
