@@ -21,7 +21,7 @@ public class ResourceBehavior : NetworkBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         //despawn on collision
-        if (collider.gameObject.name == "Spaceship")
+        if (collider.gameObject.name == "Spaceship" && IsServer)
         { 
             GetComponent<NetworkObject>().Despawn(true);
         }

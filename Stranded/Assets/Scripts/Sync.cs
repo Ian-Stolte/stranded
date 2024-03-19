@@ -10,12 +10,16 @@ public class Sync : NetworkBehaviour
     public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
     
     private GameObject ship;
+    private GameObject shield;
     private GameObject thrusterFire;
+    private CameraFollow camera;
     public PlayerStations player;
 
     void Start()
     {
         ship = GameObject.Find("Spaceship");
+        shield = GameObject.Find("Shield");
+        camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
 
@@ -40,6 +44,7 @@ public class Sync : NetworkBehaviour
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
         thrusterFire.SetActive(fire);
+        camera.UpdateCamera();
         ReadShipMoveClientRpc(newVel, newPos, fire);
     }
 
@@ -55,6 +60,7 @@ public class Sync : NetworkBehaviour
             }
         }
         thrusterFire.SetActive(fire);
+        camera.UpdateCamera();
     }
 
     //STEERING SYNC
@@ -73,6 +79,28 @@ public class Sync : NetworkBehaviour
             if (player.currentStation != "steering")
             {
                 ship.transform.rotation = newAngle;
+            }
+        }
+    }
+
+    //SHIELD SYNC
+    [Rpc(SendTo.Server)]
+    public void WriteShieldServerRpc(Quaternion angle, Vector3 position)
+    {
+        shield.transform.rotation = angle;
+        shield.transform.position = position;
+        ReadShieldClientRpc(angle, position);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void ReadShieldClientRpc(Quaternion angle, Vector3 position)
+    {
+        if (player != null)
+        {
+            if (player.currentStation != "shields")
+            {
+                shield.transform.rotation = angle;
+                shield.transform.position = position;
             }
         }
     }
