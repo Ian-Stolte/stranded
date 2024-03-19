@@ -130,9 +130,9 @@ public class Spaceship : NetworkBehaviour
     {
         while (fuelAmount.Value > 0)
         {   
-            yield return new WaitForSeconds(depletionInterval); // wait
             if (IsServer)
             {
+                yield return new WaitForSeconds(depletionInterval);
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
