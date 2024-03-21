@@ -3,30 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class Shield : MonoBehaviour
+public class Shield : NetworkBehaviour
 {
-   
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-   
-        
-    }
-
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Asteroid")
         {
-            Debug.Log("Hit Asteroid with Shield");
-            collider.gameObject.GetComponent<NetworkObject>().Despawn(true);
+            if (IsServer)
+                collider.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
     }
 }

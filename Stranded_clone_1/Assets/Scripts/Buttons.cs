@@ -13,23 +13,24 @@ public class Buttons : MonoBehaviour
         players = GameObject.FindGameObjectsWithTag("Player");
         CheckInUse(transform.GetChild(0));
         CheckInUse(transform.GetChild(1));
+        CheckInUse(transform.GetChild(2));
     }
     
     public void CheckInUse(Transform child)
     {
         bool inUse = false;
-                foreach (GameObject p in players)
-                {
-                    if (child.name.ToLower() == p.GetComponent<PlayerStations>().station.Value)
-                    {
-                        child.GetComponent<Button>().interactable = false;
-                        inUse = true;
-                    }
-                }
-                if (!inUse)
-                {
-                    child.GetComponent<Button>().interactable = true;
-                }
+        foreach (GameObject p in players)
+        {
+            if (child.name.ToLower() == p.GetComponent<PlayerStations>().station.Value)
+            {
+                child.GetComponent<Button>().interactable = false;
+                inUse = true;
+            }
+        }
+        if (!inUse)
+        {
+            child.GetComponent<Button>().interactable = true;
+        }
     }
 
     public void SetStation(string s)

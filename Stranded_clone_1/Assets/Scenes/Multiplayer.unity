@@ -810,9 +810,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stun: 1
   slowSpeed: 0
-  destroyAsteroid: 1
-  turnSpeed: 0.3
-  thrustSpeed: 1
+  destroyAsteroid: 0
+  turnSpeed: 0.2
+  shieldSpeed: 0.2
+  thrustSpeed: 0.8
   decelSpeed: 0.001
   maxSpeed: 10
   speedDecrease: 1

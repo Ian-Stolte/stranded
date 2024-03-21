@@ -17,13 +17,14 @@ public class Spaceship : NetworkBehaviour
     // Speed variables
     [Header("Speed Variables")]
     public float turnSpeed;
+    public float shieldSpeed;
     public float thrustSpeed;
     public float decelSpeed;
     public float maxSpeed;
     public float speedDecrease;
     public float stunDuration; // Duration of the stun in seconds
-    public bool isStunned; // Indicates if the player is stunned
-    float maxSpeedRecord;
+    [HideInInspector] public bool isStunned; // Indicates if the player is stunned
+    private float maxSpeedRecord;
 
     // Resource variables
     [Header("Resource Variables")]
