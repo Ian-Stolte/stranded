@@ -113,13 +113,7 @@ public class PlayerStations : NetworkBehaviour
             //Steering
             if (currentStation == "steering")
             {
-                if (steerInstruction != null)
-                {
-                    if (steering.ReadValue<float>() != 0)
-                        Destroy(steerInstruction);
-                    else
-                        steerInstruction.SetActive(true);
-                }
+                steerInstruction.SetActive(true);
                 if (!shipScript.isStunned)
                 {
                     ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>() * shipScript.turnSpeed);
@@ -139,8 +133,6 @@ public class PlayerStations : NetworkBehaviour
             }
             if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space) && !shipScript.isStunned)
             {
-                if (thrusterInstruction != null)
-                    Destroy(thrusterInstruction);
                 thrustersOn = true;
                 Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
                 ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.thrustSpeed, Mathf.Sin(rot.z)*shipScript.thrustSpeed), ForceMode2D.Force);
@@ -156,13 +148,7 @@ public class PlayerStations : NetworkBehaviour
             //Shields
             if (currentStation == "shields")
             {
-                if (shieldInstruction != null)
-                {
-                    if (steering.ReadValue<float>() != 0)
-                        Destroy(shieldInstruction);
-                    else
-                        shieldInstruction.SetActive(true);                
-                }
+                shieldInstruction.SetActive(true);
                 shield.transform.RotateAround(ship.transform.localPosition, new Vector3(0, 0, steering.ReadValue<float>()), shipScript.shieldSpeed);
             }
             //Write shield rotation
