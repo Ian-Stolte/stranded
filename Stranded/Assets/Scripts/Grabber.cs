@@ -5,10 +5,14 @@ using Unity.Netcode;
 
 public class Grabber : NetworkBehaviour
 {
-    public NetworkVariable<bool> grabberFiring;
-    public NetworkVariable<Vector3> direction;
+    [HideInInspector] public NetworkVariable<bool> grabberFiring;
+    [HideInInspector] public NetworkVariable<Vector3> direction;
+    
     public float speed;
     public float retractSpeed;
+    public float waitTime;
+    public float maxDistance;
+
     private GameObject ship;
 
     void Start()
@@ -18,15 +22,14 @@ public class Grabber : NetworkBehaviour
 
     void FixedUpdate()
     {
+//TODO: accel and decel on the motion
         //Grabber
-        if (Input.GetKey(KeyCode.Space) && grabberFiring.Value)
+        if (grabberFiring.Value)
         {
-            Debug.Log("Grabber firing!");
             transform.position += direction.Value*speed; //move arm in direction fired
         }
         else if (!grabberFiring.Value && Vector2.Distance(transform.position, ship.transform.position) > 3)
         {
-            Debug.Log("Grabber retracting!");
             Vector2 dist = ship.transform.position - transform.position; //move arm back to ship
             dist = dist.normalized;
             transform.position += new Vector3(dist.x*retractSpeed, dist.y*retractSpeed, 0);

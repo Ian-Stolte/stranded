@@ -839,7 +839,6 @@ Transform:
   - {fileID: 9367087}
   - {fileID: 632415136}
   - {fileID: 1053010498}
-  - {fileID: 910736333}
   - {fileID: 424680417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1230,8 +1229,10 @@ MonoBehaviour:
     m_InternalValue: 0
   direction:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  speed: 1
-  retractSpeed: 1
+  speed: 0.3
+  retractSpeed: 0.3
+  waitTime: 0
+  maxDistance: 12
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,6 +1950,7 @@ GameObject:
   m_Component:
   - component: {fileID: 910736333}
   - component: {fileID: 910736334}
+  - component: {fileID: 910736337}
   - component: {fileID: 910736335}
   - component: {fileID: 910736336}
   m_Layer: 0
@@ -1967,11 +1969,11 @@ Transform:
   m_GameObject: {fileID: 910736332}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0022424369, y: -0.000017977389, z: -0.000000040286775, w: 0.99999756}
-  m_LocalPosition: {x: 0.02, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.69429994, y: 0.17299385, z: 0}
+  m_LocalPosition: {x: 0.10008, y: 3.5028, z: 0}
+  m_LocalScale: {x: 3.474277, y: 0.86566126, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 412612937}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -0.257, y: -0.002, z: 0}
 --- !u!212 &910736334
 SpriteRenderer:
@@ -2082,6 +2084,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &910736337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 910736332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1978594773
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &915497579
 GameObject:
   m_ObjectHideFlags: 0
@@ -3644,4 +3667,5 @@ SceneRoots:
   - {fileID: 115028563}
   - {fileID: 1631109220}
   - {fileID: 1361559819}
+  - {fileID: 910736333}
   - {fileID: 412612937}

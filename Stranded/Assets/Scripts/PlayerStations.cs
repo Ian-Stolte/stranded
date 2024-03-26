@@ -15,6 +15,7 @@ public class PlayerStations : NetworkBehaviour
     private bool thrustersOn;
     private GameObject ship;
     private Spaceship shipScript;
+    private Vector3 oldShipPos;
     
     private GameObject shield;
     private GameObject grabber;
@@ -34,6 +35,7 @@ public class PlayerStations : NetworkBehaviour
     private bool hideShieldInstruction;
 
     private bool grabberFiring;
+    private float grabberWait;
 
 
     void OnEnable()
@@ -115,20 +117,39 @@ public class PlayerStations : NetworkBehaviour
             //Grabber
             if (currentStation == "grabber")
             {
-                if (Vector3.Distance(grabber.transform.position, ship.transform.position) > 8)
+                //wait timer (delay between activations)
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 3 && !grabber.GetComponent<Grabber>().grabberFiring.Value)
+                {
+                    if (grabberWait == -1)
+                    {
+                        grabberWait = grabber.GetComponent<Grabber>().waitTime;
+                    }
+                    else
+                    {
+                        grabberWait -= Time.deltaTime;
+                        grabberWait = Mathf.Max(grabberWait, 0);
+                    }
+                }
+                //retract if too far
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabber.GetComponent<Grabber>().maxDistance)
                 {
                     grabber.GetComponent<Grabber>().grabberFiring.Value = false;
                 }
-                else if (Input.GetKeyDown(KeyCode.Space)) //and if arm is back to ship
+                //fire if space pressed and delay time has elapsed
+                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
                 {
+//TODO: shoot toward mouse
                     grabber.GetComponent<Grabber>().grabberFiring.Value = true;
+                    grabberWait = -1;
                     Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
                     Vector3 dir = new Vector3(Mathf.Cos(rot.z), Mathf.Sin(rot.z), 0);
                     grabber.GetComponent<Grabber>().direction.Value = dir.normalized;
                 }
+                //retract if space released
                 else if (Input.GetKeyUp(KeyCode.Space))
                 {
                     grabber.GetComponent<Grabber>().grabberFiring.Value = false;
+//TODO: if in the collision box of an asteroid, attach to it
                 }
             }
         }
@@ -177,7 +198,9 @@ public class PlayerStations : NetworkBehaviour
             }
             //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable)) {
+                GameObject.Find("Shield").transform.position += ship.transform.position - oldShipPos;
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn);
+                oldShipPos = ship.transform.position;
             }
 
             //Shields
@@ -200,6 +223,8 @@ public class PlayerStations : NetworkBehaviour
             {
                 sync.WriteShieldServerRpc(shield.transform.rotation, shield.transform.position);
             }
+
+//TODO: if grabber station, rotate around ship with mouse
         }
         else {
             //Read station (from owner)

@@ -40,7 +40,8 @@ public class Sync : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool fire)
     {
-//Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
+        //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
+        GameObject.Find("Shield").transform.position += newPos - ship.transform.position;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
         thrusterFire.SetActive(fire);
@@ -55,6 +56,7 @@ public class Sync : NetworkBehaviour
         {
             if (player.currentStation != "thrusters")
             {
+                GameObject.Find("Shield").transform.position += newPos - ship.transform.position;
                 ship.transform.position = newPos;
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
