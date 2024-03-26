@@ -54,7 +54,7 @@ public class Spaceship : NetworkBehaviour
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         GetComponent<Rigidbody2D>().velocity *= (1 - decelSpeed);
         Vector2 vel = GetComponent<Rigidbody2D>().velocity;
