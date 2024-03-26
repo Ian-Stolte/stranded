@@ -17,6 +17,7 @@ public class PlayerStations : NetworkBehaviour
     private Spaceship shipScript;
     
     private GameObject shield;
+    private GameObject grabber;
 
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
@@ -31,6 +32,8 @@ public class PlayerStations : NetworkBehaviour
     private bool hideThrusterInstruction;
     private GameObject shieldInstruction;
     private bool hideShieldInstruction;
+
+    private bool grabberFiring;
 
 
     void OnEnable()
@@ -59,9 +62,8 @@ public class PlayerStations : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
         //thrusterFire = ship.transform.GetChild(1).gameObject;
-
-        //shield set up
         shield = GameObject.Find("Shield");
+        grabber = GameObject.Find("Grabber");
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -109,6 +111,26 @@ public class PlayerStations : NetworkBehaviour
             else {
                 buttonCircles.SetActive(false);
             }
+
+            //Grabber
+            if (currentStation == "grabber")
+            {
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) > 8)
+                {
+                    grabber.GetComponent<Grabber>().grabberFiring.Value = false;
+                }
+                else if (Input.GetKeyDown(KeyCode.Space)) //and if arm is back to ship
+                {
+                    grabber.GetComponent<Grabber>().grabberFiring.Value = true;
+                    Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
+                    Vector3 dir = new Vector3(Mathf.Cos(rot.z), Mathf.Sin(rot.z), 0);
+                    grabber.GetComponent<Grabber>().direction.Value = dir.normalized;
+                }
+                else if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    grabber.GetComponent<Grabber>().grabberFiring.Value = false;
+                }
+            }
         }
     }
 
@@ -131,7 +153,7 @@ public class PlayerStations : NetworkBehaviour
                     }
                 }
             }
-            //Write ship rotation
+            //write ship rotation
             if (currentStation == "steering" || (IsServer && buttonCircles.transform.GetChild(0).GetComponent<Button>().interactable))
             {
                 sync.WriteShipRotServerRpc(ship.transform.rotation);
@@ -153,7 +175,7 @@ public class PlayerStations : NetworkBehaviour
             else {
                 thrustersOn = false;
             }
-            //Write ship position & velocity
+            //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable)) {
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn);
             }
@@ -173,7 +195,7 @@ public class PlayerStations : NetworkBehaviour
                     }
                 }
             }
-            //Write shield rotation
+            //write shield rotation
             if (currentStation == "shields" || (IsServer && buttonCircles.transform.GetChild(2).GetComponent<Button>().interactable))
             {
                 sync.WriteShieldServerRpc(shield.transform.rotation, shield.transform.position);
