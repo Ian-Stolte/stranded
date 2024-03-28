@@ -31,6 +31,7 @@ public class Spaceship : NetworkBehaviour
     public NetworkVariable<int> shipHealth;
     public int shipHealthMax;
     public int resourcesCollected;
+    public int scrapsCollected;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
@@ -41,6 +42,7 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject coordText;
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
+    [SerializeField] private GameObject scrapText;
 
     //References
     private Sync sync;
@@ -49,6 +51,7 @@ public class Spaceship : NetworkBehaviour
     {
         shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
         resourcesCollected = 0;
+        scrapsCollected = 0;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
@@ -71,10 +74,11 @@ public class Spaceship : NetworkBehaviour
             GetComponent<Rigidbody2D>().velocity *= decel;
         }
 
-        //show coordinates
+        //show coordinates and resource/scrap count
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
         resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + resourcesCollected;
+        scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps Collected: " + scrapsCollected;
     }
 
     //collision
@@ -122,6 +126,10 @@ public class Spaceship : NetworkBehaviour
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
                 sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
+        }
+        if (collider.gameObject.name == "Shipwreck(Clone)")
+        {
+            scrapsCollected++;
         }
     }
 

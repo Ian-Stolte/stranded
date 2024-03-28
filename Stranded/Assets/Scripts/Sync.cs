@@ -68,6 +68,7 @@ public class Sync : NetworkBehaviour
     public void WriteShipRotServerRpc(Quaternion newAngle)
     {
         ship.transform.rotation = newAngle;
+        //shield.transform.rotation = 180;
         ReadShipRotClientRpc(newAngle);
     }
 
@@ -79,6 +80,7 @@ public class Sync : NetworkBehaviour
             if (player.currentStation != "steering")
             {
                 ship.transform.rotation = newAngle;
+                //shield.transform.rotation = 180;
             }
         }
     }
