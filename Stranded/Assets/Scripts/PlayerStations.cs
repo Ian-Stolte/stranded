@@ -118,7 +118,7 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation == "grabber")
             {
                 //wait timer (delay between activations)
-                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 3 && !grabber.GetComponent<Grabber>().grabberFiring.Value)
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabber.GetComponent<Grabber>().grabberFiring.Value)
                 {
                     if (grabberWait == -1)
                     {
@@ -138,19 +138,31 @@ public class PlayerStations : NetworkBehaviour
                 //fire if space pressed and delay time has elapsed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
                 {
-//TODO: shoot toward mouse
+                    Vector3 mousePos = Input.mousePosition;
+                    Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
+                    Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
+                    float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x)*0.5f;
+                    float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y)*0.5f;
+                    //TODO: take into account camera follow if ship is moving
+                        //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
+                    Vector3 dir = new Vector3(mouseXChange, mouseYChange, 0);
+                    
                     grabber.GetComponent<Grabber>().grabberFiring.Value = true;
                     grabberWait = -1;
-                    Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
-                    Vector3 dir = new Vector3(Mathf.Cos(rot.z), Mathf.Sin(rot.z), 0);
                     grabber.GetComponent<Grabber>().direction.Value = dir.normalized;
+                    Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange)*Mathf.Rad2Deg - 90);
+                    grabber.transform.rotation = (Quaternion.Euler(rot));
+                }
+                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait == -1 && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5)
+                {
+                    grabber.GetComponent<Grabber>().grabberFiring.Value = false;
                 }
                 //retract if space released
-                else if (Input.GetKeyUp(KeyCode.Space))
+                /*else if (Input.GetKeyUp(KeyCode.Space))
                 {
                     grabber.GetComponent<Grabber>().grabberFiring.Value = false;
 //TODO: if in the collision box of an asteroid, attach to it
-                }
+                }*/
             }
         }
     }
