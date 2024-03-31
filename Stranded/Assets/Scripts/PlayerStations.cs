@@ -190,7 +190,6 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation == "steering" || (IsServer && buttonCircles.transform.GetChild(0).GetComponent<Button>().interactable))
             {
                 sync.WriteShipRotServerRpc(ship.transform.rotation);
-                sync.WriteShieldServerRpc(Quaternion.Inverse(shield.transform.rotation), shield.transform.position);
             }
 
             //Thrusters
