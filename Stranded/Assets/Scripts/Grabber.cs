@@ -28,7 +28,7 @@ public class Grabber : NetworkBehaviour
         {
             transform.position += direction.Value*speed; //move arm in direction fired
         }
-        else if (!grabberFiring.Value && Vector2.Distance(transform.position, ship.transform.position) > 3)
+        else if (!grabberFiring.Value && Vector2.Distance(transform.position, ship.transform.position) > 0.1f)
         {
             Vector2 dist = ship.transform.position - transform.position; //move arm back to ship
             dist = dist.normalized;
