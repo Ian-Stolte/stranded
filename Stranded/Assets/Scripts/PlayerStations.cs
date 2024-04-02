@@ -19,6 +19,7 @@ public class PlayerStations : NetworkBehaviour
     
     private GameObject shield;
     private GameObject grabber;
+    private Grabber grabScript;
 
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
@@ -66,6 +67,7 @@ public class PlayerStations : NetworkBehaviour
         //thrusterFire = ship.transform.GetChild(1).gameObject;
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
+        grabScript = grabber.GetComponent<Grabber>();
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -118,11 +120,11 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation == "grabber")
             {
                 //wait timer (delay between activations)
-                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabber.GetComponent<Grabber>().grabberFiring.Value)
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabScript.grabberFiring.Value)
                 {
                     if (grabberWait == -1)
                     {
-                        grabberWait = grabber.GetComponent<Grabber>().waitTime;
+                        grabberWait = grabScript.waitTime;
                     }
                     else
                     {
@@ -131,9 +133,9 @@ public class PlayerStations : NetworkBehaviour
                     }
                 }
                 //retract if too far
-                if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabber.GetComponent<Grabber>().maxDistance)
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
                 {
-                    grabber.GetComponent<Grabber>().grabberFiring.Value = false;
+                    grabScript.grabberFiring.Value = false;
                 }
                 //fire if space pressed and delay time has elapsed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
@@ -141,26 +143,38 @@ public class PlayerStations : NetworkBehaviour
                     Vector3 mousePos = Input.mousePosition;
                     Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                     Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
-                    float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x)*0.5f;
-                    float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y)*0.5f;
+                    float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x) * 0.5f;
+                    float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y) * 0.5f;
                     //TODO: take into account camera follow if ship is moving
                         //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
                     Vector3 dir = new Vector3(mouseXChange, mouseYChange, 0);
-                    
-                    grabber.GetComponent<Grabber>().grabberFiring.Value = true;
+
+                    grabScript.grabberFiring.Value = true;
                     grabberWait = -1;
-                    grabber.GetComponent<Grabber>().direction.Value = dir.normalized;
-                    Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange)*Mathf.Rad2Deg - 90);
+                    grabScript.direction.Value = dir.normalized;
+                    Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
                     grabber.transform.rotation = (Quaternion.Euler(rot));
+                    //display grabber opening
+                    grabber.transform.GetChild(0).gameObject.SetActive(false);
+                    grabber.transform.GetChild(1).gameObject.SetActive(true);
                 }
-                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait == -1 && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5)
+                //retract if space pressed
+                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait == -1 && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5 && grabScript.grabberFiring.Value)
                 {
-                    grabber.GetComponent<Grabber>().grabberFiring.Value = false;
+                    grabScript.grabberFiring.Value = false;
+                    //display grabber closing
+                    grabber.transform.GetChild(0).gameObject.SetActive(true);
+                    grabber.transform.GetChild(1).gameObject.SetActive(false);
+                    Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
+                    if (Physics2D.OverlapBox(b.center, b.extents*2, 0, LayerMask.GetMask("Asteroid")))
+                    {
+                        Debug.Log("Asteroid grabbed!");
+                    }
                 }
                 //retract if space released
                 /*else if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    grabber.GetComponent<Grabber>().grabberFiring.Value = false;
+                    grabScript.grabberFiring.Value = false;
 //TODO: if in the collision box of an asteroid, attach to it
                 }*/
             }
