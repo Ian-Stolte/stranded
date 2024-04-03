@@ -168,15 +168,17 @@ public class PlayerStations : NetworkBehaviour
                     Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
                     if (Physics2D.OverlapBox(b.center, b.extents*2, 0, LayerMask.GetMask("Asteroid")))
                     {
-                        Debug.Log("Asteroid grabbed!");
+                        //some way to track the grabbed gameobject (is it ok to just set it on the machine grabbing it?)
+                        grabScript.asteroidGrabbed.Value = true;
                     }
                 }
-                //retract if space released
-                /*else if (Input.GetKeyUp(KeyCode.Space))
+                //release grab if space released
+                else if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    grabScript.grabberFiring.Value = false;
-//TODO: if in the collision box of an asteroid, attach to it
-                }*/
+                    grabScript.asteroidGrabbed.Value = false;
+                    grabber.transform.GetChild(0).gameObject.SetActive(false);
+                    grabber.transform.GetChild(1).gameObject.SetActive(true);
+                }
             }
         }
     }

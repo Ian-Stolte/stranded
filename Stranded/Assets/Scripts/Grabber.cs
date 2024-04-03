@@ -7,6 +7,7 @@ public class Grabber : NetworkBehaviour
 {
     [HideInInspector] public NetworkVariable<bool> grabberFiring;
     [HideInInspector] public NetworkVariable<Vector3> direction;
+    [HideInInspector] public NetworkVariable<bool> asteroidGrabbed;
     
     public float speed;
     public float retractSpeed;
@@ -28,7 +29,7 @@ public class Grabber : NetworkBehaviour
         {
             transform.position += direction.Value*speed; //move arm in direction fired
         }
-        else if (!grabberFiring.Value && Vector2.Distance(transform.position, ship.transform.position) > 0.1f)
+        else if (!grabberFiring.Value && Vector2.Distance(transform.position, ship.transform.position) > 0.1f && !asteroidGrabbed.Value)
         {
             Vector2 dist = ship.transform.position - transform.position; //move arm back to ship
             dist = dist.normalized;
