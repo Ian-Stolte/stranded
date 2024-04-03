@@ -21,7 +21,7 @@ public class AsteroidBehavior : NetworkBehaviour
 
     void FixedUpdate()
     {
-        Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
+        /*Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
         Collider2D[] overlapObjs = Physics2D.OverlapBoxAll(b.center, b.extents * 2, 0, LayerMask.GetMask("Asteroid"));
         isGrabbed = false;
         foreach (Collider2D c in overlapObjs)
@@ -29,8 +29,8 @@ public class AsteroidBehavior : NetworkBehaviour
             if (c.gameObject == gameObject && grabber.GetComponent<Grabber>().asteroidGrabbed.Value)
                 isGrabbed = true;
         }
-        if (!isGrabbed)
-            transform.position += speed.Value * direction.Value * Time.deltaTime;
+        if (!isGrabbed)*/
+        transform.position += speed.Value * direction.Value * Time.deltaTime;
         if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
         {
             GetComponent<NetworkObject>().Despawn(true);

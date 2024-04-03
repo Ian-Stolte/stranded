@@ -20,6 +20,7 @@ public class PlayerStations : NetworkBehaviour
     private GameObject shield;
     private GameObject grabber;
     private Grabber grabScript;
+    private GameObject grabLine;
 
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
@@ -68,6 +69,7 @@ public class PlayerStations : NetworkBehaviour
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
         grabScript = grabber.GetComponent<Grabber>();
+        grabLine = GameObject.Find("Grabber Rope");
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -117,6 +119,8 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Grabber
+            grabLine.GetComponent<LineRenderer>().SetPosition(0, grabber.transform.localPosition);
+            grabLine.GetComponent<LineRenderer>().SetPosition(1, ship.transform.localPosition);
             if (currentStation == "grabber")
             {
                 //wait timer (delay between activations)
@@ -166,19 +170,31 @@ public class PlayerStations : NetworkBehaviour
                     grabber.transform.GetChild(0).gameObject.SetActive(true);
                     grabber.transform.GetChild(1).gameObject.SetActive(false);
                     Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
-                    if (Physics2D.OverlapBox(b.center, b.extents*2, 0, LayerMask.GetMask("Asteroid")))
+                    Collider2D grabCollider = Physics2D.OverlapBox(b.center, b.extents * 2, 0, LayerMask.GetMask(/*"Asteroid",*/ "Resource"));
+                    if (grabCollider != null)
                     {
-                        //some way to track the grabbed gameobject (is it ok to just set it on the machine grabbing it?)
-                        grabScript.asteroidGrabbed.Value = true;
+                        grabScript.grabbedObj = grabCollider.gameObject;
                     }
+                    /*if (grabScript.grabbedObj != null)
+                    {
+                        if (LayerMask.LayerToName(grabScript.grabbedObj.layer) == "Asteroid")
+                        {
+                            grabScript.grabbedObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                            Debug.Log("Asteroid Grabbed!");
+                        }
+                    }*/
                 }
                 //release grab if space released
                 else if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    grabScript.asteroidGrabbed.Value = false;
+                    grabScript.grabbedObj = null;
                     grabber.transform.GetChild(0).gameObject.SetActive(false);
                     grabber.transform.GetChild(1).gameObject.SetActive(true);
                 }
+            }
+            else
+            {
+                grabScript.grabberFiring.Value = false;
             }
         }
     }
