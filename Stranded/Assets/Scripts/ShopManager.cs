@@ -13,12 +13,18 @@ public class ShopManager : MonoBehaviour
     private Spaceship shipScript;
     public TMP_Text scrapsText;
     public BoostEffect[] boostEffectsSO;
+    public GameObject[] shopPanelsGO;
     public ShopTemplate[] shopPanels;
 
     void Start()
     {
         shop = GameObject.Find("Shop");
         shop.SetActive(false);
+
+        for (int i=0; i < boostEffectsSO.Length; i++)
+        {
+            shopPanelsGO[i].SetActive(true);
+        }
 
         shipScript = GameObject.Find("Spaceship").GetComponent<Spaceship>();  
         AddScraps();     
