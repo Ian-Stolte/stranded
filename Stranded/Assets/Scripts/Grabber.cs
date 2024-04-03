@@ -34,6 +34,12 @@ public class Grabber : NetworkBehaviour
             Vector2 dist = ship.transform.position - transform.position; //move arm back to ship
             dist = dist.normalized;
             transform.position += new Vector3(dist.x*retractSpeed, dist.y*retractSpeed, 0);
+            //Vector3 retractDir = ship.transform.position - transform.position;
+            //Vector3 rot = new Vector3(0, 0, Mathf.Atan2(retractDir.y, retractDir.x) * Mathf.Rad2Deg + 90);
+            //transform.rotation = (Quaternion.Euler(rot));
         }
+        Vector3 retractDir = ship.transform.position - transform.position;
+        Vector3 rot = new Vector3(0, 0, Mathf.Atan2(retractDir.y, retractDir.x) * Mathf.Rad2Deg + 90);
+        transform.rotation = (Quaternion.Euler(rot));
     }
 }
