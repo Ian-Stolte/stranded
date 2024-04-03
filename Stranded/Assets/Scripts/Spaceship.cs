@@ -46,6 +46,7 @@ public class Spaceship : NetworkBehaviour
 
     //References
     private Sync sync;
+    private ShopManager shop;
 
     void Start()
     {
@@ -54,7 +55,9 @@ public class Spaceship : NetworkBehaviour
         scrapsCollected = 0;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
+        
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
+        shop = GameObject.Find("Shop").GetComponent<ShopManager>();
     }
 
     void FixedUpdate()
@@ -130,6 +133,7 @@ public class Spaceship : NetworkBehaviour
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {
             scrapsCollected++;
+            shop.AddScraps();
         }
     }
 
