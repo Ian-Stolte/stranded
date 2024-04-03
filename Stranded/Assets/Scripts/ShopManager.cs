@@ -12,7 +12,8 @@ public class ShopManager : MonoBehaviour
     private GameObject ship;
     private Spaceship shipScript;
     public TMP_Text scrapsText;
-
+    public BoostEffect[] boostEffectsSO;
+    public ShopTemplate[] shopPanels;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class ShopManager : MonoBehaviour
 
         shipScript = GameObject.Find("Spaceship").GetComponent<Spaceship>();  
         AddScraps();     
+        LoadPanels();
     }
 
     public void AddScraps()
@@ -28,4 +30,13 @@ public class ShopManager : MonoBehaviour
         scrapsText.text =  "Scraps: " + shipScript.scrapsCollected.ToString();
     }
 
+    public void LoadPanels()
+    {
+        for (int i = 0; i < boostEffectsSO.Length; i++)
+        {
+            shopPanels[i].itemName.text = boostEffectsSO[i].itemName;
+            shopPanels[i].itemDescription.text = boostEffectsSO[i].itemDescription;
+            shopPanels[i].itemPrice.text =  boostEffectsSO[i].baseCost.ToString() + " Scraps";
+        }
+    }
 }

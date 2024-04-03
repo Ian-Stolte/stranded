@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class BoostEffect : ScriptableObject
 {
     public string itemName;
-    public string description;
+    public string itemDescription;
     public int baseCost;
     public abstract void Apply(GameObject target);
 }
