@@ -34,7 +34,7 @@ public class Grabber : NetworkBehaviour
             Vector2 dist = ship.transform.position - transform.position; //move arm back to ship
             dist = dist.normalized;
             transform.position += new Vector3(dist.x*retractSpeed, dist.y*retractSpeed, 0);
-            if (grabbedObj != null)
+            if (grabbedObj != ship && grabbedObj != null)
             {
                 if (LayerMask.LayerToName(grabbedObj.layer) == "Resource")
                 {

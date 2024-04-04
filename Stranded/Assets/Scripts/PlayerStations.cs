@@ -21,6 +21,7 @@ public class PlayerStations : NetworkBehaviour
     private GameObject grabber;
     private Grabber grabScript;
     private GameObject grabLine;
+    private bool firedLastFrame;
 
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
@@ -128,7 +129,7 @@ public class PlayerStations : NetworkBehaviour
                 //wait timer (delay between activations)
                 if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabScript.grabberFiring.Value)
                 {
-                    if (grabberWait == -1) //TODO: delay this for a frame or something (takes a frame for the RPC to hit the client, so it triggers this immediately after firing)
+                    if (grabberWait == -1 && !firedLastFrame)
                     {
                         grabberWait = grabScript.waitTime;
                     }
@@ -137,6 +138,7 @@ public class PlayerStations : NetworkBehaviour
                         grabberWait -= Time.deltaTime;
                         grabberWait = Mathf.Max(grabberWait, 0);
                     }
+                    firedLastFrame = false;
                 }
                 //retract if too far
                 if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
@@ -146,6 +148,7 @@ public class PlayerStations : NetworkBehaviour
                 //fire if space pressed and delay time has elapsed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
                 {
+                    firedLastFrame = true;
                     Vector3 mousePos = Input.mousePosition;
                     Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                     Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
@@ -159,7 +162,7 @@ public class PlayerStations : NetworkBehaviour
                     Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
                     sync.WriteGrabberFiringRpc(true);
                     sync.WriteGrabberPosServerRpc(dir.normalized, rot);
-                    sync.WriteGrabberCloseServerRpc(null, false);
+                    sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
                 }
                 //retract if space pressed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait == -1 && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5 && grabScript.grabberFiring.Value)
@@ -167,7 +170,7 @@ public class PlayerStations : NetworkBehaviour
                     sync.WriteGrabberFiringRpc(false);
                     Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
                     Collider2D grabCollider = Physics2D.OverlapBox(b.center, b.extents * 2, 0, LayerMask.GetMask(/*"Asteroid",*/ "Resource"));
-                    GameObject obj = null;
+                    GameObject obj = ship;
                     if (grabCollider != null)
                     {
                         obj = grabCollider.gameObject;
@@ -185,7 +188,7 @@ public class PlayerStations : NetworkBehaviour
                 //release grab if space released
                 else if (Input.GetKeyUp(KeyCode.Space))
                 {
-                    sync.WriteGrabberCloseServerRpc(null, false);
+                    sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
                 }
             }
             //write grabber position
