@@ -105,6 +105,8 @@ public class PlayerStations : NetworkBehaviour
             //Exit station
             if (currentStation != "none" && Input.GetKeyDown(KeyCode.Q))
             {
+                if (currentStation == "grabber")
+                    sync.WriteGrabberFiringRpc(false);
                 currentStation = "none";
                 steerInstruction.SetActive(false);
                 thrusterInstruction.SetActive(false);
@@ -123,10 +125,11 @@ public class PlayerStations : NetworkBehaviour
             grabLine.GetComponent<LineRenderer>().SetPosition(1, ship.transform.localPosition);
             if (currentStation == "grabber")
             {
+                Debug.Log(grabberWait);
                 //wait timer (delay between activations)
                 if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabScript.grabberFiring.Value)
                 {
-                    if (grabberWait == -1)
+                    if (grabberWait == -1) //TODO: delay this for a frame or something (takes a frame for the RPC to hit the client, so it triggers this immediately after firing)
                     {
                         grabberWait = grabScript.waitTime;
                     }
@@ -139,7 +142,7 @@ public class PlayerStations : NetworkBehaviour
                 //retract if too far
                 if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
                 {
-                    grabScript.grabberFiring.Value = false;
+                    sync.WriteGrabberFiringRpc(false);
                 }
                 //fire if space pressed and delay time has elapsed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
@@ -149,15 +152,14 @@ public class PlayerStations : NetworkBehaviour
                     Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
                     float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x) * 0.5f;
                     float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y) * 0.5f;
-                    //TODO: take into account camera follow if ship is moving
-                        //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
+//TODO: take into account camera follow if ship is moving
+    //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
                     Vector3 dir = new Vector3(mouseXChange, mouseYChange, 0);
 
-                    grabScript.grabberFiring.Value = true;
                     grabberWait = -1;
-                    grabScript.direction.Value = dir.normalized;
                     Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
-                    grabber.transform.rotation = (Quaternion.Euler(rot));
+                    sync.WriteGrabberFiringRpc(true);
+                    sync.WriteGrabberPosServerRpc(dir.normalized, rot);
                     //display grabber opening
                     grabber.transform.GetChild(0).gameObject.SetActive(false);
                     grabber.transform.GetChild(1).gameObject.SetActive(true);
@@ -165,7 +167,7 @@ public class PlayerStations : NetworkBehaviour
                 //retract if space pressed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait == -1 && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5 && grabScript.grabberFiring.Value)
                 {
-                    grabScript.grabberFiring.Value = false;
+                    sync.WriteGrabberFiringRpc(false);
                     //display grabber closing
                     grabber.transform.GetChild(0).gameObject.SetActive(true);
                     grabber.transform.GetChild(1).gameObject.SetActive(false);
@@ -192,10 +194,11 @@ public class PlayerStations : NetworkBehaviour
                     grabber.transform.GetChild(1).gameObject.SetActive(true);
                 }
             }
-            else
+            //write grabber position
+            /*if (currentStation == "grabber" || (IsServer && buttonCircles.transform.GetChild(3).GetComponent<Button>().interactable))
             {
-                grabScript.grabberFiring.Value = false;
-            }
+
+            }*/
         }
     }
 

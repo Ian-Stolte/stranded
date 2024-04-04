@@ -11,6 +11,7 @@ public class Sync : NetworkBehaviour
     
     private GameObject ship;
     private GameObject shield;
+    private GameObject grabber;
     private GameObject thrusterFire;
     private CameraFollow camera;
     public PlayerStations player;
@@ -19,6 +20,7 @@ public class Sync : NetworkBehaviour
     {
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
+        grabber = GameObject.Find("Grabber");
         camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
@@ -106,4 +108,31 @@ public class Sync : NetworkBehaviour
             }
         }
     }
+
+    //GRABBER SYNC
+    [Rpc(SendTo.Server)]
+    public void WriteGrabberFiringRpc(bool firing)
+    {
+        grabber.GetComponent<Grabber>().grabberFiring.Value = firing;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void WriteGrabberPosServerRpc(Vector3 direction, Vector3 rotation)
+    {
+        grabber.GetComponent<Grabber>().direction.Value = direction;
+        grabber.transform.rotation = (Quaternion.Euler(rotation));
+        //ReadGrabberPosClientRpc(rotation);
+    }
+
+    /*[Rpc(SendTo.NotServer)]
+    public void ReadGrabberPosClientRpc(Vector3 direction, Vector3 rotation)
+    {
+        if (player != null)
+        {
+            if (player.currentStation != "steering")
+            {
+                ship.transform.rotation = newAngle;
+            }
+        }
+    }*/
 }
