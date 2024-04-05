@@ -2810,12 +2810,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a54e450228a6c4b16b83636e84dcd7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipPos:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  shipVel:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  shipRot:
-    m_InternalValue: {x: 0, y: 0, z: 0, w: 0}
   player: {fileID: 0}
 --- !u!4 &915497581
 Transform:
