@@ -11,7 +11,6 @@ public class PlayerStations : NetworkBehaviour
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     public string currentStation;
     
-    private GameObject thrusterFire;
     private bool thrustersOn;
     private GameObject ship;
     private Spaceship shipScript;
@@ -65,7 +64,6 @@ public class PlayerStations : NetworkBehaviour
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
-        //thrusterFire = ship.transform.GetChild(1).gameObject;
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
         grabScript = grabber.GetComponent<Grabber>();
