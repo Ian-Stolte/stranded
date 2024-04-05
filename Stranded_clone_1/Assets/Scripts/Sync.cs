@@ -88,7 +88,7 @@ public class Sync : NetworkBehaviour
     public void WriteShieldServerRpc(Quaternion angle, Vector3 position)
     {
         shield.transform.rotation = angle;
-        //shield.transform.position = position;
+        shield.transform.position = position;
         ReadShieldClientRpc(angle, position);
     }
 
@@ -100,7 +100,7 @@ public class Sync : NetworkBehaviour
             if (player.currentStation != "shields")
             {
                 shield.transform.rotation = angle;
-                //shield.transform.position = position;
+                shield.transform.position = position;
             }
         }
     }
