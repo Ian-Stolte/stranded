@@ -104,8 +104,10 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation != "none" && Input.GetKeyDown(KeyCode.Q))
             {
                 if (currentStation == "grabber")
+                {
                     sync.WriteGrabberFiringRpc(false);
                     grabberFired = false;
+                }
                 currentStation = "none";
                 steerInstruction.SetActive(false);
                 thrusterInstruction.SetActive(false);
@@ -190,11 +192,6 @@ public class PlayerStations : NetworkBehaviour
                     sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
                 }
             }
-            //write grabber position
-            /*if (currentStation == "grabber" || (IsServer && buttonCircles.transform.GetChild(3).GetComponent<Button>().interactable))
-            {
-
-            }*/
         }
     }
 
@@ -242,7 +239,6 @@ public class PlayerStations : NetworkBehaviour
             //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable))
             {
-                //GameObject.Find("Shield").transform.position += ship.transform.position - oldShipPos;
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn, ship.transform.position - oldShipPos);
             }
             oldShipPos = ship.transform.position;

@@ -18,7 +18,7 @@ public class CameraFollow : MonoBehaviour
 
     /*void Update()
     {*/
-    public void UpdateCamera()
+    public void UpdateCamera(Vector3 posChange)
     {
         speed = Mathf.Sqrt(Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.x, 2) + Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.y, 2));
         if (speed - pastSpeed < -1)
@@ -30,9 +30,9 @@ public class CameraFollow : MonoBehaviour
 
         if (!inDecel)
         {
-            if (pastPos != ship.transform.position)
+            if (Vector3.Magnitude(posChange) != 0)
             {
-                offset = new Vector2(ship.transform.position.x - pastPos.x, ship.transform.position.y - pastPos.y) * 60;
+                offset = new Vector2(posChange.x, posChange.y) * 60;
                 if (Vector3.Magnitude(offset) > 6)
                 {
                     offset *= Mathf.Pow(Vector3.Magnitude(offset)-6, 1.5f) / 30; //slight exponential growth (^1.5) from 6 onwards
@@ -41,7 +41,6 @@ public class CameraFollow : MonoBehaviour
                 {
                     offset = new Vector2(0, 0);
                 }
-                pastPos = ship.transform.position;
             }
             transform.position = new Vector3(ship.transform.position.x + offset.x, ship.transform.position.y + offset.y, transform.position.z);
             if (speed > 5)
