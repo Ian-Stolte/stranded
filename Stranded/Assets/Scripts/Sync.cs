@@ -5,10 +5,6 @@ using Unity.Netcode;
 
 public class Sync : NetworkBehaviour
 {
-    public NetworkVariable<Vector3> shipPos = new NetworkVariable<Vector3>();
-    public NetworkVariable<Vector3> shipVel = new NetworkVariable<Vector3>();
-    public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
-    
     private GameObject ship;
     private GameObject shield;
     private GameObject grabber;
@@ -40,29 +36,30 @@ public class Sync : NetworkBehaviour
 
     //THRUSTER SYNC
     [Rpc(SendTo.Server)]
-    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool fire)
+    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool fire, Vector3 addToShield)
     {
         //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
-        GameObject.Find("Shield").transform.position += newPos - ship.transform.position;
+        GameObject.Find("Shield").transform.position += addToShield;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
         thrusterFire.SetActive(fire);
         camera.UpdateCamera();
-        ReadShipMoveClientRpc(newVel, newPos, fire);
+        ReadShipMoveClientRpc(newVel, newPos, fire, addToShield);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool fire)
+    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool fire, Vector3 addToShield)
     {
         if (player != null)
         {
             if (player.currentStation != "thrusters")
             {
-                GameObject.Find("Shield").transform.position += newPos - ship.transform.position;
+                
                 ship.transform.position = newPos;
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
+        GameObject.Find("Shield").transform.position += addToShield;
         thrusterFire.SetActive(fire);
         camera.UpdateCamera();
     }
@@ -92,7 +89,7 @@ public class Sync : NetworkBehaviour
     public void WriteShieldServerRpc(Quaternion angle, Vector3 position)
     {
         shield.transform.rotation = angle;
-        shield.transform.position = position;
+        //shield.transform.position = position;
         ReadShieldClientRpc(angle, position);
     }
 
@@ -104,7 +101,7 @@ public class Sync : NetworkBehaviour
             if (player.currentStation != "shields")
             {
                 shield.transform.rotation = angle;
-                shield.transform.position = position;
+                //shield.transform.position = position;
             }
         }
     }

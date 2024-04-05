@@ -127,9 +127,9 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation == "grabber")
             {
                 //wait timer (delay between activations)
-                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabScript.grabberFiring.Value)
+                if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabberFired)
                 {
-                    if (grabberWait == -1 && !grabberFired)
+                    if (grabberWait == -1)
                     {
                         grabberWait = grabScript.waitTime;
                     }
@@ -148,7 +148,6 @@ public class PlayerStations : NetworkBehaviour
                 //fire if space pressed and delay time has elapsed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
                 {
-                    firedLastFrame = true;
                     Vector3 mousePos = Input.mousePosition;
                     Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                     Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
@@ -243,11 +242,12 @@ public class PlayerStations : NetworkBehaviour
                 thrustersOn = false;
             }
             //write ship position & velocity
-            if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable)) {
-                GameObject.Find("Shield").transform.position += ship.transform.position - oldShipPos;
-                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn);
-                oldShipPos = ship.transform.position;
+            if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable))
+            {
+                //GameObject.Find("Shield").transform.position += ship.transform.position - oldShipPos;
+                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn, ship.transform.position - oldShipPos);
             }
+            oldShipPos = ship.transform.position;
 
             //Shields
             if (currentStation == "shields")
@@ -269,8 +269,6 @@ public class PlayerStations : NetworkBehaviour
             {
                 sync.WriteShieldServerRpc(shield.transform.rotation, shield.transform.position);
             }
-
-//TODO: if grabber station, rotate around ship with mouse
         }
         else {
             //Read station (from owner)
