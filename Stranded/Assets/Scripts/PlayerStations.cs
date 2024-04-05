@@ -34,6 +34,8 @@ public class PlayerStations : NetworkBehaviour
     private bool hideThrusterInstruction;
     private GameObject shieldInstruction;
     private bool hideShieldInstruction;
+    private GameObject grabberInstruction;
+    private bool hideGrabberInstruction;
 
     private bool grabberFired;
     private float grabberWait;
@@ -76,10 +78,12 @@ public class PlayerStations : NetworkBehaviour
         steerInstruction = GameObject.Find("Steering Instructions");
         thrusterInstruction = GameObject.Find("Thruster Instructions");
         shieldInstruction = GameObject.Find("Shield Instructions");
+        grabberInstruction = GameObject.Find("Grabber Instructions");
 
         steerInstruction.SetActive(false);
         thrusterInstruction.SetActive(false);
         shieldInstruction.SetActive(false);
+        grabberInstruction.SetActive(false);
         buttonCircles.SetActive(true);
     }
 
@@ -112,6 +116,7 @@ public class PlayerStations : NetworkBehaviour
                 steerInstruction.SetActive(false);
                 thrusterInstruction.SetActive(false);
                 shieldInstruction.SetActive(false);
+                grabberInstruction.SetActive(false);
             }
             //Buttons
             if (currentStation == "none" && IsOwner) {
@@ -126,6 +131,10 @@ public class PlayerStations : NetworkBehaviour
             grabLine.GetComponent<LineRenderer>().SetPosition(1, ship.transform.localPosition);
             if (currentStation == "grabber")
             {
+                if (!hideGrabberInstruction) {
+                    grabberInstruction.SetActive(true);
+                }
+
                 //wait timer (delay between activations)
                 if (Vector3.Distance(grabber.transform.position, ship.transform.position) <= 2 && !grabberFired)
                 {
