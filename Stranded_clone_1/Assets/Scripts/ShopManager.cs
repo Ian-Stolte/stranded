@@ -8,7 +8,7 @@ using TMPro;
 // Link: https://www.youtube.com/watch?v=kUwnfkYcaFU
 public class ShopManager : MonoBehaviour
 {
-    private GameObject shop;
+    [SerializeField] GameObject shop;
     private GameObject ship;
     private Spaceship shipScript;
     public TMP_Text scrapsText;
@@ -16,10 +16,16 @@ public class ShopManager : MonoBehaviour
     public GameObject[] shopPanelsGO;
     public ShopTemplate[] shopPanels;
 
+    public GameObject openShopBtn;
+    public GameObject closeShopBtn;
+
     void Start()
     {
         shop = GameObject.Find("Shop");
-        shop.SetActive(false);
+        CloseShop();
+
+        openShopBtn.SetActive(true);
+        closeShopBtn.SetActive(false);
 
         for (int i=0; i < boostEffectsSO.Length; i++)
         {
@@ -29,6 +35,20 @@ public class ShopManager : MonoBehaviour
         shipScript = GameObject.Find("Spaceship").GetComponent<Spaceship>();  
         AddScraps();     
         LoadPanels();
+    }
+
+    public void OpenShop()
+    {
+        shop.SetActive(true);
+        openShopBtn.SetActive(false);
+        closeShopBtn.SetActive(true);
+    }
+
+    public void CloseShop()
+    {
+        shop.SetActive(false);
+        openShopBtn.SetActive(true);
+        closeShopBtn.SetActive(false);
     }
 
     public void AddScraps()
