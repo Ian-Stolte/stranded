@@ -22,9 +22,12 @@ public class Spaceship : NetworkBehaviour
     public float decelSpeed;
     public float maxSpeed;
     public float speedDecrease;
+    private float maxSpeedRecord;
+
+    //Collision vars
+    private bool asteroidImmunity;
     public float stunDuration; // Duration of the stun in seconds
     [HideInInspector] public bool isStunned; // Indicates if the player is stunned
-    private float maxSpeedRecord;
 
     // Resource variables
     [Header("Resource Variables")]
@@ -87,7 +90,7 @@ public class Spaceship : NetworkBehaviour
     //collision
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Asteroid(Clone)")
+        if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity)
         {
             // Updates the health bar
             if (IsServer)
@@ -95,6 +98,7 @@ public class Spaceship : NetworkBehaviour
                 shipHealth.Value--;
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
                 sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
+                StartCoroutine(HitImmunity());
             }
 
             if (shipHealth.Value <= 0) {
@@ -114,6 +118,13 @@ public class Spaceship : NetworkBehaviour
             if (destroyAsteroid && IsServer)
                 collision.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
+    }
+
+    IEnumerator HitImmunity()
+    {
+        asteroidImmunity = true;
+        yield return new WaitForSeconds(5);
+        asteroidImmunity = false;
     }
 
     // Resource enters trigger collider

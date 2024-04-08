@@ -10,24 +10,34 @@ public class PlayerStations : NetworkBehaviour
 {
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     public string currentStation;
-    
-    private bool thrustersOn;
+    private Sync sync;
+
+    //Buttons
+    [SerializeField] private GameObject buttonPrefab;
+    public GameObject buttons;
+    public GameObject buttonCircles;
+
+    //GameObjects
     private GameObject ship;
     private Spaceship shipScript;
-    private Vector3 oldShipPos;
-    
     private GameObject shield;
     private GameObject grabber;
     private Grabber grabScript;
     private GameObject grabLine;
 
-    [SerializeField] private GameObject buttonPrefab;
-    public GameObject buttons;
-    public GameObject buttonCircles;
-
+    //Steering
     public InputAction steering;
 
-    private Sync sync;
+    //Thrusters
+    private bool thrustersOn;
+    private Vector3 oldShipPos;
+
+    //Grabbers
+    private bool grabberFired;
+    private float grabberWait;
+    private bool grabberHasGrabbed;
+
+    //Instructions
     private GameObject steerInstruction;
     private bool hideSteerInstruction;
     private GameObject thrusterInstruction;
@@ -36,10 +46,6 @@ public class PlayerStations : NetworkBehaviour
     private bool hideShieldInstruction;
     private GameObject grabberInstruction;
     private bool hideGrabberInstruction;
-
-    private bool grabberFired;
-    private float grabberWait;
-
 
     void OnEnable()
     {
@@ -141,6 +147,7 @@ public class PlayerStations : NetworkBehaviour
                     if (grabberWait == -1)
                     {
                         grabberWait = grabScript.waitTime;
+                        grabberHasGrabbed = false;
                     }
                     else
                     {
@@ -148,34 +155,10 @@ public class PlayerStations : NetworkBehaviour
                         grabberWait = Mathf.Max(grabberWait, 0);
                     }
                 }
-                //retract if too far
-                if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
-                {
-                    sync.WriteGrabberFiringRpc(false);
-                    grabberFired = false;
-                }
-                //fire if space pressed and delay time has elapsed
-                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
-                {
-                    Vector3 mousePos = Input.mousePosition;
-                    Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
-                    Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
-                    float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x) * 0.5f;
-                    float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y) * 0.5f;
-//TODO: take into account camera follow if ship is moving
-    //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
-                    Vector3 dir = new Vector3(mouseXChange, mouseYChange, 0);
-
-                    grabberWait = -1;
-                    Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
-                    sync.WriteGrabberFiringRpc(true);
-                    grabberFired = true;
-                    sync.WriteGrabberPosServerRpc(dir.normalized, rot);
-                    sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
-                }
                 //retract if space pressed
-                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait == -1 && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5 && grabScript.grabberFiring.Value)
+                if (Input.GetKeyDown(KeyCode.Space) && !grabberHasGrabbed && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5 /*&& grabScript.grabberFiring.Value*/)
                 {
+                    grabberHasGrabbed = true;
                     sync.WriteGrabberFiringRpc(false);
                     grabberFired = false;
                     Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
@@ -194,6 +177,33 @@ public class PlayerStations : NetworkBehaviour
                             Debug.Log("Asteroid Grabbed!");
                         }
                     }*/
+                }
+                //retract if too far
+                else if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
+                {
+                    sync.WriteGrabberFiringRpc(false);
+                    grabberFired = false;
+                }
+                //fire if space pressed and delay time has elapsed
+                else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
+                {
+                    hideGrabberInstruction = true;
+                    grabberInstruction.SetActive(false);
+                    Vector3 mousePos = Input.mousePosition;
+                    Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
+                    Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
+                    float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x) * 0.5f;
+                    float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y) * 0.5f;
+//TODO: take into account camera follow if ship is moving
+    //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
+                    Vector3 dir = new Vector3(mouseXChange, mouseYChange, 0);
+
+                    grabberWait = -1;
+                    Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
+                    sync.WriteGrabberFiringRpc(true);
+                    grabberFired = true;
+                    sync.WriteGrabberPosServerRpc(dir.normalized, rot);
+                    sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
                 }
                 //release grab if space released
                 else if (Input.GetKeyUp(KeyCode.Space))

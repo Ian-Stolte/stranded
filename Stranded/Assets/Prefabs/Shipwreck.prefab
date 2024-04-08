@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: -324880121415167337}
   - component: {fileID: -1648764634423113571}
   - component: {fileID: 4688094268433281338}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Shipwreck
-  m_TagString: Untagged
+  m_TagString: Shipwreck
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_InternalValue: 0
   direction:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  despawnDistance: 100
+  despawnDistance: 300
 --- !u!50 &4688094268433281338
 Rigidbody2D:
   serializedVersion: 4

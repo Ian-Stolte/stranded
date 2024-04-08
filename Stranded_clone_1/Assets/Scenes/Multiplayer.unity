@@ -1284,8 +1284,8 @@ MonoBehaviour:
   stun: 1
   slowSpeed: 0
   destroyAsteroid: 0
-  turnSpeed: 1
-  shieldSpeed: 1
+  turnSpeed: 1.3
+  shieldSpeed: 1.3
   thrustSpeed: 4
   decelSpeed: 0.005
   maxSpeed: 10
@@ -1300,7 +1300,7 @@ MonoBehaviour:
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10
-  depletionInterval: 3
+  depletionInterval: 5
   depletionAmount: 0.5
   coordText: {fileID: 736649308}
   speedText: {fileID: 1631926231}
@@ -2177,10 +2177,10 @@ MonoBehaviour:
   prefab: {fileID: 7698982669609692162, guid: 8782e6c3b411f47499fe48699f69a4fa, type: 3}
   minDelay: 1
   maxDelay: 4
-  minDistance: 10
-  maxDistance: 30
-  minSpeed: 0.1
-  maxSpeed: 1
+  minDistance: 30
+  maxDistance: 50
+  minSpeed: 0
+  maxSpeed: 0
   minSize: 1
   maxSize: 10
 --- !u!4 &632415136
@@ -2289,7 +2289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -824
+      value: -792.99994
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -3023,7 +3023,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 811.64, y: 424.79}
+  m_AnchoredPosition: {x: 764, y: 452}
   m_SizeDelta: {x: 301.283, y: 76.422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &929954096
@@ -3187,10 +3187,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 7698982669609692162, guid: e32e76c7e584b114681a5d11185f2911, type: 3}
-  minDelay: 2
+  minDelay: 3
   maxDelay: 8
-  minDistance: 10
-  maxDistance: 30
+  minDistance: 30
+  maxDistance: 50
   minSpeed: 0.5
   maxSpeed: 3
   resourceValue: 2
@@ -3251,7 +3251,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: -3
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -3410,7 +3410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109989464}
   - component: {fileID: 1109989466}
-  - component: {fileID: 1109989465}
+  - component: {fileID: 1109989467}
   m_Layer: 0
   m_Name: Shipwreck Spawner
   m_TagString: Untagged
@@ -3433,26 +3433,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 412612937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1109989465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109989463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38c3af3e123a7524396a5ca67125ee36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 7698982669609692162, guid: f835232d8e3a51744ac7b543af54ca77, type: 3}
-  minDelay: 7
-  maxDelay: 15
-  minDistance: 10
-  maxDistance: 30
-  minSpeed: 0.5
-  maxSpeed: 2
-  resourceValue: 2
 --- !u!114 &1109989466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3474,6 +3454,24 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &1109989467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109989463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8b982cbbca7d384fba464b6e139edd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7698982669609692162, guid: f835232d8e3a51744ac7b543af54ca77, type: 3}
+  minDelay: 15
+  maxDelay: 30
+  minDistance: 50
+  maxDistance: 100
+  maxAtOnce: 6
 --- !u!1 &1127563768
 GameObject:
   m_ObjectHideFlags: 0
@@ -6165,7 +6163,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -840.358, y: -215.789}
+  m_AnchoredPosition: {x: -810, y: -215.789}
   m_SizeDelta: {x: 301.283, y: 76.422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2142448681
@@ -6332,7 +6330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -824
+      value: -793
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.y

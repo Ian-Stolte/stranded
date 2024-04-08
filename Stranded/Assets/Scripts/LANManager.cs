@@ -32,6 +32,10 @@ public class LANManager : NetworkBehaviour
 		NetworkManager.Singleton.StartHost();
 		GetLocalIPAddress();
 		lanElements.SetActive(false);
+		for (int i = 0; i < 10; i++)
+        {
+			GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+		}
 	}
 
 	// To Join a game
