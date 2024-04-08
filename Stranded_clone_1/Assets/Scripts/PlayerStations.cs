@@ -8,6 +8,7 @@ using Unity.Collections;
 
 public class PlayerStations : NetworkBehaviour
 {
+    //Stations
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     public string currentStation;
     private Sync sync;
@@ -32,10 +33,14 @@ public class PlayerStations : NetworkBehaviour
     private bool thrustersOn;
     private Vector3 oldShipPos;
 
-    //Grabbers
+    //Grabber
     private bool grabberFired;
     private float grabberWait;
     private bool grabberHasGrabbed;
+
+    //Radar
+    public bool radarUnlocked;
+    private TMPro.TextMeshProUGUI radarText;
 
     //Instructions
     private GameObject steerInstruction;
@@ -76,6 +81,7 @@ public class PlayerStations : NetworkBehaviour
         grabber = GameObject.Find("Grabber");
         grabScript = grabber.GetComponent<Grabber>();
         grabLine = GameObject.Find("Grabber Rope");
+        radarText = GameObject.Find("Radar Text").GetComponent<TMPro.TextMeshProUGUI>();
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -209,6 +215,31 @@ public class PlayerStations : NetworkBehaviour
                 else if (Input.GetKeyUp(KeyCode.Space))
                 {
                     sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
+                }
+            }
+
+            //Radar
+            if (radarUnlocked)
+            {
+                GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
+                float minDist = 999;
+                if (shipwrecks.Length == 0)
+                {
+                    radarText.text = "No shipwrecks";
+                }
+                else
+                {
+                    GameObject closestWreck = shipwrecks[0];
+                    foreach (GameObject g in shipwrecks)
+                    {
+                        float dist = Vector3.Distance(ship.transform.position, g.transform.position);
+                        if (dist < minDist)
+                        {
+                            minDist = dist;
+                            closestWreck = g;
+                        }
+                    }
+                    radarText.text = Mathf.Round(minDist) + " km";
                 }
             }
         }
