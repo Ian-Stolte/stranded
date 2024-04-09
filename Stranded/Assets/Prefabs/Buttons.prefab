@@ -256,7 +256,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 65032476301019129}
+      - m_Target: {fileID: 7533609068493746197}
         m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: SetStation
         m_Mode: 5
@@ -594,7 +594,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 65032476301019129}
+      - m_Target: {fileID: 7533609068493746197}
         m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: SetStation
         m_Mode: 5
@@ -650,8 +650,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4137783730460423042}
+  - component: {fileID: 7533609068493746197}
   m_Layer: 5
-  m_Name: Spaceship Buttons
+  m_Name: Buttons
   m_TagString: Buttons
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -678,6 +679,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7533609068493746197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4117076319511684776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a4e7712ef7004efbb5f103ae1f54238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
 --- !u!1 &4167621682919009447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,7 +1082,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 65032476301019129}
+      - m_Target: {fileID: 7533609068493746197}
         m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: SetStation
         m_Mode: 5
@@ -1773,7 +1787,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 65032476301019129}
+      - m_Target: {fileID: 7533609068493746197}
         m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
         m_MethodName: SetStation
         m_Mode: 5
@@ -1829,7 +1843,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4977767759697921741}
-  - component: {fileID: 65032476301019129}
   m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
@@ -1860,16 +1873,3 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &65032476301019129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8102109184879037287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a4e7712ef7004efbb5f103ae1f54238, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}

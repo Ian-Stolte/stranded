@@ -41,15 +41,16 @@ public class PlayerStations : NetworkBehaviour
     //Radar
     public bool radarUnlocked;
     private TMPro.TextMeshProUGUI radarText;
+    private GameObject radarArrow;
 
     //Instructions
-    private GameObject steerInstruction;
+    public GameObject steerInstruction;
     private bool hideSteerInstruction;
-    private GameObject thrusterInstruction;
+    public GameObject thrusterInstruction;
     private bool hideThrusterInstruction;
-    private GameObject shieldInstruction;
+    public GameObject shieldInstruction;
     private bool hideShieldInstruction;
-    private GameObject grabberInstruction;
+    public GameObject grabberInstruction;
     private bool hideGrabberInstruction;
 
     void OnEnable()
@@ -68,12 +69,11 @@ public class PlayerStations : NetworkBehaviour
         name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
 
         currentStation = "none";
-        buttons = GameObject.Find("Spaceship Buttons");
         buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
         buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
         buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
+        buttons.GetComponent<Buttons>().target = gameObject;
         buttonCircles = buttons.transform.GetChild(0).gameObject;
-        buttonCircles.GetComponent<Buttons>().target = gameObject;
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
@@ -82,6 +82,7 @@ public class PlayerStations : NetworkBehaviour
         grabScript = grabber.GetComponent<Grabber>();
         grabLine = GameObject.Find("Grabber Rope");
         radarText = GameObject.Find("Radar Text").GetComponent<TMPro.TextMeshProUGUI>();
+        radarArrow = GameObject.Find("Radar Arrow");
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -97,6 +98,8 @@ public class PlayerStations : NetworkBehaviour
         shieldInstruction.SetActive(false);
         grabberInstruction.SetActive(false);
         buttonCircles.SetActive(true);
+
+        StartCoroutine(Radar());
     }
 
     void Update()
@@ -168,7 +171,7 @@ public class PlayerStations : NetworkBehaviour
                     sync.WriteGrabberFiringRpc(false);
                     grabberFired = false;
                     Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
-                    Collider2D grabCollider = Physics2D.OverlapBox(b.center, b.extents * 2, 0, LayerMask.GetMask(/*"Asteroid",*/ "Resource"));
+                    Collider2D grabCollider = Physics2D.OverlapBox(b.center, b.extents * 2, 0, LayerMask.GetMask("Resource", "Shipwreck"));
                     GameObject obj = ship;
                     if (grabCollider != null)
                     {
@@ -215,31 +218,6 @@ public class PlayerStations : NetworkBehaviour
                 else if (Input.GetKeyUp(KeyCode.Space))
                 {
                     sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
-                }
-            }
-
-            //Radar
-            if (radarUnlocked)
-            {
-                GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
-                float minDist = 999;
-                if (shipwrecks.Length == 0)
-                {
-                    radarText.text = "No shipwrecks";
-                }
-                else
-                {
-                    GameObject closestWreck = shipwrecks[0];
-                    foreach (GameObject g in shipwrecks)
-                    {
-                        float dist = Vector3.Distance(ship.transform.position, g.transform.position);
-                        if (dist < minDist)
-                        {
-                            minDist = dist;
-                            closestWreck = g;
-                        }
-                    }
-                    radarText.text = Mathf.Round(minDist) + " km";
                 }
             }
         }
@@ -317,6 +295,54 @@ public class PlayerStations : NetworkBehaviour
         else {
             //Read station (from owner)
             GetComponent<PlayerStations>().currentStation = "" + station.Value;
+        }
+    }
+
+    IEnumerator Radar()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+            radarArrow.SetActive(false);
+            yield return new WaitForSeconds(0.05f);
+            if (radarUnlocked)
+            {
+                GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
+                float minDist = 999;
+                if (shipwrecks.Length == 0)
+                {
+                    radarText.text = "N/A";
+                    radarArrow.SetActive(false);
+                }
+                else
+                {
+                    GameObject closestWreck = shipwrecks[0];
+                    foreach (GameObject g in shipwrecks)
+                    {
+                        float dist = Vector3.Distance(ship.transform.position, g.transform.position);
+                        if (dist < minDist)
+                        {
+                            minDist = dist;
+                            closestWreck = g;
+                        }
+                    }
+                    radarText.text = Mathf.Round(minDist) + " km";
+                    float cameraZoom = GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize;
+                    if (minDist >= 1.67 * cameraZoom && minDist <= 100)
+                    {
+                        radarArrow.SetActive(true);
+                        radarArrow.transform.localScale = new Vector3(0.65f + (cameraZoom - 15) / 100, 1 + (cameraZoom - 15) / 100, 1);
+                        Vector3 dir = Vector3.Normalize(closestWreck.transform.position - ship.transform.position);
+                        radarArrow.transform.position = ship.transform.position + dir * (cameraZoom - 5);
+                        Vector3 rot = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90);
+                        radarArrow.transform.rotation = (Quaternion.Euler(rot));
+                    }
+                    else
+                    {
+                        radarArrow.SetActive(false);
+                    }
+                }
+            }
         }
     }
 }

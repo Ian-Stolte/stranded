@@ -9,6 +9,7 @@ public class Sync : NetworkBehaviour
     private GameObject shield;
     private GameObject grabber;
     private GameObject thrusterFire;
+    private GameObject radarArrow;
     private CameraFollow camera;
     public PlayerStations player;
 
@@ -17,6 +18,7 @@ public class Sync : NetworkBehaviour
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
+        radarArrow = GameObject.Find("Radar Arrow");
         camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
@@ -40,6 +42,7 @@ public class Sync : NetworkBehaviour
     {
         //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
         GameObject.Find("Shield").transform.position += addToShield;
+        radarArrow.transform.position += addToShield;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
         thrusterFire.SetActive(thrustersOn);
@@ -59,6 +62,7 @@ public class Sync : NetworkBehaviour
             }
         }
         GameObject.Find("Shield").transform.position += addToShield;
+        radarArrow.transform.position += addToShield;
         thrusterFire.SetActive(thrustersOn);
         camera.UpdateCamera(addToShield);
     }
