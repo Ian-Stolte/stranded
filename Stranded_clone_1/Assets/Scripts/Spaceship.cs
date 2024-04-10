@@ -188,11 +188,10 @@ public class Spaceship : NetworkBehaviour
         {
             isStunned = true;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            maxSpeedRecord = maxSpeed; // Remembers the current speed
+            maxSpeedRecord = maxSpeed; // remembers the current speed
             maxSpeed = 0;
-            // GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
-            Invoke("EndStun", stunDuration); // Ends stun after duration
+            Invoke("EndStun", stunDuration); // ends stun after duration
         }
     }
 

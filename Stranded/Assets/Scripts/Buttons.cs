@@ -21,36 +21,44 @@ public class Buttons : MonoBehaviour
         CheckInUse(buttons.GetChild(1));
         CheckInUse(buttons.GetChild(2));
         CheckInUse(buttons.GetChild(3));
-//TODO: allow swap between stations without hitting Q?
+
+        //swap between stations with number keys
         if (Input.GetKeyDown(KeyCode.Alpha1) && buttons.GetChild(0).GetComponent<Button>().interactable)
         {
-            HideInstructions();
-            target.GetComponent<PlayerStations>().currentStation = "steering";
+            ChangeTo("steering");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && buttons.GetChild(1).GetComponent<Button>().interactable)
         {
-            HideInstructions();
-            target.GetComponent<PlayerStations>().currentStation = "thrusters";
+            ChangeTo("thrusters");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) && buttons.GetChild(2).GetComponent<Button>().interactable)
         {
-            HideInstructions();
-            target.GetComponent<PlayerStations>().currentStation = "shields";
+            ChangeTo("shields");
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) && buttons.GetChild(3).GetComponent<Button>().interactable)
         {
-            HideInstructions();
-            target.GetComponent<PlayerStations>().currentStation = "grabber";
+            ChangeTo("grabber");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5) && buttons.GetChild(4).GetComponent<Button>().interactable)
+        {
+            ChangeTo("radar");
         }
     }
 
-    void HideInstructions()
+    void ChangeTo(string station)
     {
         PlayerStations p = target.GetComponent<PlayerStations>();
         p.steerInstruction.SetActive(false);
         p.thrusterInstruction.SetActive(false);
         p.shieldInstruction.SetActive(false);
         p.grabberInstruction.SetActive(false);
+        
+        if (p.currentStation == "grabber")
+        {
+            GameObject.Find("Sync Object").GetComponent<Sync>().WriteGrabberFiringRpc(false);
+            p.grabberFired = false;
+        }
+        p.currentStation = station;
     }
     
     public void CheckInUse(Transform child)

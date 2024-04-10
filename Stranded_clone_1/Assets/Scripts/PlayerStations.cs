@@ -34,7 +34,7 @@ public class PlayerStations : NetworkBehaviour
     private Vector3 oldShipPos;
 
     //Grabber
-    private bool grabberFired;
+    [HideInInspector] public bool grabberFired;
     private float grabberWait;
     private bool grabberHasGrabbed;
 
@@ -42,6 +42,9 @@ public class PlayerStations : NetworkBehaviour
     public bool radarUnlocked;
     private TMPro.TextMeshProUGUI radarText;
     private GameObject radarArrow;
+    private Vector3 radarDir;
+    private float cameraZoom;
+    private float minDist;
 
     //Instructions
     public GameObject steerInstruction;
@@ -134,19 +137,22 @@ public class PlayerStations : NetworkBehaviour
                 grabberInstruction.SetActive(false);
             }
             //Buttons
-            if (currentStation == "none" && IsOwner) {
+            if (currentStation == "none" && IsOwner)
+            {
                 buttonCircles.SetActive(true);
             }
-            else {
+            else
+            {
                 buttonCircles.SetActive(false);
             }
 
             //Grabber
             grabLine.GetComponent<LineRenderer>().SetPosition(0, grabber.transform.localPosition);
             grabLine.GetComponent<LineRenderer>().SetPosition(1, ship.transform.localPosition);
-            if (currentStation == "grabber")
+            if (currentStation == "grabber" && !shipScript.isStunned)
             {
-                if (!hideGrabberInstruction) {
+                if (!hideGrabberInstruction)
+                {
                     grabberInstruction.SetActive(true);
                 }
 
@@ -201,11 +207,11 @@ public class PlayerStations : NetworkBehaviour
                     Vector3 mousePos = Input.mousePosition;
                     Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                     Vector3 canvasScale = GameObject.Find("Canvas").GetComponent<RectTransform>().localScale;
-                    float mouseXChange = mousePos.x - (canvasRect.width * canvasScale.x) * 0.5f;
-                    float mouseYChange = mousePos.y - (canvasRect.height * canvasScale.y) * 0.5f;
-//TODO: take into account camera follow if ship is moving
-    //Debug.Log(GameObject.Find("Main Camera").transform.position - grabber.transform.position);
-                    Vector3 dir = new Vector3(mouseXChange, mouseYChange, 0);
+                    float mouseXChange = mousePos.x/(canvasRect.width * canvasScale.x) - 0.5f;
+                    float mouseYChange = mousePos.y/(canvasRect.height * canvasScale.y) - 0.5f;
+                    //take into account camera follow if ship is moving
+                    Vector3 cameraOffset = (GameObject.Find("Main Camera").transform.position - grabber.transform.position)/GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize;
+                    Vector3 dir = new Vector3((mouseXChange+cameraOffset.x)*canvasRect.width*canvasScale.x, (mouseYChange+cameraOffset.y)*canvasRect.height*canvasScale.y, 0);
 
                     grabberWait = -1;
                     Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
@@ -220,6 +226,26 @@ public class PlayerStations : NetworkBehaviour
                     sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
                 }
             }
+            else if (shipScript.isStunned && grabScript.grabberFiring.Value)
+            {
+                sync.WriteGrabberFiringRpc(false);
+                grabberFired = false;
+            }
+
+            //Radar
+            float cameraZoom = GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize;
+            if (minDist >= 1.67 * cameraZoom && minDist <= 100 && currentStation == "radar")
+            {
+                radarArrow.SetActive(true);
+                radarArrow.transform.position = ship.transform.position + radarDir * (cameraZoom - 5);
+                radarArrow.transform.localScale = new Vector3(0.65f + (cameraZoom - 15) / 100, 1 + (cameraZoom - 15) / 100, 1);
+            }
+            else
+            {
+                radarArrow.SetActive(false);
+            }
+
+            radarText.enabled = (currentStation == "radar");
         }
     }
 
@@ -298,17 +324,19 @@ public class PlayerStations : NetworkBehaviour
         }
     }
 
-    IEnumerator Radar()
+    private IEnumerator Radar()
+//TODO: allow multiple arrows? (instantiate prefabs & destroy instead of setting inactive?)
     {
         while (true)
         {
             yield return new WaitForSeconds(2);
             radarArrow.SetActive(false);
             yield return new WaitForSeconds(0.05f);
+            yield return new WaitUntil(() => currentStation == "radar");
             if (radarUnlocked)
             {
                 GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
-                float minDist = 999;
+                minDist = 101;
                 if (shipwrecks.Length == 0)
                 {
                     radarText.text = "N/A";
@@ -319,22 +347,22 @@ public class PlayerStations : NetworkBehaviour
                     GameObject closestWreck = shipwrecks[0];
                     foreach (GameObject g in shipwrecks)
                     {
-                        float dist = Vector3.Distance(ship.transform.position, g.transform.position);
+                        float dist = Vector3.Distance(ship.transform.position, g.transform.position)-3;
                         if (dist < minDist)
                         {
                             minDist = dist;
                             closestWreck = g;
                         }
                     }
-                    radarText.text = Mathf.Round(minDist) + " km";
-                    float cameraZoom = GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize;
+                    if (minDist == 101)
+                        radarText.text = "N/A";
+                    else
+                        radarText.text = Mathf.Round(minDist) + " km";
                     if (minDist >= 1.67 * cameraZoom && minDist <= 100)
                     {
                         radarArrow.SetActive(true);
-                        radarArrow.transform.localScale = new Vector3(0.65f + (cameraZoom - 15) / 100, 1 + (cameraZoom - 15) / 100, 1);
-                        Vector3 dir = Vector3.Normalize(closestWreck.transform.position - ship.transform.position);
-                        radarArrow.transform.position = ship.transform.position + dir * (cameraZoom - 5);
-                        Vector3 rot = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90);
+                        radarDir = Vector3.Normalize(closestWreck.transform.position - ship.transform.position);
+                        Vector3 rot = new Vector3(0, 0, Mathf.Atan2(radarDir.y, radarDir.x) * Mathf.Rad2Deg - 90);
                         radarArrow.transform.rotation = (Quaternion.Euler(rot));
                     }
                     else

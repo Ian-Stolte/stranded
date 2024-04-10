@@ -36,10 +36,7 @@ public class Grabber : NetworkBehaviour
             transform.position += new Vector3(dist.x*retractSpeed, dist.y*retractSpeed, 0);
             if (grabbedObj != ship && grabbedObj != null)
             {
-                if (LayerMask.LayerToName(grabbedObj.layer) == "Resource")
-                {
-                    grabbedObj.transform.position += new Vector3(dist.x * retractSpeed, dist.y * retractSpeed, 0);
-                }
+                grabbedObj.transform.position += new Vector3(dist.x * retractSpeed, dist.y * retractSpeed, 0);
             }
             //Vector3 retractDir = ship.transform.position - transform.position;
             //Vector3 rot = new Vector3(0, 0, Mathf.Atan2(retractDir.y, retractDir.x) * Mathf.Rad2Deg + 90);
