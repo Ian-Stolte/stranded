@@ -56,6 +56,13 @@ public class PlayerStations : NetworkBehaviour
     public GameObject grabberInstruction;
     private bool hideGrabberInstruction;
 
+    //Outlines
+    private GameObject steeringOutline;
+    private GameObject thrusterOutline;
+    private GameObject shieldsOutline;
+    private GameObject grabberOutline;
+    private GameObject radarOutline;
+
     void OnEnable()
     {
         steering.Enable();
@@ -96,6 +103,12 @@ public class PlayerStations : NetworkBehaviour
         shieldInstruction = GameObject.Find("Shield Instructions");
         grabberInstruction = GameObject.Find("Grabber Instructions");
 
+        steeringOutline = GameObject.Find("Steering Outline");
+        thrusterOutline = GameObject.Find("Thruster Outline");
+        shieldsOutline = GameObject.Find("Shields Outline");
+        grabberOutline = GameObject.Find("Grabber Outline");
+        radarOutline = GameObject.Find("Radar Outline");
+
         steerInstruction.SetActive(false);
         thrusterInstruction.SetActive(false);
         shieldInstruction.SetActive(false);
@@ -107,6 +120,13 @@ public class PlayerStations : NetworkBehaviour
 
     void Update()
     {
+        //Show station outlines
+        steeringOutline.SetActive((currentStation == "steering"));
+        thrusterOutline.SetActive((currentStation == "thrusters"));
+        shieldsOutline.SetActive((currentStation == "shields"));
+        grabberOutline.SetActive((currentStation == "grabber"));
+        radarOutline.SetActive((currentStation == "radar"));
+
         //Hide incorrect buttons
         if (IsOwner)
         {
