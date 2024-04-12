@@ -48,10 +48,7 @@ public class Buttons : MonoBehaviour
     void ChangeTo(string station)
     {
         PlayerStations p = target.GetComponent<PlayerStations>();
-        p.steerInstruction.SetActive(false);
-        p.thrusterInstruction.SetActive(false);
-        p.shieldInstruction.SetActive(false);
-        p.grabberInstruction.SetActive(false);
+        p.HideInstructions();
         
         if (p.currentStation == "grabber")
         {

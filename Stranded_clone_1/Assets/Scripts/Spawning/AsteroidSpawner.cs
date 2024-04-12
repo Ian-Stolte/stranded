@@ -33,8 +33,12 @@ public class AsteroidSpawner : NetworkBehaviour
     {
         timer = Random.Range(minDelay, maxDelay);
         Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-        distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
-        GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Asteroids").transform*/);
+        Vector3 veloAdd = new Vector3(GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.x, GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.y, 0);
+        while (Vector3.Magnitude(distance) < minDistance || Vector3.Magnitude(distance) > maxDistance)
+        {
+            distance = Vector3.Normalize(distance) * Random.Range(0, maxDistance) + veloAdd * 4;
+        }
+        GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation);
         //Set asteroid values
         obj.transform.localScale = new Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), 1);
         var euler = transform.eulerAngles;

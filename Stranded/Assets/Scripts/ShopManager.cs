@@ -11,6 +11,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] GameObject shop;
     private GameObject ship;
     private Spaceship shipScript;
+    [HideInInspector] public PlayerStations player;
+
     public TMP_Text scrapsText;
     public BoostEffect[] boostEffectsSO;
     public GameObject[] shopPanelsGO;
@@ -37,11 +39,31 @@ public class ShopManager : MonoBehaviour
         LoadPanels();
     }
 
+    void Update()
+    {
+        if (Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")) && !shop.activeSelf)
+        {
+            openShopBtn.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E))
+                OpenShop();
+        }
+        else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) && shop.activeSelf)
+        {
+            CloseShop();
+        }
+        else
+        {
+            openShopBtn.SetActive(false);
+        }
+    }
+
     public void OpenShop()
     {
         shop.SetActive(true);
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
+        player.currentStation = "none";
+        player.HideInstructions();
     }
 
     public void CloseShop()

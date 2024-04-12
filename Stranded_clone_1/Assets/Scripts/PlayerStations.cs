@@ -83,7 +83,10 @@ public class PlayerStations : NetworkBehaviour
         buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
         buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
         buttons.GetComponent<Buttons>().target = gameObject;
+        buttons.transform.SetSiblingIndex(0);
         buttonCircles = buttons.transform.GetChild(0).gameObject;
+
+        GameObject.Find("Shop Manager").GetComponent<ShopManager>().player = this;
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();
@@ -109,10 +112,7 @@ public class PlayerStations : NetworkBehaviour
         grabberOutline = GameObject.Find("Grabber Outline");
         radarOutline = GameObject.Find("Radar Outline");
 
-        steerInstruction.SetActive(false);
-        thrusterInstruction.SetActive(false);
-        shieldInstruction.SetActive(false);
-        grabberInstruction.SetActive(false);
+        HideInstructions();
         buttonCircles.SetActive(true);
 
         StartCoroutine(Radar());
@@ -143,7 +143,7 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Exit station
-            if (currentStation != "none" && Input.GetKeyDown(KeyCode.Q))
+            if (currentStation != "none" && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)))
             {
                 if (currentStation == "grabber")
                 {
@@ -151,10 +151,7 @@ public class PlayerStations : NetworkBehaviour
                     grabberFired = false;
                 }
                 currentStation = "none";
-                steerInstruction.SetActive(false);
-                thrusterInstruction.SetActive(false);
-                shieldInstruction.SetActive(false);
-                grabberInstruction.SetActive(false);
+                HideInstructions();
             }
             //Buttons
             if (currentStation == "none" && IsOwner)
@@ -342,6 +339,14 @@ public class PlayerStations : NetworkBehaviour
             //Read station (from owner)
             GetComponent<PlayerStations>().currentStation = "" + station.Value;
         }
+    }
+
+    public void HideInstructions()
+    {
+        steerInstruction.SetActive(false);
+        thrusterInstruction.SetActive(false);
+        shieldInstruction.SetActive(false);
+        grabberInstruction.SetActive(false);
     }
 
     private IEnumerator Radar()

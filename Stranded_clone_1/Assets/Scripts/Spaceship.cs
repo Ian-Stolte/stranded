@@ -60,7 +60,7 @@ public class Spaceship : NetworkBehaviour
         StartCoroutine(DepleteOverTime());
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
-        shop = GameObject.Find("Shop").GetComponent<ShopManager>();
+        shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
     }
 
     void FixedUpdate()
