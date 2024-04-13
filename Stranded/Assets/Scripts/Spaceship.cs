@@ -82,7 +82,7 @@ public class Spaceship : NetworkBehaviour
         //show coordinates and resource/scrap count
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
-        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + stats.resourcesCollected;
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected;
         scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps;
     }
 
