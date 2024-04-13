@@ -31,7 +31,8 @@ public class AsteroidSpawner : NetworkBehaviour
 
     public void SpawnAsteroid(float minDistance, float maxDistance)
     {
-        timer = Random.Range(minDelay, maxDelay);
+        int asteroidDensity = Physics2D.OverlapCircleAll(transform.position, 40, LayerMask.GetMask("Asteroid")).Length;
+        timer = Random.Range(minDelay, maxDelay)*asteroidDensity/5;
         Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
         Vector3 veloAdd = new Vector3(GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.x, GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.y, 0);
         while (Vector3.Magnitude(distance) < minDistance || Vector3.Magnitude(distance) > maxDistance)

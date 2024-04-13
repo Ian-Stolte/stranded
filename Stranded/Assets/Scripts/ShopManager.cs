@@ -75,7 +75,7 @@ public class ShopManager : MonoBehaviour
 
     public void AddScraps()
     {
-        scrapsText.text =  "Scraps: " + shipScript.scrapsCollected.ToString();
+        scrapsText.text =  "Scraps: " + shipScript.scraps;
     }
 
     public void LoadPanels()

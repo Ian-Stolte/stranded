@@ -33,8 +33,7 @@ public class Spaceship : NetworkBehaviour
     [Header("Resource Variables")]
     public NetworkVariable<int> shipHealth;
     public int shipHealthMax;
-    public int resourcesCollected;
-    public int scrapsCollected;
+    public int scraps;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
@@ -50,17 +49,17 @@ public class Spaceship : NetworkBehaviour
     //References
     private Sync sync;
     private ShopManager shop;
+    private StatTracker stats;
 
     void Start()
     {
         shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
-        resourcesCollected = 0;
-        scrapsCollected = 0;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
+        stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
     }
 
     void FixedUpdate()
@@ -83,8 +82,8 @@ public class Spaceship : NetworkBehaviour
         //show coordinates and resource/scrap count
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
-        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + resourcesCollected;
-        scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps Collected: " + scrapsCollected;
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + stats.resourcesCollected;
+        scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps;
     }
 
     //collision
@@ -132,7 +131,7 @@ public class Spaceship : NetworkBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
-            resourcesCollected++;
+            stats.resourcesCollected++;
             if (IsServer)
             {
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
@@ -143,7 +142,8 @@ public class Spaceship : NetworkBehaviour
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {
-            scrapsCollected++;
+            scraps++;
+            stats.scrapsCollected++;
             shop.AddScraps();
         }
     }
