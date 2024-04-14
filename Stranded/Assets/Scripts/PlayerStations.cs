@@ -115,21 +115,21 @@ public class PlayerStations : NetworkBehaviour
         HideInstructions();
         buttonCircles.SetActive(true);
 
-        StartCoroutine(Radar());
+        if (IsOwner)
+            StartCoroutine(Radar());
     }
 
     void Update()
     {
-        //Show station outlines
-        steeringOutline.SetActive((currentStation == "steering"));
-        thrusterOutline.SetActive((currentStation == "thrusters"));
-        shieldsOutline.SetActive((currentStation == "shields"));
-        grabberOutline.SetActive((currentStation == "grabber"));
-        radarOutline.SetActive((currentStation == "radar"));
-
-        //Hide incorrect buttons
         if (IsOwner)
         {
+            //Show station outlines
+            steeringOutline.SetActive((currentStation == "steering"));
+            thrusterOutline.SetActive((currentStation == "thrusters"));
+            shieldsOutline.SetActive((currentStation == "shields"));
+            grabberOutline.SetActive((currentStation == "grabber"));
+            radarOutline.SetActive((currentStation == "radar"));
+
             //Write station (as owner)
             station.Value = currentStation;
 
@@ -310,7 +310,12 @@ public class PlayerStations : NetworkBehaviour
             //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable))
             {
+                shipScript.controlOfThrusters = true;
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn, ship.transform.position - oldShipPos);
+            }
+            else
+            {
+                shipScript.controlOfThrusters = false;
             }
             oldShipPos = ship.transform.position;
 

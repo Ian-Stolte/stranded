@@ -6,9 +6,9 @@ using Unity.Netcode;
 
 public class StatTracker : NetworkBehaviour
 {
-    private float totalTime;
-    public int resourcesCollected;
-    public int scrapsCollected;
+    public NetworkVariable<float> totalTime;
+    public NetworkVariable<int> resourcesCollected;
+    public NetworkVariable<int> scrapsCollected;
 
     void OnEnable()
     {
@@ -25,17 +25,17 @@ public class StatTracker : NetworkBehaviour
         if (scene.name == "Game Over")
         {
             string formattedTime;
-            if (totalTime < 60)
+            if (totalTime.Value < 60)
             {
-                formattedTime = Mathf.Round(totalTime) + "s";
+                formattedTime = Mathf.Round(totalTime.Value) + "s";
             }
             else
             {
-                formattedTime = Mathf.Round(totalTime / 60) + ":" + Mathf.Round(totalTime % 60);
+                formattedTime = Mathf.Round(totalTime.Value / 60) + ":" + Mathf.Round(totalTime.Value % 60);
             }
             GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You survived for " + formattedTime;
-            GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected;
-            GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected;
+            GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected.Value;
+            GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected.Value;
         }
     }
 
@@ -43,7 +43,7 @@ public class StatTracker : NetworkBehaviour
     {
         if (IsServer)
         {
-            totalTime += Time.deltaTime;
+            totalTime.Value += Time.deltaTime;
         }
     }
 }

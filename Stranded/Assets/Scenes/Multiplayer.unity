@@ -5582,8 +5582,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b799d41532eec5844929010e3d57a1e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcesCollected: 0
-  scrapsCollected: 0
+  totalTime:
+    m_InternalValue: 0
+  resourcesCollected:
+    m_InternalValue: 0
+  scrapsCollected:
+    m_InternalValue: 0
 --- !u!114 &1348284270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6365,8 +6369,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 283339164}
   - {fileID: 522904708}
+  - {fileID: 283339164}
   - {fileID: 1057030572}
   - {fileID: 462864538}
   - {fileID: 1627853653}
