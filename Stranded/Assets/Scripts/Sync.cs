@@ -41,7 +41,8 @@ public class Sync : NetworkBehaviour
     public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield)
     {
         //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
-        GameObject.Find("Shield").transform.position += addToShield;
+        shield.transform.position += addToShield;
+        shield.transform.position = ship.transform.position + Vector3.Normalize(shield.transform.position - ship.transform.position) * 5;
         radarArrow.transform.position += addToShield;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
@@ -61,7 +62,7 @@ public class Sync : NetworkBehaviour
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
-        GameObject.Find("Shield").transform.position += addToShield;
+        shield.transform.position += addToShield;
         radarArrow.transform.position += addToShield;
         thrusterFire.SetActive(thrustersOn);
         camera.UpdateCamera(addToShield);

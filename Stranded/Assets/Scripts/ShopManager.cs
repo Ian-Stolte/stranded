@@ -9,7 +9,7 @@ using TMPro;
 // Link: https://www.youtube.com/watch?v=kUwnfkYcaFU
 public class ShopManager : MonoBehaviour
 {
-    [SerializeField] GameObject shop;
+    public GameObject shop;
     private GameObject ship;
     private Spaceship shipScript;
     [HideInInspector] public PlayerStations player;
@@ -24,7 +24,6 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
-        shop = GameObject.Find("Shop");
         CloseShop();
 
         openShopBtn.SetActive(true);
@@ -35,7 +34,8 @@ public class ShopManager : MonoBehaviour
             shopPanelsGO[i].SetActive(true);
         }
 
-        shipScript = GameObject.Find("Spaceship").GetComponent<Spaceship>();  
+        ship = GameObject.Find("Spaceship");
+        shipScript = ship.GetComponent<Spaceship>();  
         AddScraps();     
         LoadPanels();
     }
@@ -49,6 +49,10 @@ public class ShopManager : MonoBehaviour
                 OpenShop();
         }
         else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) && shop.activeSelf)
+        {
+            CloseShop();
+        }
+        else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")))
         {
             CloseShop();
         }
@@ -70,13 +74,13 @@ public class ShopManager : MonoBehaviour
     public void CloseShop()
     {
         shop.SetActive(false);
-        openShopBtn.SetActive(true);
+        openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
     }
 
     public void AddScraps()
     {
-        scrapsText.text =  "Scraps: " + shipScript.scraps;
+        scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
     }
 
     public void LoadPanels()

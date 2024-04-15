@@ -25,6 +25,7 @@ public class PlayerStations : NetworkBehaviour
     private GameObject grabber;
     private Grabber grabScript;
     private GameObject grabLine;
+    private GameObject shop;
 
     //Steering
     public InputAction steering;
@@ -96,6 +97,7 @@ public class PlayerStations : NetworkBehaviour
         grabLine = GameObject.Find("Grabber Rope");
         radarText = GameObject.Find("Radar Text").GetComponent<TMPro.TextMeshProUGUI>();
         radarArrow = GameObject.Find("Radar Arrow");
+        shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop;
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -154,7 +156,7 @@ public class PlayerStations : NetworkBehaviour
                 HideInstructions();
             }
             //Buttons
-            if (currentStation == "none" && IsOwner)
+            if (currentStation == "none" && IsOwner && !shop.activeSelf)
             {
                 buttonCircles.SetActive(true);
             }

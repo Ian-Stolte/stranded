@@ -31,17 +31,20 @@ public class AsteroidBehavior : NetworkBehaviour
         }
         if (!isGrabbed)*/
 
-        if (GameObject.Find("Spaceship").GetComponent<Spaceship>().controlOfThrusters && GameObject.FindGameObjectsWithTag("Player").Length > 1)
+        if (GameObject.Find("Spaceship").GetComponent<Spaceship>().controlOfThrusters)
         {
             transform.position += speed.Value * direction.Value * Time.deltaTime;
             if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
             {
                 GetComponent<NetworkObject>().Despawn(true);
             }
-            if (IsServer)
-                WriteAsteroidPosClientRpc(transform.position, transform.rotation, GetComponent<Rigidbody2D>().velocity);
-            else
-                WriteAsteroidPosServerRpc(transform.position, transform.rotation, GetComponent<Rigidbody2D>().velocity);
+            if (GameObject.FindGameObjectsWithTag("Player").Length > 1)
+            {    
+                if (IsServer)
+                    WriteAsteroidPosClientRpc(transform.position, transform.rotation, GetComponent<Rigidbody2D>().velocity);
+                else
+                    WriteAsteroidPosServerRpc(transform.position, transform.rotation, GetComponent<Rigidbody2D>().velocity);
+            }
         }
     }
 
