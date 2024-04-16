@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,15 +24,16 @@ public class Spaceship : NetworkBehaviour
     private float maxSpeedRecord;
 
     //Collision vars
-    private bool asteroidImmunity;
+    public NetworkVariable<bool> asteroidImmunity;
     public float stunDuration; // Duration of the stun in seconds
     [HideInInspector] public bool isStunned; // Indicates if the player is stunned
+    public bool controlOfThrusters;
 
     // Resource variables
     [Header("Resource Variables")]
     public NetworkVariable<int> shipHealth;
     public int shipHealthMax;
-    public int scraps;
+    public NetworkVariable<int> scraps;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
@@ -82,14 +82,14 @@ public class Spaceship : NetworkBehaviour
         //show coordinates and resource/scrap count
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
-        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + stats.resourcesCollected;
-        scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps;
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected.Value;
+        scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
     }
 
     //collision
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity)
+        if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
         {
             // Updates the health bar
             if (IsServer)
@@ -102,7 +102,6 @@ public class Spaceship : NetworkBehaviour
 
             if (shipHealth.Value <= 0) {
                 Debug.Log("Game Over! Your ship broke down...");
-                GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().GameOver();
                 GameOver();
             }
 
@@ -121,9 +120,9 @@ public class Spaceship : NetworkBehaviour
 
     IEnumerator HitImmunity()
     {
-        asteroidImmunity = true;
+        asteroidImmunity.Value = true;
         yield return new WaitForSeconds(5);
-        asteroidImmunity = false;
+        asteroidImmunity.Value = false;
     }
 
     // Resource enters trigger collider
@@ -131,9 +130,9 @@ public class Spaceship : NetworkBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
-            stats.resourcesCollected++;
             if (IsServer)
             {
+                stats.resourcesCollected.Value++;
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
@@ -141,10 +140,13 @@ public class Spaceship : NetworkBehaviour
             }
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
-        {
-            scraps++;
-            stats.scrapsCollected++;
+        {  
             shop.AddScraps();
+            if (IsServer)
+            {
+                scraps.Value++;
+                stats.scrapsCollected.Value++;
+            }
         }
     }
 
@@ -166,7 +168,6 @@ public class Spaceship : NetworkBehaviour
         // Game over
         if (fuelAmount.Value <= 0)
         {
-            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
             GameOver();
         }
     }
@@ -176,6 +177,7 @@ public class Spaceship : NetworkBehaviour
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
             Destroy(g);
+//TODO: just set inactive so can restart the game (or respawn?)
         }
         if (IsServer)
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);

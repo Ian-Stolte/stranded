@@ -25,6 +25,7 @@ public class PlayerStations : NetworkBehaviour
     private GameObject grabber;
     private Grabber grabScript;
     private GameObject grabLine;
+    private GameObject shop;
 
     //Steering
     public InputAction steering;
@@ -96,6 +97,7 @@ public class PlayerStations : NetworkBehaviour
         grabLine = GameObject.Find("Grabber Rope");
         radarText = GameObject.Find("Radar Text").GetComponent<TMPro.TextMeshProUGUI>();
         radarArrow = GameObject.Find("Radar Arrow");
+        shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop;
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         if (IsOwner)
@@ -115,21 +117,21 @@ public class PlayerStations : NetworkBehaviour
         HideInstructions();
         buttonCircles.SetActive(true);
 
-        StartCoroutine(Radar());
+        if (IsOwner)
+            StartCoroutine(Radar());
     }
 
     void Update()
     {
-        //Show station outlines
-        steeringOutline.SetActive((currentStation == "steering"));
-        thrusterOutline.SetActive((currentStation == "thrusters"));
-        shieldsOutline.SetActive((currentStation == "shields"));
-        grabberOutline.SetActive((currentStation == "grabber"));
-        radarOutline.SetActive((currentStation == "radar"));
-
-        //Hide incorrect buttons
         if (IsOwner)
         {
+            //Show station outlines
+            steeringOutline.SetActive((currentStation == "steering"));
+            thrusterOutline.SetActive((currentStation == "thrusters"));
+            shieldsOutline.SetActive((currentStation == "shields"));
+            grabberOutline.SetActive((currentStation == "grabber"));
+            radarOutline.SetActive((currentStation == "radar"));
+
             //Write station (as owner)
             station.Value = currentStation;
 
@@ -154,7 +156,7 @@ public class PlayerStations : NetworkBehaviour
                 HideInstructions();
             }
             //Buttons
-            if (currentStation == "none" && IsOwner)
+            if (currentStation == "none" && IsOwner && !shop.activeSelf)
             {
                 buttonCircles.SetActive(true);
             }
@@ -310,7 +312,12 @@ public class PlayerStations : NetworkBehaviour
             //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable))
             {
+                shipScript.controlOfThrusters = true;
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn, ship.transform.position - oldShipPos);
+            }
+            else
+            {
+                shipScript.controlOfThrusters = false;
             }
             oldShipPos = ship.transform.position;
 

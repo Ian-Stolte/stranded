@@ -21,6 +21,7 @@ public class Buttons : MonoBehaviour
         CheckInUse(buttons.GetChild(1));
         CheckInUse(buttons.GetChild(2));
         CheckInUse(buttons.GetChild(3));
+        CheckInUse(buttons.GetChild(4));
 
         //swap between stations with number keys
         if (Input.GetKeyDown(KeyCode.Alpha1) && buttons.GetChild(0).GetComponent<Button>().interactable)

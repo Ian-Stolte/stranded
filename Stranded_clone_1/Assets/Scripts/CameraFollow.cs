@@ -30,7 +30,7 @@ public class CameraFollow : MonoBehaviour
 
         if (!inDecel)
         {
-            if (Vector3.Magnitude(posChange) != 0)
+            /*if (Vector3.Magnitude(posChange) != 0)
             {
                 offset = new Vector2(posChange.x, posChange.y) * 60;
                 if (Vector3.Magnitude(offset) > 6)
@@ -42,7 +42,8 @@ public class CameraFollow : MonoBehaviour
                     offset = new Vector2(0, 0);
                 }
             }
-            transform.position = new Vector3(ship.transform.position.x + offset.x, ship.transform.position.y + offset.y, transform.position.z);
+            transform.position = new Vector3(ship.transform.position.x + offset.x, ship.transform.position.y + offset.y, transform.position.z);*/
+            transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, transform.position.z);
             if (speed > 5)
             {
                 GetComponent<Camera>().orthographicSize = 15 + Mathf.Pow((speed-5), 2) / 5; //quadratic growth from 5 to 10
