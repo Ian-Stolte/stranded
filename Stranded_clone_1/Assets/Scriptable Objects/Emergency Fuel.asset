@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d96372bfe493004438009ad35e327afc, type: 3}
-  m_Name: ReplenishHealth
+  m_Script: {fileID: 11500000, guid: 48f868be4db6c534aa1cc43840f0ca79, type: 3}
+  m_Name: Emergency Fuel
   m_EditorClassIdentifier: 
-  itemName: Replenish Health
-  itemDescription: Give your ship a little boost in health.
-  baseCost: 3
-  amount: 2
+  itemName: Emergency Fuel
+  itemDescription: Refill with a critical infusion of fuel.
+  baseCost: 2
+  amount: 5
