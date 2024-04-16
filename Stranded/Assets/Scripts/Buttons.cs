@@ -57,6 +57,7 @@ public class Buttons : MonoBehaviour
             p.grabberFired = false;
         }
         p.currentStation = station;
+        GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShop();
     }
     
     public void CheckInUse(Transform child)
@@ -78,6 +79,9 @@ public class Buttons : MonoBehaviour
 
     public void SetStation(string s)
     {
-        target.GetComponent<PlayerStations>().currentStation = s;
+        if (!GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
+        {
+            target.GetComponent<PlayerStations>().currentStation = s;
+        }
     }
 }

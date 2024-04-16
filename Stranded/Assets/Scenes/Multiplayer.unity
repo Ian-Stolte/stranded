@@ -1257,7 +1257,7 @@ GameObject:
   - component: {fileID: 222706458}
   - component: {fileID: 222706457}
   m_Layer: 5
-  m_Name: Half-Screen Shop
+  m_Name: Small Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4608,7 +4608,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &929954095
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9553,7 +9553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5d790bfb77cf644d856e3f08f3f81ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shop: {fileID: 1864062696}
+  shop: {fileID: 222706455}
   player: {fileID: 0}
   scrapsText: {fileID: 876314053}
   boostEffectsSO:
@@ -9573,7 +9573,7 @@ MonoBehaviour:
   - {fileID: 1912859404}
   - {fileID: 2040676406}
   openShopBtn: {fileID: 2142448679}
-  closeShopBtn: {fileID: 929954094}
+  closeShopBtn: {fileID: 2079583267}
 --- !u!4 &2013286084
 Transform:
   m_ObjectHideFlags: 0
