@@ -18,6 +18,7 @@ public class ShopManager : MonoBehaviour
     public BoostEffect[] boostEffectsSO;
     public GameObject[] shopPanelsGO;
     public ShopTemplate[] shopPanels;
+    public Button[] myPurchaseBtns;
 
     public GameObject openShopBtn;
     public GameObject closeShopBtn;
@@ -39,6 +40,7 @@ public class ShopManager : MonoBehaviour
         shipScript = ship.GetComponent<Spaceship>();  
         AddScraps();     
         LoadPanels();
+        CheckPurchaseable();
     }
 
     void Update()
@@ -82,6 +84,7 @@ public class ShopManager : MonoBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
+        CheckPurchaseable();
     }
 
     public void LoadPanels()
@@ -91,6 +94,21 @@ public class ShopManager : MonoBehaviour
             shopPanels[i].itemName.text = boostEffectsSO[i].itemName;
             shopPanels[i].itemDescription.text = boostEffectsSO[i].itemDescription;
             shopPanels[i].itemPrice.text =  boostEffectsSO[i].baseCost.ToString() + " Scraps";
+        }
+    }
+
+    public void CheckPurchaseable()
+    {
+        for (int i = 0; i < boostEffectsSO.Length; i++)
+        {
+            if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
+            {
+                myPurchaseBtns[i].interactable = true;
+            } 
+            else 
+            {
+                myPurchaseBtns[i].interactable = false;
+            }
         }
     }
 }
