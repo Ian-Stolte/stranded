@@ -1791,6 +1791,12 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
+  - name: Shop
+    clip: {fileID: 8300000, guid: b2b9e53a4949046b7901bd2851dce0f1, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
   sfx: []
   audios: []
   currentSong: 
@@ -2336,6 +2342,7 @@ Transform:
   - {fileID: 632415136}
   - {fileID: 1053010498}
   - {fileID: 1109989464}
+  - {fileID: 519420032}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &412612938
@@ -2991,12 +2998,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.9984014}
+  m_LocalScale: {x: 0.19984014, y: 0.19984014, z: 0.19984014}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 412612937}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &519420033
 MonoBehaviour:
@@ -3010,6 +3017,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04bc9595056785f4b8f9c3388a7cce43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  follow: 0
+  rotWithShip: 0
+  doOffset: 0
   offset: {x: 0, y: 0}
 --- !u!1 &522904707
 GameObject:
@@ -3103,8 +3113,10 @@ MonoBehaviour:
   direction:
     m_InternalValue: {x: 0, y: 0, z: 0}
   grabbedObj: {fileID: 0}
-  speed: 0.3
-  retractSpeed: 0.3
+  speed: 0.5
+  decelAmount: 0.98
+  retractSpeed: 0.2
+  retractDecel: 1.04
   waitTime: 0
   maxDistance: 12
 --- !u!61 &554494294
@@ -10299,7 +10311,6 @@ SceneRoots:
   - {fileID: 333916536}
   - {fileID: 915497581}
   - {fileID: 282882308}
-  - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 407631692}
   - {fileID: 278868767}

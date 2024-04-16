@@ -46,6 +46,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         Play("Stranded");
+        Play("Shop");
         StartCoroutine(StartFade("Stranded", 2, 0.4f));
     }
 

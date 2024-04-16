@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,6 +61,14 @@ public class ShopManager : MonoBehaviour
         {
             openShopBtn.SetActive(false);
         }
+
+        //audio fade
+        float distance = Vector2.Distance(transform.position, GameObject.Find("Spaceship").transform.position);
+        Sound s = Array.Find(GameObject.Find("Audio Manager").GetComponent<AudioManager>().music, sound => sound.name == "Shop");
+        if (distance < 50)
+            s.source.volume = 0.4f * (50 - distance)/50;
+        else
+            s.source.volume = 0;
     }
 
     public void OpenShop()
