@@ -141,12 +141,12 @@ public class Spaceship : NetworkBehaviour
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
-            shop.AddScraps();
             if (IsServer)
             {
                 scraps.Value++;
                 stats.scrapsCollected.Value++;
             }
+            shop.AddScraps();
         }
     }
 

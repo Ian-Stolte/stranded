@@ -24,9 +24,12 @@ public class ShopManager : MonoBehaviour
     public GameObject openShopBtn;
     public GameObject closeShopBtn;
 
+    private AudioManager audio;
+    private bool startMusic;
+
     void Start()
     {
-        CloseShop();
+        audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
 
         openShopBtn.SetActive(true);
         closeShopBtn.SetActive(false);
@@ -39,6 +42,7 @@ public class ShopManager : MonoBehaviour
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();  
+        CloseShop();
         AddScraps();     
         LoadPanels();
         CheckPurchaseable();
@@ -67,11 +71,22 @@ public class ShopManager : MonoBehaviour
 
         //audio fade
         float distance = Vector2.Distance(transform.position, GameObject.Find("Spaceship").transform.position);
-        Sound s = Array.Find(GameObject.Find("Audio Manager").GetComponent<AudioManager>().music, sound => sound.name == "Shop");
+        Sound shopMusic = Array.Find(audio.music, sound => sound.name == "Shop");
+        Sound strandedMusic = Array.Find(audio.music, sound => sound.name == "Stranded");
         if (distance < 50)
-            s.source.volume = 0.4f * (50 - distance)/50;
-        else
-            s.source.volume = 0;
+        {
+            if (startMusic)
+            {
+                shopMusic.source.volume = 0.4f * (50 - distance)/50;
+                if (!shop.activeSelf)
+                    strandedMusic.source.volume = 0.2f + 0.2f*(distance/50);
+            }
+        }
+        else {
+            startMusic = true;
+            shopMusic.source.volume = 0;
+            strandedMusic.source.volume = 0.4f;
+        }
     }
 
     public void OpenShop()
@@ -81,6 +96,11 @@ public class ShopManager : MonoBehaviour
         closeShopBtn.SetActive(true);
         player.currentStation = "none";
         player.HideInstructions();
+        if (startMusic)
+        {
+            Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
+            s.source.volume = 0;
+        }
     }
 
     public void CloseShop()
@@ -88,6 +108,8 @@ public class ShopManager : MonoBehaviour
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
+        //Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
+        //s.source.volume = 0.2f;
     }
 
     public void AddScraps()
