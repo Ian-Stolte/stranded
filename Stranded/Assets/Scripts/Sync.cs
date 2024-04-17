@@ -47,7 +47,7 @@ public class Sync : NetworkBehaviour
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
         thrusterFire.SetActive(thrustersOn);
-        camera.UpdateCamera(addToShield);
+        //camera.UpdateCamera(addToShield);
         ReadShipMoveClientRpc(newVel, newPos, thrustersOn, addToShield);
     }
 
@@ -65,7 +65,7 @@ public class Sync : NetworkBehaviour
         shield.transform.position += addToShield;
         radarArrow.transform.position += addToShield;
         thrusterFire.SetActive(thrustersOn);
-        camera.UpdateCamera(addToShield);
+        //camera.UpdateCamera(addToShield);
     }
 
     //STEERING SYNC

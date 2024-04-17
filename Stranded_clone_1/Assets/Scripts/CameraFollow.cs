@@ -20,9 +20,7 @@ public class CameraFollow : MonoBehaviour
         ship = GameObject.Find("Spaceship");
     }
 
-    /*void Update()
-    {*/
-    public void UpdateCamera(Vector3 posChange)
+    void Update()
     {
         speed = Mathf.Sqrt(Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.x, 2) + Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.y, 2));
         if (speed - pastSpeed < -1)
@@ -34,7 +32,7 @@ public class CameraFollow : MonoBehaviour
 
         if (!inDecel)
         {
-            if (doOffset)
+            /*if (doOffset)
             {
                 if (Vector3.Magnitude(posChange) != 0)
                 {
@@ -55,9 +53,9 @@ public class CameraFollow : MonoBehaviour
                 transform.position = new Vector3(ship.transform.position.x, ship.transform.position.y, transform.position.z);
             }
             else if (!rotWithShip)
-            {
+            {*/
                 transform.rotation = Quaternion.identity;
-            }
+            //}
             //Zoom out
             if (speed > 5)
             {
