@@ -12,6 +12,8 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private bool stun;
     [SerializeField] private bool slowSpeed;
     [SerializeField] private bool destroyAsteroid;
+    [SerializeField] private bool singlePlayer;
+    [SerializeField] private float asteroidDmg;
 
     // Speed variables
     [Header("Speed Variables")]
@@ -31,7 +33,7 @@ public class Spaceship : NetworkBehaviour
 
     // Resource variables
     [Header("Resource Variables")]
-    public NetworkVariable<int> shipHealth;
+    public NetworkVariable<float> shipHealth;
     public int shipHealthMax;
     public NetworkVariable<int> scraps;
     public NetworkVariable<float> fuelAmount;
@@ -94,7 +96,7 @@ public class Spaceship : NetworkBehaviour
             // Updates the health bar
             if (IsServer)
             {
-                shipHealth.Value--;
+                shipHealth.Value -= asteroidDmg;
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
                 sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
                 StartCoroutine(HitImmunity());
@@ -156,7 +158,7 @@ public class Spaceship : NetworkBehaviour
         while (fuelAmount.Value > 0)
         {   
             yield return new WaitForSeconds(depletionInterval); // wait
-            if (IsServer)
+            if (IsServer && (GameObject.FindGameObjectsWithTag("Player").Length > 1 || singlePlayer))
             {
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
@@ -176,8 +178,9 @@ public class Spaceship : NetworkBehaviour
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
-            Destroy(g);
-//TODO: just set inactive so can restart the game (or respawn?)
+//TODO: fix restart button (respawn buttons when rejoin?)
+            g.GetComponent<PlayerStations>().enabled = false;
+            //Destroy(g);
         }
         if (IsServer)
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
