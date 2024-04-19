@@ -2377,7 +2377,7 @@ MonoBehaviour:
   slowSpeed: 0
   destroyAsteroid: 0
   singlePlayer: 0
-  asteroidDmg: 1.5
+  asteroidDmg: 10
   turnSpeed: 1.3
   shieldSpeed: 1.5
   thrustSpeed: 4
@@ -6404,12 +6404,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1348284271}
-  - component: {fileID: 1348284270}
   - component: {fileID: 1348284268}
   - component: {fileID: 1348284269}
+  - component: {fileID: 1348284272}
   m_Layer: 0
   m_Name: Stat Tracker
-  m_TagString: Untagged
+  m_TagString: Stats
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6453,18 +6453,6 @@ MonoBehaviour:
     m_InternalValue: 0
   scrapsCollected:
     m_InternalValue: 0
---- !u!114 &1348284270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1348284267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b3d0487e64364742ac3debcbf073199, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1348284271
 Transform:
   m_ObjectHideFlags: 0
@@ -6480,6 +6468,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1348284272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348284267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65679d5ae5e247b080a84cd7cb8b79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTag: Stats
 --- !u!1 &1366164867
 GameObject:
   m_ObjectHideFlags: 0

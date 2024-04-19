@@ -34,18 +34,18 @@ public class ShopManager : MonoBehaviour
         openShopBtn.SetActive(true);
         closeShopBtn.SetActive(false);
 
-        for (int i=0; i < boostEffectsSO.Length; i++)
+        /*for (int i=0; i < boostEffectsSO.Length; i++)
         {
-            Debug.Log(boostEffectsSO.Length);
+            //Debug.Log(boostEffectsSO.Length);
             shopPanelsGO[i].SetActive(true);
-        }
+        }*/
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();  
         CloseShop();
         AddScraps();     
-        LoadPanels();
-        CheckPurchaseable();
+        //LoadPanels();
+        //CheckPurchaseable();
     }
 
     void Update()
@@ -115,7 +115,7 @@ public class ShopManager : MonoBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        CheckPurchaseable();
+        //CheckPurchaseable();
     }
 
     public void LoadPanels()
