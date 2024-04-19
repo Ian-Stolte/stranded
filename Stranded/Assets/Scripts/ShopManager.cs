@@ -34,11 +34,11 @@ public class ShopManager : MonoBehaviour
         openShopBtn.SetActive(true);
         closeShopBtn.SetActive(false);
 
-        /*for (int i=0; i < boostEffectsSO.Length; i++)
-        {
-            //Debug.Log(boostEffectsSO.Length);
-            shopPanelsGO[i].SetActive(true);
-        }*/
+        // for (int i=0; i < boostEffectsSO.Length; i++)
+        // {
+        //     //Debug.Log(boostEffectsSO.Length);
+        //     shopPanelsGO[i].SetActive(true);
+        // }
 
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();  
