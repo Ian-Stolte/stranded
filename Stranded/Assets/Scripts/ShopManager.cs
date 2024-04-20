@@ -41,7 +41,7 @@ public class ShopManager : MonoBehaviour
         AddScraps();  
         Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
         LoadPanels();
-        // CheckPurchaseable();
+        CheckPurchaseable();
     }
 
     void Update()
@@ -112,7 +112,7 @@ public class ShopManager : MonoBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        // CheckPurchaseable();
+        CheckPurchaseable();
     }
 
     public void LoadPanels()
