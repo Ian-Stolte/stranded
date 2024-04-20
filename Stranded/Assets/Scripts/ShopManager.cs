@@ -17,7 +17,7 @@ public class ShopManager : MonoBehaviour
 
     public TMP_Text scrapsText;
     public BoostEffect[] boostEffectsSO;
-    public GameObject[] shopPanelsGO;
+    [SerializeField] GameObject[] shopPanelsGO;
     public ShopTemplate[] shopPanels;
     public Button[] myPurchaseBtns;
 
@@ -34,18 +34,14 @@ public class ShopManager : MonoBehaviour
         openShopBtn.SetActive(true);
         closeShopBtn.SetActive(false);
 
-        // for (int i=0; i < boostEffectsSO.Length; i++)
-        // {
-        //     //Debug.Log(boostEffectsSO.Length);
-        //     shopPanelsGO[i].SetActive(true);
-        // }
-
         ship = GameObject.Find("Spaceship");
         shipScript = ship.GetComponent<Spaceship>();  
+
         CloseShop();
-        AddScraps();     
-        //LoadPanels();
-        //CheckPurchaseable();
+        AddScraps();  
+        Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
+        LoadPanels();
+        // CheckPurchaseable();
     }
 
     void Update()
@@ -94,8 +90,9 @@ public class ShopManager : MonoBehaviour
         shop.SetActive(true);
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
-        player.currentStation = "none";
-        player.HideInstructions();
+        AddScraps();
+        // player.currentStation = "none";
+        // player.HideInstructions();
         if (startMusic)
         {
             Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
@@ -115,11 +112,16 @@ public class ShopManager : MonoBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        //CheckPurchaseable();
+        // CheckPurchaseable();
     }
 
     public void LoadPanels()
     {
+        for (int i=0; i < boostEffectsSO.Length; i++)
+        {
+            shopPanelsGO[i].SetActive(true);
+        }
+
         for (int i = 0; i < boostEffectsSO.Length; i++)
         {
             shopPanels[i].itemName.text = boostEffectsSO[i].itemName;

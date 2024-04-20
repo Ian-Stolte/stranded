@@ -9036,7 +9036,6 @@ GameObject:
   - component: {fileID: 1864062697}
   - component: {fileID: 1864062699}
   - component: {fileID: 1864062698}
-  - component: {fileID: 1864062700}
   m_Layer: 5
   m_Name: Shop
   m_TagString: Untagged
@@ -9104,44 +9103,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1864062696}
   m_CullTransparentMesh: 1
---- !u!114 &1864062700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1864062696}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5d790bfb77cf644d856e3f08f3f81ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shop: {fileID: 1864062696}
-  player: {fileID: 0}
-  scrapsText: {fileID: 876314053}
-  boostEffectsSO:
-  - {fileID: 11400000, guid: b4e2bda4c5e080b4f911139006db1393, type: 2}
-  - {fileID: 11400000, guid: 6afdcb13c3bd3a445b1206ee7d1d1fc6, type: 2}
-  shopPanelsGO:
-  - {fileID: 138307488}
-  - {fileID: 559862990}
-  - {fileID: 1956639469}
-  - {fileID: 969394549}
-  - {fileID: 1660511750}
-  shopPanels:
-  - {fileID: 138307487}
-  - {fileID: 559862989}
-  - {fileID: 1956639468}
-  - {fileID: 969394548}
-  - {fileID: 1660511749}
-  myPurchaseBtns:
-  - {fileID: 138307486}
-  - {fileID: 559862988}
-  - {fileID: 1956639467}
-  - {fileID: 969394547}
-  - {fileID: 1660511748}
-  openShopBtn: {fileID: 2142448679}
-  closeShopBtn: {fileID: 929954094}
 --- !u!1 &1868305062
 GameObject:
   m_ObjectHideFlags: 0
@@ -9554,6 +9515,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2013286084}
   - component: {fileID: 2013286083}
+  - component: {fileID: 2013286085}
   m_Layer: 0
   m_Name: Shop Manager
   m_TagString: Untagged
@@ -9576,22 +9538,9 @@ MonoBehaviour:
   shop: {fileID: 1864062696}
   player: {fileID: 0}
   scrapsText: {fileID: 876314053}
-  boostEffectsSO:
-  - {fileID: 11400000, guid: 6afdcb13c3bd3a445b1206ee7d1d1fc6, type: 2}
-  shopPanelsGO:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  shopPanels:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  boostEffectsSO: []
+  shopPanelsGO: []
+  shopPanels: []
   myPurchaseBtns: []
   openShopBtn: {fileID: 2142448679}
   closeShopBtn: {fileID: 929954094}
@@ -9610,6 +9559,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 278868767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2013286085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013286082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d790bfb77cf644d856e3f08f3f81ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shop: {fileID: 1864062696}
+  player: {fileID: 0}
+  scrapsText: {fileID: 876314053}
+  boostEffectsSO:
+  - {fileID: 11400000, guid: b4e2bda4c5e080b4f911139006db1393, type: 2}
+  - {fileID: 11400000, guid: 6afdcb13c3bd3a445b1206ee7d1d1fc6, type: 2}
+  shopPanelsGO:
+  - {fileID: 138307488}
+  - {fileID: 559862990}
+  - {fileID: 1956639469}
+  - {fileID: 969394549}
+  - {fileID: 1660511750}
+  shopPanels:
+  - {fileID: 138307487}
+  - {fileID: 559862989}
+  - {fileID: 1956639468}
+  - {fileID: 969394548}
+  - {fileID: 1660511749}
+  myPurchaseBtns:
+  - {fileID: 138307486}
+  - {fileID: 559862988}
+  - {fileID: 1956639467}
+  - {fileID: 969394547}
+  - {fileID: 1660511748}
+  openShopBtn: {fileID: 2142448679}
+  closeShopBtn: {fileID: 929954094}
 --- !u!1 &2013636717
 GameObject:
   m_ObjectHideFlags: 0
