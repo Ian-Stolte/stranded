@@ -103,7 +103,6 @@ public class Spaceship : NetworkBehaviour
             }
 
             if (shipHealth.Value <= 0) {
-                Debug.Log("Game Over! Your ship broke down...");
                 GameOver();
             }
 
@@ -178,9 +177,7 @@ public class Spaceship : NetworkBehaviour
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
-//TODO: fix restart button (respawn buttons when rejoin?)
             g.GetComponent<PlayerStations>().enabled = false;
-            //Destroy(g);
         }
         if (IsServer)
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);

@@ -37,6 +37,12 @@ public class StatTracker : NetworkBehaviour
             GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected.Value;
             GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected.Value;
         }
+        else if (scene.name == "Multiplayer")
+        {
+            totalTime.Value = 0;
+            resourcesCollected.Value = 0;
+            scrapsCollected.Value = 0;
+        }
     }
 
     void Update()

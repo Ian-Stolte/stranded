@@ -6,6 +6,13 @@ public class SceneLoader : NetworkBehaviour
 {
     public void LoadScene(string name)
     {
+        if (name == "Multiplayer")
+        {
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                g.GetComponent<PlayerStations>().enabled = true;
+            }
+        }
         NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
     }
 }

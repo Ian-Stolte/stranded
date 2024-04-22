@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
@@ -67,25 +68,51 @@ public class PlayerStations : NetworkBehaviour
     void OnEnable()
     {
         steering.Enable();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     void OnDisable()
     {
         steering.Disable();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Multiplayer")
+        {
+            Setup();
+            GameObject.Find("LAN Elements").SetActive(false);
+            for (int i = 0; i < 10; i++)
+            {
+                GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+            }
+            oldShipPos = ship.transform.position;
+            GameObject.Find("Shield").transform.position = new Vector3(0, 5, 0);
+        }
     }
 
     void Start()
     {
-//TODO: fix naming players (works on host, not on client --- all spawn at same time)
+        Setup();
+    }
+
+    void Setup()
+    {
+        //TODO: fix naming players (works on host, not on client --- all spawn at same time)
         name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
 
         currentStation = "none";
-        buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
-        buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
-        buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
-        buttons.GetComponent<Buttons>().target = gameObject;
-        buttons.transform.SetSiblingIndex(0);
-        buttonCircles = buttons.transform.GetChild(0).gameObject;
+//TODO: check that this works properly w/ mutliplayer
+        if (IsOwner)
+        {
+            buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
+            buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+            buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
+            buttons.GetComponent<Buttons>().target = gameObject;
+            buttons.transform.SetSiblingIndex(0);
+            buttonCircles = buttons.transform.GetChild(0).gameObject;
+        }
 
         GameObject.Find("Shop Manager").GetComponent<ShopManager>().player = this;
 
