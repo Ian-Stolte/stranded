@@ -41,7 +41,7 @@ public class ShopManager : MonoBehaviour
         AddScraps();  
         Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
         LoadPanels();
-        CheckPurchaseable();
+        // CheckPurchaseable();
     }
 
     void Update()
@@ -112,7 +112,7 @@ public class ShopManager : MonoBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        CheckPurchaseable();
+        // CheckPurchaseable();
     }
 
     public void LoadPanels()
@@ -132,16 +132,28 @@ public class ShopManager : MonoBehaviour
 
     public void CheckPurchaseable()
     {
+        Debug.Log("Array length: " + boostEffectsSO.Length);
         for (int i = 0; i < boostEffectsSO.Length; i++)
         {
+            Debug.Log("Cost: " + boostEffectsSO[i].baseCost);
             if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
             {
+                Debug.Log("Yay");
                 myPurchaseBtns[i].interactable = true;
             } 
             else 
             {
                 myPurchaseBtns[i].interactable = false;
             }
+        }
+    }
+
+    public void PurchaseItem(int btnNo)
+    {
+        if (shipScript.scraps.Value >= boostEffectsSO[btnNo].baseCost)
+        {
+            shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
+            AddScraps();
         }
     }
 }
