@@ -6,16 +6,18 @@ TagManager:
   tags:
   - Buttons
   - Asteroid
+  - Shipwreck
+  - Stats
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Layer1
+  - Asteroid
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Resource
+  - Shipwreck
+  - Shop
   - 
   - 
   - 

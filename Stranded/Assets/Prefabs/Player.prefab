@@ -172,5 +172,4 @@ MonoBehaviour:
       m_Action: Steering
       m_Flags: 8
     m_Flags: 0
-  steerInstruction: {fileID: 0}
-  thrusterInstruction: {fileID: 0}
+  radarUnlocked: 1

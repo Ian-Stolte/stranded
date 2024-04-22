@@ -12,12 +12,6 @@ public class ResourceBar : MonoBehaviour
     [Header("Core Settings")]
     [SerializeField] private Image bar;
 
-    public void GameOver() //probably only needed if we do a game over UI on the bar
-    {
-        //add game over UI
-        bar.fillAmount = 0;
-    }
-
     public void ChangeResourceToAmount(float current, float max)
     {
         bar.fillAmount = current / max;

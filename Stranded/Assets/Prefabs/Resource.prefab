@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -324880121415167337}
   - component: {fileID: -1648764634423113571}
   - component: {fileID: 4688094268433281338}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Resource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_InternalValue: 0
   direction:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  despawnDistance: 100
+  despawnDistance: 200
 --- !u!50 &4688094268433281338
 Rigidbody2D:
   serializedVersion: 4

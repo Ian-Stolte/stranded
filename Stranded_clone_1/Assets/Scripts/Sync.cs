@@ -5,13 +5,11 @@ using Unity.Netcode;
 
 public class Sync : NetworkBehaviour
 {
-    public NetworkVariable<Vector3> shipPos = new NetworkVariable<Vector3>();
-    public NetworkVariable<Vector3> shipVel = new NetworkVariable<Vector3>();
-    public NetworkVariable<Quaternion> shipRot = new NetworkVariable<Quaternion>();
-    
     private GameObject ship;
     private GameObject shield;
+    private GameObject grabber;
     private GameObject thrusterFire;
+    private GameObject radarArrow;
     private CameraFollow camera;
     public PlayerStations player;
 
@@ -19,6 +17,8 @@ public class Sync : NetworkBehaviour
     {
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
+        grabber = GameObject.Find("Grabber");
+        radarArrow = GameObject.Find("Radar Arrow");
         camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
@@ -38,18 +38,21 @@ public class Sync : NetworkBehaviour
 
     //THRUSTER SYNC
     [Rpc(SendTo.Server)]
-    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool fire)
+    public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield)
     {
-//Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
+        //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
+        shield.transform.position += addToShield;
+        shield.transform.position = ship.transform.position + Vector3.Normalize(shield.transform.position - ship.transform.position) * 5;
+        radarArrow.transform.position += addToShield;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
-        thrusterFire.SetActive(fire);
-        camera.UpdateCamera();
-        ReadShipMoveClientRpc(newVel, newPos, fire);
+        thrusterFire.SetActive(thrustersOn);
+        //camera.UpdateCamera(addToShield);
+        ReadShipMoveClientRpc(newVel, newPos, thrustersOn, addToShield);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool fire)
+    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield)
     {
         if (player != null)
         {
@@ -59,8 +62,10 @@ public class Sync : NetworkBehaviour
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
-        thrusterFire.SetActive(fire);
-        camera.UpdateCamera();
+        shield.transform.position += addToShield;
+        radarArrow.transform.position += addToShield;
+        thrusterFire.SetActive(thrustersOn);
+        //camera.UpdateCamera(addToShield);
     }
 
     //STEERING SYNC
@@ -104,4 +109,48 @@ public class Sync : NetworkBehaviour
             }
         }
     }
+
+    //GRABBER SYNC
+    [Rpc(SendTo.Server)]
+    public void WriteGrabberFiringRpc(bool firing)
+    {
+        grabber.GetComponent<Grabber>().grabberFiring.Value = firing;
+    }
+
+    [Rpc(SendTo.Server)]
+    public void WriteGrabberPosServerRpc(Vector3 direction, Vector3 rotation)
+    {
+        grabber.GetComponent<Grabber>().direction.Value = direction;
+        grabber.transform.rotation = (Quaternion.Euler(rotation));
+        //ReadGrabberPosClientRpc(rotation);
+    }
+
+    [Rpc(SendTo.Server)]
+    public void WriteGrabberCloseServerRpc(NetworkObjectReference obj, bool closed)
+    {
+        grabber.transform.GetChild(0).gameObject.SetActive(closed);
+        grabber.transform.GetChild(1).gameObject.SetActive(!closed);
+        grabber.GetComponent<Grabber>().grabbedObj = obj;
+        WriteGrabberCloseClientRpc(obj, closed);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void WriteGrabberCloseClientRpc(NetworkObjectReference obj, bool closed)
+    {
+        grabber.transform.GetChild(0).gameObject.SetActive(closed);
+        grabber.transform.GetChild(1).gameObject.SetActive(!closed);
+        grabber.GetComponent<Grabber>().grabbedObj = obj;
+    }
+
+    /*[Rpc(SendTo.NotServer)]
+    public void ReadGrabberPosClientRpc(Vector3 direction, Vector3 rotation)
+    {
+        if (player != null)
+        {
+            if (player.currentStation != "steering")
+            {
+                ship.transform.rotation = newAngle;
+            }
+        }
+    }*/
 }
