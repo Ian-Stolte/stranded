@@ -13,7 +13,6 @@ public class LANManager : NetworkBehaviour
 
 	[SerializeField] TextMeshProUGUI ipText;
 	[SerializeField] TMP_InputField ipInput;
-	[SerializeField] GameObject lanElements;
 
 	[SerializeField] string ipAddress;
 	[SerializeField] UnityTransport transport;
@@ -31,11 +30,6 @@ public class LANManager : NetworkBehaviour
 	{
 		NetworkManager.Singleton.StartHost();
 		GetLocalIPAddress();
-		lanElements.SetActive(false);
-		for (int i = 0; i < 10; i++)
-        {
-			GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
-		}
 	}
 
 	// To Join a game
@@ -45,7 +39,6 @@ public class LANManager : NetworkBehaviour
 		ipText.text = ipAddress;
 		SetIpAddress();
 		NetworkManager.Singleton.StartClient();
-		lanElements.SetActive(false);
 	}
 
 	/* Gets the Ip Address of your connected network and
@@ -75,4 +68,18 @@ public class LANManager : NetworkBehaviour
 		transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 		transport.ConnectionData.Address = ipAddress;
 	}
+
+	// Assigns the player to this script when player is loaded
+	/*private void assignPlayerController()
+	{
+		if (pc == null)
+		{
+			pc = FindObjectOfType<PlayerController>();
+		}
+		else if (pc == FindObjectOfType<PlayerController>())
+		{
+			pcAssigned = true;
+			CancelInvoke();
+		}
+	}*/
 }

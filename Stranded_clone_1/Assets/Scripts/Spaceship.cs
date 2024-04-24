@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,6 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private bool stun;
     [SerializeField] private bool slowSpeed;
     [SerializeField] private bool destroyAsteroid;
-    [SerializeField] private bool singlePlayer;
-    [SerializeField] private float asteroidDmg;
 
     // Speed variables
     [Header("Speed Variables")]
@@ -23,19 +22,15 @@ public class Spaceship : NetworkBehaviour
     public float decelSpeed;
     public float maxSpeed;
     public float speedDecrease;
-    private float maxSpeedRecord;
-
-    //Collision vars
-    public NetworkVariable<bool> asteroidImmunity;
     public float stunDuration; // Duration of the stun in seconds
     [HideInInspector] public bool isStunned; // Indicates if the player is stunned
-    public bool controlOfThrusters;
+    private float maxSpeedRecord;
 
     // Resource variables
     [Header("Resource Variables")]
-    public NetworkVariable<float> shipHealth;
+    public NetworkVariable<int> shipHealth;
     public int shipHealthMax;
-    public NetworkVariable<int> scraps;
+    public int resourcesCollected;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
@@ -46,25 +41,20 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject coordText;
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
-    [SerializeField] private GameObject scrapText;
 
     //References
     private Sync sync;
-    private ShopManager shop;
-    private StatTracker stats;
 
     void Start()
     {
         shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
+        resourcesCollected = 0;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
-        
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
-        shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
-        stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         GetComponent<Rigidbody2D>().velocity *= (1 - decelSpeed);
         Vector2 vel = GetComponent<Rigidbody2D>().velocity;
@@ -81,28 +71,28 @@ public class Spaceship : NetworkBehaviour
             GetComponent<Rigidbody2D>().velocity *= decel;
         }
 
-        //show coordinates and resource/scrap count
+        //show coordinates
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
-        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected.Value;
-        scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources Collected: " + resourcesCollected;
     }
 
     //collision
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
+        if (collision.gameObject.name == "Asteroid(Clone)")
         {
             // Updates the health bar
             if (IsServer)
             {
-                shipHealth.Value -= asteroidDmg;
+                shipHealth.Value--;
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
                 sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
-                StartCoroutine(HitImmunity());
             }
 
             if (shipHealth.Value <= 0) {
+                Debug.Log("Game Over! Your ship broke down...");
+                GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().GameOver();
                 GameOver();
             }
 
@@ -119,35 +109,19 @@ public class Spaceship : NetworkBehaviour
         }
     }
 
-    IEnumerator HitImmunity()
-    {
-        asteroidImmunity.Value = true;
-        yield return new WaitForSeconds(5);
-        asteroidImmunity.Value = false;
-    }
-
     // Resource enters trigger collider
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
+            resourcesCollected++;
             if (IsServer)
             {
-                stats.resourcesCollected.Value++;
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
                 sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
-        }
-        if (collider.gameObject.name == "Shipwreck(Clone)")
-        {  
-            if (IsServer)
-            {
-                scraps.Value++;
-                stats.scrapsCollected.Value++;
-            }
-            shop.AddScraps();
         }
     }
 
@@ -156,9 +130,9 @@ public class Spaceship : NetworkBehaviour
     {
         while (fuelAmount.Value > 0)
         {   
-            yield return new WaitForSeconds(depletionInterval); // wait
-            if (IsServer && (GameObject.FindGameObjectsWithTag("Player").Length > 1 || singlePlayer))
+            if (IsServer)
             {
+                yield return new WaitForSeconds(depletionInterval);
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
                 GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
@@ -169,6 +143,7 @@ public class Spaceship : NetworkBehaviour
         // Game over
         if (fuelAmount.Value <= 0)
         {
+            GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().GameOver(); //probably only needed if we do a game over UI on the bar
             GameOver();
         }
     }
@@ -177,7 +152,7 @@ public class Spaceship : NetworkBehaviour
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
-            g.GetComponent<PlayerStations>().enabled = false;
+            Destroy(g);
         }
         if (IsServer)
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
@@ -190,10 +165,11 @@ public class Spaceship : NetworkBehaviour
         {
             isStunned = true;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            maxSpeedRecord = maxSpeed; // remembers the current speed
+            maxSpeedRecord = maxSpeed; // Remembers the current speed
             maxSpeed = 0;
+            // GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
-            Invoke("EndStun", stunDuration); // ends stun after duration
+            Invoke("EndStun", stunDuration); // Ends stun after duration
         }
     }
 
