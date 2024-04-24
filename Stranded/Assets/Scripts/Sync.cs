@@ -13,6 +13,10 @@ public class Sync : NetworkBehaviour
     private CameraFollow camera;
     public PlayerStations player;
 
+    //pause
+    [SerializeField] private GameObject pauseMenu;
+    public NetworkVariable<bool> paused;
+
     void Start()
     {
         ship = GameObject.Find("Spaceship");
@@ -21,6 +25,24 @@ public class Sync : NetworkBehaviour
         radarArrow = GameObject.Find("Radar Arrow");
         camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
+    }
+
+    //PAUSE MENU
+    [Rpc(SendTo.Server)]
+    public void PauseServerRpc(bool showMenu)
+    {
+        paused.Value = !paused.Value;
+        pauseMenu.SetActive((paused.Value && showMenu));
+        Time.timeScale = (paused.Value) ? 0 : 1;
+        PauseClientRpc(showMenu);
+        
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void PauseClientRpc(bool showMenu)
+    {
+        pauseMenu.SetActive((paused.Value && showMenu));
+        Time.timeScale = (paused.Value) ? 0 : 1;
     }
 
     //RESOURCE/FUEL SYNC

@@ -98,15 +98,16 @@ public class ShopManager : MonoBehaviour
             Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
             s.source.volume = 0;
         }
+        GameObject.Find("Sync Object").GetComponent<Sync>().PauseServerRpc(false);
     }
 
     public void CloseShop()
     {
+        if (shop.activeSelf)
+            GameObject.Find("Sync Object").GetComponent<Sync>().PauseServerRpc(false);
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
-        //Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
-        //s.source.volume = 0.2f;
     }
 
     public void AddScraps()

@@ -152,6 +152,12 @@ public class PlayerStations : NetworkBehaviour
     {
         if (IsOwner)
         {
+            //Pause game
+            if (Input.GetKeyDown(KeyCode.Escape) && !GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
+            {
+                sync.PauseServerRpc(true);
+            }
+
             //Show station outlines
             steeringOutline.SetActive((currentStation == "steering"));
             thrusterOutline.SetActive((currentStation == "thrusters"));
@@ -172,7 +178,7 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Exit station
-            if (currentStation != "none" && (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)))
+            if (currentStation != "none" && Input.GetKeyDown(KeyCode.Q) && !sync.paused.Value)
             {
                 if (currentStation == "grabber")
                 {

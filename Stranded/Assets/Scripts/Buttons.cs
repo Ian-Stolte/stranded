@@ -48,16 +48,19 @@ public class Buttons : MonoBehaviour
 
     void ChangeTo(string station)
     {
-        PlayerStations p = target.GetComponent<PlayerStations>();
-        p.HideInstructions();
-        
-        if (p.currentStation == "grabber")
+        if (!GameObject.Find("Sync Object").GetComponent<Sync>().paused.Value)
         {
-            GameObject.Find("Sync Object").GetComponent<Sync>().WriteGrabberFiringRpc(false);
-            p.grabberFired = false;
+            PlayerStations p = target.GetComponent<PlayerStations>();
+            p.HideInstructions();
+
+            if (p.currentStation == "grabber")
+            {
+                GameObject.Find("Sync Object").GetComponent<Sync>().WriteGrabberFiringRpc(false);
+                p.grabberFired = false;
+            }
+            p.currentStation = station;
+            GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShop();
         }
-        p.currentStation = station;
-        GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShop();
     }
     
     public void CheckInUse(Transform child)
