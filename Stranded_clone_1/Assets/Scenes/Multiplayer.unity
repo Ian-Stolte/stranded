@@ -4122,7 +4122,6 @@ GameObject:
   - component: {fileID: 910736337}
   - component: {fileID: 910736335}
   - component: {fileID: 910736336}
-  - component: {fileID: 910736337}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
