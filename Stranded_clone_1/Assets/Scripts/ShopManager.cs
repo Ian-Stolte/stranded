@@ -71,7 +71,7 @@ public class ShopManager : NetworkBehaviour
         {
             CloseShopServerRpc();
         }
-        else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")))
+        else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")) && shop.activeSelf)
         {
             CloseShopServerRpc();
         }
