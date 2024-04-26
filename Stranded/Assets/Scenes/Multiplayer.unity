@@ -9717,7 +9717,6 @@ GameObject:
   - component: {fileID: 1891905961}
   - component: {fileID: 1891905963}
   - component: {fileID: 1891905962}
-  - component: {fileID: 1891905964}
   m_Layer: 5
   m_Name: Upgrades Tab
   m_TagString: Untagged

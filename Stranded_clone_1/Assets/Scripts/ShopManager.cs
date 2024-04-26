@@ -57,6 +57,7 @@ public class ShopManager : NetworkBehaviour
 
         CloseShopServerRpc();
         AddScraps();  
+        Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
         LoadPanels();
     }
 
@@ -188,8 +189,10 @@ public class ShopManager : NetworkBehaviour
 
     public void CheckPurchaseable()
     {
+        Debug.Log("Array length: " + boostEffectsSO.Length);
         for (int i = 0; i < boostEffectsSO.Length; i++)
         {
+            Debug.Log("Cost: " + boostEffectsSO[i].baseCost);
             if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
             {
                 myPurchaseBtns[i].interactable = true;
@@ -209,7 +212,7 @@ public class ShopManager : NetworkBehaviour
             AddScraps();
         }
     }
-
+	
     public void ChangeTab(int tabNo)
     {
         if (tabNo == 1){
