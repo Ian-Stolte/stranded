@@ -165,7 +165,7 @@ public class ShopManager : NetworkBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        // CheckPurchaseable();
+        CheckPurchaseable();
     }
 
     public void LoadPanels()
