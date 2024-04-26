@@ -13,6 +13,8 @@ public class ShopManager : MonoBehaviour
     public GameObject shop;
     private GameObject ship;
     private Spaceship shipScript;
+    public GameObject fuelBar;
+    public GameObject healthBar;
     [HideInInspector] public PlayerStations player;
 
     public TMP_Text scrapsText;
@@ -27,8 +29,16 @@ public class ShopManager : MonoBehaviour
     private AudioManager audio;
     private bool startMusic;
 
+    private RectTransform fuelBarRectTransform;
+    private RectTransform healthBarRectTransform;
+    
     void Start()
     {
+        fuelBarRectTransform = fuelBar.GetComponent<RectTransform>();
+        healthBarRectTransform = healthBar.GetComponent<RectTransform>();
+        fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Set initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
+
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
 
         openShopBtn.SetActive(true);
@@ -90,6 +100,10 @@ public class ShopManager : MonoBehaviour
         shop.SetActive(true);
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
+        
+        fuelBarRectTransform.anchoredPosition = new Vector2(792f, 64f);
+        healthBarRectTransform.anchoredPosition = new Vector2(792f, -19f);
+
         AddScraps();
         // player.currentStation = "none";
         // player.HideInstructions();
@@ -108,6 +122,10 @@ public class ShopManager : MonoBehaviour
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Back to initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
+        //Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
+        //s.source.volume = 0.2f;
     }
 
     public void AddScraps()
@@ -139,7 +157,6 @@ public class ShopManager : MonoBehaviour
             Debug.Log("Cost: " + boostEffectsSO[i].baseCost);
             if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
             {
-                Debug.Log("Yay");
                 myPurchaseBtns[i].interactable = true;
             } 
             else 

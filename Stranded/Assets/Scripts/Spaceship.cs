@@ -93,6 +93,7 @@ public class Spaceship : NetworkBehaviour
     {
         if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
         {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Collision");
             // Updates the health bar
             if (IsServer)
             {
