@@ -89,9 +89,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 1447290089153225068}
-  resourceCurrent: 10
-  resourceMax: 10
-  overkillPossible: 1
 --- !u!1 &8470870211481513142
 GameObject:
   m_ObjectHideFlags: 0
