@@ -500,7 +500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4, y: 26}
+  m_AnchoredPosition: {x: 4, y: 29}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &104014317
@@ -1685,6 +1685,7 @@ GameObject:
   - component: {fileID: 269901092}
   - component: {fileID: 269901094}
   - component: {fileID: 269901093}
+  - component: {fileID: 269901095}
   m_Layer: 5
   m_Name: Cosmetics Tab
   m_TagString: Untagged
@@ -1709,7 +1710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 61, y: 136}
+  m_AnchoredPosition: {x: 116.707825, y: 160.79}
   m_SizeDelta: {x: 441.34, y: 183}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &269901093
@@ -1750,6 +1751,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 269901091}
   m_CullTransparentMesh: 1
+--- !u!114 &269901095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269901091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2013286085}
+          m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+          m_MethodName: ChangeTab
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &278868765
 GameObject:
   m_ObjectHideFlags: 0
@@ -2852,7 +2882,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 21, y: 29}
+  m_AnchoredPosition: {x: 21, y: 32}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &475186455
@@ -4199,11 +4229,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 792
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 64
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4769,7 +4799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 462, y: 158}
+  m_AnchoredPosition: {x: 470, y: 192}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &876314053
@@ -5145,7 +5175,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 811, y: 166}
+  m_AnchoredPosition: {x: 781, y: 189}
   m_SizeDelta: {x: 301.283, y: 76.422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &929954096
@@ -7759,6 +7789,7 @@ GameObject:
   - component: {fileID: 1439681756}
   - component: {fileID: 1439681758}
   - component: {fileID: 1439681757}
+  - component: {fileID: 1439681759}
   m_Layer: 5
   m_Name: Boosts Tab
   m_TagString: Untagged
@@ -7783,7 +7814,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -799.70776, y: 134.21}
+  m_AnchoredPosition: {x: -744, y: 159}
   m_SizeDelta: {x: 436.656, y: 183}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1439681757
@@ -7824,6 +7855,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439681755}
   m_CullTransparentMesh: 1
+--- !u!114 &1439681759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439681755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2013286085}
+          m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+          m_MethodName: ChangeTab
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1448840745
 GameObject:
   m_ObjectHideFlags: 0
@@ -8382,8 +8442,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -362.524, y: 22.873}
-  m_SizeDelta: {x: -723.819, y: -838.253}
+  m_AnchoredPosition: {x: -313.79, y: 22.873}
+  m_SizeDelta: {x: -626.35, y: -838.253}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1552278733
 MonoBehaviour:
@@ -9657,6 +9717,7 @@ GameObject:
   - component: {fileID: 1891905961}
   - component: {fileID: 1891905963}
   - component: {fileID: 1891905962}
+  - component: {fileID: 1891905964}
   m_Layer: 5
   m_Name: Upgrades Tab
   m_TagString: Untagged
@@ -9681,7 +9742,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -371, y: 134.21}
+  m_AnchoredPosition: {x: -315.29218, y: 159}
   m_SizeDelta: {x: 432.078, y: 183}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1891905962
@@ -9722,6 +9783,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891905960}
   m_CullTransparentMesh: 1
+--- !u!114 &1891905964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891905960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2013286085}
+          m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+          m_MethodName: ChangeTab
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1945739619
 GameObject:
   m_ObjectHideFlags: 0
@@ -10132,6 +10222,9 @@ MonoBehaviour:
   - {fileID: 1660511748}
   openShopBtn: {fileID: 2142448679}
   closeShopBtn: {fileID: 929954094}
+  boostsPage: {fileID: 1500946236}
+  upgradesPage: {fileID: 0}
+  cosmeticsPage: {fileID: 0}
 --- !u!114 &2013286086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10398,7 +10491,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -819, y: -215.789}
+  m_AnchoredPosition: {x: -757, y: -215.789}
   m_SizeDelta: {x: 301.283, y: 76.422}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2142448681
@@ -10565,11 +10658,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 792
+      value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -19
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 454451357334855534, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

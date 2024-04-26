@@ -33,13 +33,18 @@ public class ShopManager : NetworkBehaviour
 
     private RectTransform fuelBarRectTransform;
     private RectTransform healthBarRectTransform;
+
+    [Header("Shop Tabs")]
+    public GameObject boostsPage;
+    public GameObject upgradesPage;
+    public GameObject cosmeticsPage;
     
     void Start()
     {
         fuelBarRectTransform = fuelBar.GetComponent<RectTransform>();
         healthBarRectTransform = healthBar.GetComponent<RectTransform>();
-        fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Set initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Set initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
 
@@ -52,9 +57,7 @@ public class ShopManager : NetworkBehaviour
 
         CloseShopServerRpc();
         AddScraps();  
-        Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
         LoadPanels();
-        // CheckPurchaseable();
     }
 
     void Update()
@@ -108,8 +111,8 @@ public class ShopManager : NetworkBehaviour
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
         
-        fuelBarRectTransform.anchoredPosition = new Vector2(792f, 64f);
-        healthBarRectTransform.anchoredPosition = new Vector2(792f, -19f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(750f, 64f);
+        healthBarRectTransform.anchoredPosition = new Vector2(750f, -19f);
 
         AddScraps();
         if (startMusic)
@@ -128,8 +131,8 @@ public class ShopManager : NetworkBehaviour
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
 
-        fuelBarRectTransform.anchoredPosition = new Vector2(792f, 64f);
-        healthBarRectTransform.anchoredPosition = new Vector2(792f, -19f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(750f, 90f);
+        healthBarRectTransform.anchoredPosition = new Vector2(750f, 7f);
 
         AddScraps();
         if (startMusic)
@@ -147,8 +150,8 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
-        fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Back to initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
         CloseShopClientRpc();
     }
 
@@ -158,8 +161,8 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
-        fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Back to initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
     }
 
     public void AddScraps()
@@ -185,10 +188,8 @@ public class ShopManager : NetworkBehaviour
 
     public void CheckPurchaseable()
     {
-        Debug.Log("Array length: " + boostEffectsSO.Length);
         for (int i = 0; i < boostEffectsSO.Length; i++)
         {
-            Debug.Log("Cost: " + boostEffectsSO[i].baseCost);
             if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
             {
                 myPurchaseBtns[i].interactable = true;
@@ -206,6 +207,32 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
+        }
+    }
+
+    public void ChangeTab(int tabNo)
+    {
+        if (tabNo == 1){
+            // Debug.Log("Opening Boost Tab");
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+            boostsPage.SetActive(true);
+        } else if (tabNo == 2){
+            // Debug.Log("Opening Upgrades Tab");
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+            boostsPage.SetActive(false);
+        } else if (tabNo == 3){
+            // Debug.Log("Opening Cosmetics Tab");
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+            boostsPage.SetActive(false);
         }
     }
 }
