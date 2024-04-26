@@ -4442,7 +4442,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2013286085}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: CloseShop
         m_Mode: 1
@@ -8818,7 +8818,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2013286084}
   - component: {fileID: 2013286085}
-  - component: {fileID: 2013286083}
   m_Layer: 0
   m_Name: Shop Manager
   m_TagString: Untagged
@@ -8826,29 +8825,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2013286083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013286082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5d790bfb77cf644d856e3f08f3f81ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shop: {fileID: 1864062696}
-  fuelBar: {fileID: 103641953}
-  healthBar: {fileID: 639217421}
-  player: {fileID: 0}
-  scrapsText: {fileID: 876314053}
-  boostEffectsSO: []
-  shopPanelsGO: []
-  shopPanels: []
-  myPurchaseBtns: []
-  openShopBtn: {fileID: 2142448679}
-  closeShopBtn: {fileID: 929954094}
 --- !u!4 &2013286084
 Transform:
   m_ObjectHideFlags: 0
@@ -9062,7 +9038,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2013286085}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenShop
         m_Mode: 1
