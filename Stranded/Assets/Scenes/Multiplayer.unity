@@ -4436,7 +4436,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2013286083}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: CloseShop
         m_Mode: 1
@@ -8812,7 +8812,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2013286084}
   - component: {fileID: 2013286085}
-  - component: {fileID: 2013286083}
   m_Layer: 0
   m_Name: Shop Manager
   m_TagString: Untagged
@@ -9056,7 +9055,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2013286083}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
         m_MethodName: OpenShop
         m_Mode: 1

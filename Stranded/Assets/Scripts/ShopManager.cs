@@ -16,6 +16,7 @@ public class ShopManager : MonoBehaviour
     public GameObject fuelBar;
     public GameObject healthBar;
     [HideInInspector] public PlayerStations player;
+    private Sync sync;
 
     public TMP_Text scrapsText;
     public BoostEffect[] boostEffectsSO;
@@ -45,7 +46,8 @@ public class ShopManager : MonoBehaviour
         closeShopBtn.SetActive(false);
 
         ship = GameObject.Find("Spaceship");
-        shipScript = ship.GetComponent<Spaceship>();  
+        shipScript = ship.GetComponent<Spaceship>();
+        sync = GameObject.Find("Sync Object").GetComponent<Sync>();
 
         CloseShop();
         AddScraps();  
@@ -59,8 +61,10 @@ public class ShopManager : MonoBehaviour
         if (Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")) && !shop.activeSelf)
         {
             openShopBtn.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && !sync.paused.Value)
+            {
                 OpenShop();
+            }
         }
         else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) && shop.activeSelf)
         {
@@ -112,13 +116,13 @@ public class ShopManager : MonoBehaviour
             Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
             s.source.volume = 0;
         }
-        GameObject.Find("Sync Object").GetComponent<Sync>().PauseServerRpc(false);
+        sync.PauseServerRpc(false);
     }
 
     public void CloseShop()
     {
         if (shop.activeSelf)
-            GameObject.Find("Sync Object").GetComponent<Sync>().PauseServerRpc(false);
+            sync.PauseServerRpc(false);
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
