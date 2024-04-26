@@ -52,7 +52,6 @@ public class ShopManager : NetworkBehaviour
 
         CloseShopServerRpc();
         AddScraps();  
-        Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
         LoadPanels();
         // CheckPurchaseable();
     }
@@ -185,10 +184,8 @@ public class ShopManager : NetworkBehaviour
 
     public void CheckPurchaseable()
     {
-        Debug.Log("Array length: " + boostEffectsSO.Length);
         for (int i = 0; i < boostEffectsSO.Length; i++)
         {
-            Debug.Log("Cost: " + boostEffectsSO[i].baseCost);
             if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
             {
                 myPurchaseBtns[i].interactable = true;
@@ -206,6 +203,32 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
+        }
+    }
+
+    public void ChangeTab(int tabNo)
+    {
+        if (tabNo == 1){
+            Debug.Log("Opening Boost Tab");
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+            GameObject.Find("Boosts ScrollRect").SetActive(true);
+        } else if (tabNo == 2){
+            Debug.Log("Opening Upgrades Tab");
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+            GameObject.Find("Boosts ScrollRect").SetActive(false);
+        } else if (tabNo == 3){
+            Debug.Log("Opening Cosmetics Tab");
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+            GameObject.Find("Boosts ScrollRect").SetActive(false);
         }
     }
 }
