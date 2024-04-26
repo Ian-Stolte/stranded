@@ -33,6 +33,11 @@ public class ShopManager : NetworkBehaviour
 
     private RectTransform fuelBarRectTransform;
     private RectTransform healthBarRectTransform;
+
+    [Header("Shop Tabs")]
+    public GameObject boostsPage;
+    public GameObject upgradesPage;
+    public GameObject cosmeticsPage;
     
     void Start()
     {
@@ -53,7 +58,6 @@ public class ShopManager : NetworkBehaviour
         CloseShopServerRpc();
         AddScraps();  
         LoadPanels();
-        // CheckPurchaseable();
     }
 
     void Update()
@@ -214,21 +218,21 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
-            GameObject.Find("Boosts ScrollRect").SetActive(true);
+            boostsPage.SetActive(true);
         } else if (tabNo == 2){
             Debug.Log("Opening Upgrades Tab");
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
-            GameObject.Find("Boosts ScrollRect").SetActive(false);
+            boostsPage.SetActive(false);
         } else if (tabNo == 3){
             Debug.Log("Opening Cosmetics Tab");
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
-            GameObject.Find("Boosts ScrollRect").SetActive(false);
+            boostsPage.SetActive(false);
         }
     }
 }
