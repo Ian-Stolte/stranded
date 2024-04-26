@@ -17,6 +17,7 @@ public class PlayerStations : NetworkBehaviour
     //Buttons
     [SerializeField] private GameObject buttonPrefab;
     public GameObject buttons;
+    private GameObject qIndicator;
     public GameObject buttonCircles;
 
     //GameObjects
@@ -112,6 +113,7 @@ public class PlayerStations : NetworkBehaviour
             buttons.GetComponent<Buttons>().target = gameObject;
             buttons.transform.SetSiblingIndex(0);
             buttonCircles = buttons.transform.GetChild(0).gameObject;
+            qIndicator = buttons.transform.GetChild(2).gameObject;
         }
 
         GameObject.Find("Shop Manager").GetComponent<ShopManager>().player = this;
@@ -143,6 +145,7 @@ public class PlayerStations : NetworkBehaviour
 
         HideInstructions();
         buttonCircles.SetActive(true);
+        qIndicator.SetActive(false);
 
         if (IsOwner)
             StartCoroutine(Radar());
@@ -192,10 +195,12 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation == "none" && IsOwner && !shop.activeSelf)
             {
                 buttonCircles.SetActive(true);
+                qIndicator.SetActive(false);
             }
             else
             {
                 buttonCircles.SetActive(false);
+                qIndicator.SetActive(true);
             }
 
             //Grabber
