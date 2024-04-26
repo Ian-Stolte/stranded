@@ -34,15 +34,14 @@ public class Sync : NetworkBehaviour
         paused.Value = !paused.Value;
         pauseMenu.SetActive((paused.Value && showMenu));
         Time.timeScale = (paused.Value) ? 0 : 1;
-        PauseClientRpc(showMenu);
-        
+        PauseClientRpc(paused.Value, showMenu);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void PauseClientRpc(bool showMenu)
+    public void PauseClientRpc(bool pause, bool showMenu)
     {
-        pauseMenu.SetActive((paused.Value && showMenu));
-        Time.timeScale = (paused.Value) ? 0 : 1;
+        pauseMenu.SetActive((pause && showMenu));
+        Time.timeScale = (pause) ? 0 : 1;
     }
 
     //RESOURCE/FUEL SYNC

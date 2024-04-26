@@ -59,7 +59,8 @@ public class Buttons : MonoBehaviour
                 p.grabberFired = false;
             }
             p.currentStation = station;
-            GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShop();
+            if (GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
+                GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShopServerRpc();
         }
     }
     

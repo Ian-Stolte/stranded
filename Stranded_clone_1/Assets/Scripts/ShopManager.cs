@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
 // Based on shop tutorial by Flarvain on YouTube
 // Link: https://www.youtube.com/watch?v=kUwnfkYcaFU
-public class ShopManager : MonoBehaviour
+public class ShopManager : NetworkBehaviour
 {
     public GameObject shop;
     private GameObject ship;
@@ -49,7 +50,7 @@ public class ShopManager : MonoBehaviour
         shipScript = ship.GetComponent<Spaceship>();
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
 
-        CloseShop();
+        CloseShopServerRpc();
         AddScraps();  
         Debug.Log("Number of elements in shopPanelsGO: " + shopPanelsGO.Length);   
         LoadPanels();
@@ -63,16 +64,16 @@ public class ShopManager : MonoBehaviour
             openShopBtn.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E) && !sync.paused.Value)
             {
-                OpenShop();
+                OpenShopServerRpc();
             }
         }
         else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) && shop.activeSelf)
         {
-            CloseShop();
+            CloseShopServerRpc();
         }
         else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")))
         {
-            CloseShop();
+            CloseShopServerRpc();
         }
         else
         {
@@ -98,8 +99,10 @@ public class ShopManager : MonoBehaviour
             strandedMusic.source.volume = 0.4f;
         }
     }
-
-    public void OpenShop()
+    
+    //OPEN SHOP
+    [Rpc(SendTo.Server)]
+    public void OpenShopServerRpc()
     {
         shop.SetActive(true);
         openShopBtn.SetActive(false);
@@ -109,27 +112,54 @@ public class ShopManager : MonoBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(792f, -19f);
 
         AddScraps();
-        // player.currentStation = "none";
-        // player.HideInstructions();
         if (startMusic)
         {
             Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
             s.source.volume = 0;
         }
         sync.PauseServerRpc(false);
+        OpenShopClientRpc();
     }
 
-    public void CloseShop()
+    [Rpc(SendTo.NotServer)]
+    public void OpenShopClientRpc()
     {
-        if (shop.activeSelf)
-            sync.PauseServerRpc(false);
+        shop.SetActive(true);
+        openShopBtn.SetActive(false);
+        closeShopBtn.SetActive(true);
+
+        fuelBarRectTransform.anchoredPosition = new Vector2(792f, 64f);
+        healthBarRectTransform.anchoredPosition = new Vector2(792f, -19f);
+
+        AddScraps();
+        if (startMusic)
+        {
+            Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
+            s.source.volume = 0;
+        }
+    }
+
+    //CLOSE SHOP
+    [Rpc(SendTo.Server)]
+    public void CloseShopServerRpc()
+    {
+        sync.PauseServerRpc(false);
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
         fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
-        //Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
-        //s.source.volume = 0.2f;
+        CloseShopClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void CloseShopClientRpc()
+    {
+        shop.SetActive(false);
+        openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
+        closeShopBtn.SetActive(false);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-793f, -326f); // Back to initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-793f, -423f);
     }
 
     public void AddScraps()
