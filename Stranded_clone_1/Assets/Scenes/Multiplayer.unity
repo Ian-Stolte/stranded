@@ -1586,7 +1586,13 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
-  sfx: []
+  sfx:
+  - name: Asteroid Collision
+    clip: {fileID: 8300000, guid: 1c6149a7b2900427a9b3c91fb4879d25, type: 3}
+    volume: 0.4
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
   audios: []
   currentSong: 
 --- !u!4 &282882308
@@ -8812,6 +8818,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2013286084}
   - component: {fileID: 2013286085}
+  - component: {fileID: 2013286083}
   m_Layer: 0
   m_Name: Shop Manager
   m_TagString: Untagged
