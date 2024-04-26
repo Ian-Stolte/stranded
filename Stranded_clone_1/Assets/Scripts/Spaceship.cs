@@ -40,6 +40,7 @@ public class Spaceship : NetworkBehaviour
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
     [Tooltip("How much fuel depletes each interval")] [SerializeField] private float depletionAmount;
+    public GameObject resourceTextPrefab;
 
     // Text variables
     [Header("Text Variables")]
@@ -134,6 +135,10 @@ public class Spaceship : NetworkBehaviour
         {
             if (IsServer)
             {
+                GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
+                Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
+                resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 stats.resourcesCollected.Value++;
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
