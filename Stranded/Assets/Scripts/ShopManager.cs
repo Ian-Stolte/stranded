@@ -222,6 +222,11 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
             boostsPage.SetActive(true);
+            upgradesPage.SetActive(false);
+            cosmeticsPage.SetActive(false);
+
+            fuelBar.SetActive(true);
+            healthBar.SetActive(true);
         } else if (tabNo == 2){
             // Debug.Log("Opening Upgrades Tab");
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
@@ -229,6 +234,11 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
             boostsPage.SetActive(false);
+            upgradesPage.SetActive(true);
+            cosmeticsPage.SetActive(false);
+
+            fuelBar.SetActive(false);
+            healthBar.SetActive(false);
         } else if (tabNo == 3){
             // Debug.Log("Opening Cosmetics Tab");
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
@@ -236,6 +246,11 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
             boostsPage.SetActive(false);
+            upgradesPage.SetActive(false);
+            cosmeticsPage.SetActive(true);
+            
+            fuelBar.SetActive(false);
+            healthBar.SetActive(false);
         }
     }
 }
