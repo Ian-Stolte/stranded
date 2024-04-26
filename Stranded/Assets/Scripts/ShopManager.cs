@@ -135,7 +135,7 @@ public class ShopManager : MonoBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        // CheckPurchaseable();
+        CheckPurchaseable();
     }
 
     public void LoadPanels()
