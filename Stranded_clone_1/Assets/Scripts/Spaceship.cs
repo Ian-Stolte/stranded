@@ -14,6 +14,7 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private bool destroyAsteroid;
     [SerializeField] private bool singlePlayer;
     [SerializeField] private float asteroidDmg;
+    [SerializeField] private float knockbackAmount;
 
     // Speed variables
     [Header("Speed Variables")]
@@ -89,12 +90,14 @@ public class Spaceship : NetworkBehaviour
         scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
     }
 
-    //collision
+
+    //Hit Asteroid
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
         {
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Collision");
+            GameObject.Find("Screen Flash").GetComponent<Animator>().Play("ScreenFlash");
             // Updates the health bar
             if (IsServer)
             {
@@ -102,6 +105,8 @@ public class Spaceship : NetworkBehaviour
                 GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
                 sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
                 StartCoroutine(HitImmunity());
+                Vector3 dir = collision.gameObject.transform.position - transform.position;
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector3.Normalize(dir) * knockbackAmount, ForceMode2D.Force);
             }
 
             if (shipHealth.Value <= 0) {
@@ -124,11 +129,12 @@ public class Spaceship : NetworkBehaviour
     IEnumerator HitImmunity()
     {
         asteroidImmunity.Value = true;
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         asteroidImmunity.Value = false;
     }
 
-    // Resource enters trigger collider
+
+    //Collect Resource
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.name == "Resource(Clone)")
