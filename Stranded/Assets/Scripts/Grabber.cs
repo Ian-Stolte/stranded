@@ -29,8 +29,6 @@ public class Grabber : NetworkBehaviour
 
     void FixedUpdate()
     {
-//TODO: accel and decel on the motion
-        //Grabber
         if (grabberFiring.Value)
         {
             currentRetractSpeed = retractSpeed;
@@ -48,7 +46,6 @@ public class Grabber : NetworkBehaviour
             if (grabbedObj != ship && grabbedObj != null)
             {
                 grabbedObj.transform.position = transform.position;
-                //grabbedObj.transform.position += new Vector3(dist.x*currentRetractSpeed, dist.y*currentRetractSpeed, 0);
             }
         }
         else
