@@ -57,7 +57,10 @@ public class PlayerStations : NetworkBehaviour
     public GameObject shieldInstruction;
     private bool hideShieldInstruction;
     public GameObject grabberInstruction;
-    private bool hideGrabberInstruction;
+    [HideInInspector] public bool hideGrabberInstruction;
+    public GameObject radarInstruction;
+    [HideInInspector] public bool hideRadarInstruction;
+    [HideInInspector] public bool usedRadar;
 
     //Outlines
     private GameObject steeringOutline;
@@ -83,19 +86,17 @@ public class PlayerStations : NetworkBehaviour
         if (scene.name == "Multiplayer")
         {
             Setup();
-            GameObject.Find("LAN Elements").SetActive(false);
-            for (int i = 0; i < 10; i++)
+            if (IsServer)
             {
-                GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+                Debug.Log("Spawning asteroids!");
+                for (int i = 0; i < 10; i++)
+                {
+                    GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+                }
             }
             oldShipPos = ship.transform.position;
             GameObject.Find("Shield").transform.position = new Vector3(0, 5, 0);
         }
-    }
-
-    void Start()
-    {
-        Setup();
     }
 
     void Setup()
@@ -104,6 +105,9 @@ public class PlayerStations : NetworkBehaviour
         name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
 
         currentStation = "none";
+        
+        ship = GameObject.Find("Spaceship");
+        shipScript = ship.GetComponent<Spaceship>();
 //TODO: check that this works properly w/ mutliplayer
         if (IsOwner)
         {
@@ -114,12 +118,10 @@ public class PlayerStations : NetworkBehaviour
             buttons.transform.SetSiblingIndex(0);
             buttonCircles = buttons.transform.GetChild(0).gameObject;
             qIndicator = buttons.transform.GetChild(2).gameObject;
+            shipScript.player = this;
         }
 
-        GameObject.Find("Shop Manager").GetComponent<ShopManager>().player = this;
-
-        ship = GameObject.Find("Spaceship");
-        shipScript = ship.GetComponent<Spaceship>();
+        GameObject.Find("Shop Manager").GetComponent<ShopManager>().player = this;        
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
         grabScript = grabber.GetComponent<Grabber>();
@@ -136,6 +138,7 @@ public class PlayerStations : NetworkBehaviour
         thrusterInstruction = GameObject.Find("Thruster Instructions");
         shieldInstruction = GameObject.Find("Shield Instructions");
         grabberInstruction = GameObject.Find("Grabber Instructions");
+        radarInstruction = GameObject.Find("Radar Instructions");
 
         steeringOutline = GameObject.Find("Steering Outline");
         thrusterOutline = GameObject.Find("Thruster Outline");
@@ -153,7 +156,7 @@ public class PlayerStations : NetworkBehaviour
 
     void Update()
     {
-        if (IsOwner)
+        if (IsOwner && SceneManager.GetActiveScene().name == "Multiplayer")
         {
             //Pause game
             if (Input.GetKeyDown(KeyCode.Escape) && !GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
@@ -259,7 +262,6 @@ public class PlayerStations : NetworkBehaviour
                 //fire if space pressed and delay time has elapsed
                 else if (Input.GetKeyDown(KeyCode.Space) && grabberWait <= 0 && grabberWait != -1)
                 {
-                    hideGrabberInstruction = true;
                     grabberInstruction.SetActive(false);
                     Vector3 mousePos = Input.mousePosition;
                     Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
@@ -295,7 +297,7 @@ public class PlayerStations : NetworkBehaviour
             {
                 radarArrow.SetActive(true);
                 radarArrow.transform.position = ship.transform.position + radarDir * (cameraZoom - 5);
-                radarArrow.transform.localScale = new Vector3(0.65f + (cameraZoom - 15) / 100, 1 + (cameraZoom - 15) / 100, 1);
+                radarArrow.transform.localScale = new Vector3(1f + (cameraZoom-15)/50, 1.7f + (cameraZoom-15)/50, 1);
             }
             else
             {
@@ -308,7 +310,7 @@ public class PlayerStations : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (IsOwner)
+        if (IsOwner && SceneManager.GetActiveScene().name == "Multiplayer")
         {
             //Steering
             if (currentStation == "steering")
@@ -379,6 +381,12 @@ public class PlayerStations : NetworkBehaviour
             {
                 sync.WriteShieldServerRpc(shield.transform.rotation, shield.transform.position);
             }
+
+            //Radar
+            if (currentStation == "radar" && !hideRadarInstruction)
+            {
+                radarInstruction.SetActive(true);
+            }
         }
         else {
             //Read station (from owner)
@@ -392,6 +400,7 @@ public class PlayerStations : NetworkBehaviour
         thrusterInstruction.SetActive(false);
         shieldInstruction.SetActive(false);
         grabberInstruction.SetActive(false);
+        radarInstruction.SetActive(false);
     }
 
     private IEnumerator Radar()
@@ -399,9 +408,9 @@ public class PlayerStations : NetworkBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1.5f);
             radarArrow.SetActive(false);
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.4f);
             yield return new WaitUntil(() => currentStation == "radar");
             if (radarUnlocked)
             {
@@ -409,7 +418,7 @@ public class PlayerStations : NetworkBehaviour
                 minDist = 101;
                 if (shipwrecks.Length == 0)
                 {
-                    radarText.text = "N/A";
+                    radarText.text = "Out of Range";
                     radarArrow.SetActive(false);
                 }
                 else
@@ -425,7 +434,7 @@ public class PlayerStations : NetworkBehaviour
                         }
                     }
                     if (minDist == 101)
-                        radarText.text = "N/A";
+                        radarText.text = "Out of Range";
                     else
                         radarText.text = Mathf.Round(minDist) + " km";
                     if (minDist >= 1.67 * cameraZoom && minDist <= 100)

@@ -54,6 +54,7 @@ public class Spaceship : NetworkBehaviour
     private Sync sync;
     private ShopManager shop;
     private StatTracker stats;
+    [HideInInspector] public PlayerStations player;
 
     void Start()
     {
@@ -139,6 +140,11 @@ public class Spaceship : NetworkBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
+            if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
+            {
+                player.hideGrabberInstruction = true;
+                player.HideInstructions();
+            }
             if (IsServer)
             {
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
@@ -154,6 +160,12 @@ public class Spaceship : NetworkBehaviour
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
+            if (player.usedRadar)
+            {
+                player.hideRadarInstruction = true;
+                if (player.currentStation == "radar")
+                    player.HideInstructions();
+            }
             if (IsServer)
             {
                 scraps.Value++;

@@ -55,7 +55,6 @@ public class ShopManager : NetworkBehaviour
         shipScript = ship.GetComponent<Spaceship>();
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
 
-        CloseShopServerRpc();
         AddScraps();  
         LoadPanels();
     }

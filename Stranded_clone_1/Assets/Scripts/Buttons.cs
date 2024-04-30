@@ -59,6 +59,8 @@ public class Buttons : MonoBehaviour
                 p.grabberFired = false;
             }
             p.currentStation = station;
+            if (station == "radar")
+                p.usedRadar = true;
             if (GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
                 GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShopServerRpc();
         }
@@ -86,6 +88,8 @@ public class Buttons : MonoBehaviour
         if (!GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
         {
             target.GetComponent<PlayerStations>().currentStation = s;
+            if (s == "radar")
+                target.GetComponent<PlayerStations>().usedRadar = true;
         }
     }
 }
