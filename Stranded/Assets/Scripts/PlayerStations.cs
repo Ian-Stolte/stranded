@@ -86,19 +86,17 @@ public class PlayerStations : NetworkBehaviour
         if (scene.name == "Multiplayer")
         {
             Setup();
-            GameObject.Find("LAN Elements").SetActive(false);
-            for (int i = 0; i < 10; i++)
+            if (IsServer)
             {
-                GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+                Debug.Log("Spawning asteroids!");
+                for (int i = 0; i < 10; i++)
+                {
+                    GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+                }
             }
             oldShipPos = ship.transform.position;
             GameObject.Find("Shield").transform.position = new Vector3(0, 5, 0);
         }
-    }
-
-    void Start()
-    {
-        Setup();
     }
 
     void Setup()
@@ -158,7 +156,7 @@ public class PlayerStations : NetworkBehaviour
 
     void Update()
     {
-        if (IsOwner)
+        if (IsOwner && SceneManager.GetActiveScene().name == "Multiplayer")
         {
             //Pause game
             if (Input.GetKeyDown(KeyCode.Escape) && !GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
@@ -312,7 +310,7 @@ public class PlayerStations : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (IsOwner)
+        if (IsOwner && SceneManager.GetActiveScene().name == "Multiplayer")
         {
             //Steering
             if (currentStation == "steering")

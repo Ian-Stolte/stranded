@@ -1,6 +1,8 @@
 //from GamedevSatyam tutorial: https://www.youtube.com/watch?v=yCQ26wADnDM&list=PLcLjNdjELduFhg9Vvp17POUfZoXF5bZgE
 
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using TMPro;
@@ -9,21 +11,28 @@ using System.Net.Sockets;
 
 public class LANManager : NetworkBehaviour
 {
+	private GameObject singleplayerButton;
+	private GameObject multiplayerButton;
 	private bool pcAssigned;
 
-	[SerializeField] TextMeshProUGUI ipText;
-	[SerializeField] TMP_InputField ipInput;
-	[SerializeField] GameObject lanElements;
+	[SerializeField] private TextMeshProUGUI ipText;
+	[SerializeField] private TMP_InputField ipInput;
+	[SerializeField] private GameObject lanElements;
+	[SerializeField] private GameObject dcClient;
+	[SerializeField] private GameObject dcHost;
 
-	[SerializeField] string ipAddress;
-	[SerializeField] UnityTransport transport;
+	[SerializeField] private string ipAddress;
+	[SerializeField] private UnityTransport transport;
 
 	void Start()
 	{
 		ipAddress = "0.0.0.0";
 		SetIpAddress(); //Set the Ip to the above address
 		pcAssigned = false;
-		//InvokeRepeating("assignPlayerController", 0.1f, 0.1f);
+		singleplayerButton = GameObject.Find("Singleplayer Start");
+		singleplayerButton.GetComponent<Button>().interactable = false;
+		multiplayerButton = GameObject.Find("Multiplayer Start");
+		multiplayerButton.GetComponent<Button>().interactable = false;
 	}
 
 	// To Host a game
@@ -32,10 +41,7 @@ public class LANManager : NetworkBehaviour
 		NetworkManager.Singleton.StartHost();
 		GetLocalIPAddress();
 		lanElements.SetActive(false);
-		for (int i = 0; i < 10; i++)
-        {
-			GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
-		}
+		dcHost.SetActive(true);
 	}
 
 	// To Join a game
@@ -46,12 +52,55 @@ public class LANManager : NetworkBehaviour
 		SetIpAddress();
 		NetworkManager.Singleton.StartClient();
 		lanElements.SetActive(false);
+		dcClient.SetActive(true);
+		singleplayerButton.SetActive(false);
+		multiplayerButton.SetActive(false);
 	}
 
-	/* Gets the Ip Address of your connected network and
-	shows on the screen in order to let other players join
-	by inputing that Ip in the input field */
-	// ONLY FOR HOST SIDE 
+	[Rpc(SendTo.Server)]
+	public void DisconnectServerRpc()
+	{
+		NetworkManager.Singleton.Shutdown();
+		lanElements.SetActive(true);
+		dcHost.SetActive(false);
+		singleplayerButton.SetActive(true);
+		multiplayerButton.SetActive(true);
+		ipText.text = "[IP Address]";
+		ipAddress = "0.0.0.0";
+		DisconnectClientRpc();
+	}
+
+	[Rpc(SendTo.NotServer)]
+	public void DisconnectClientRpc()
+	{
+		NetworkManager.Singleton.Shutdown();
+		lanElements.SetActive(true);
+		dcClient.SetActive(false);
+		singleplayerButton.SetActive(true);
+		multiplayerButton.SetActive(true);
+		ipText.text = "[IP Address]";
+		ipAddress = "0.0.0.0";
+	}
+
+	void Update()
+	{
+		singleplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 0);
+		multiplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 1);
+	}
+
+	public void LoadScene(string name)
+    {
+        if (name == "Multiplayer")
+        {
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                g.GetComponent<PlayerStations>().enabled = true;
+            }
+        }
+        NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
+    }
+
+	//Gets the IP Address (only for host) 
 	public string GetLocalIPAddress()
 	{
 		var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -67,9 +116,7 @@ public class LANManager : NetworkBehaviour
 		throw new System.Exception("No network adapters with an IPv4 address in the system!");
 	}
 
-	/* Sets the Ip Address of the Connection Data in Unity Transport
-	to the Ip Address which was input in the Input Field */
-	// ONLY FOR CLIENT SIDE
+	//Sets the IP Address (only for client)
 	public void SetIpAddress()
 	{
 		transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
