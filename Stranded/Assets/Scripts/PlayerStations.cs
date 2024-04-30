@@ -83,6 +83,7 @@ public class PlayerStations : NetworkBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log(scene.name);
         if (scene.name == "Multiplayer")
         {
             Setup();
@@ -111,6 +112,7 @@ public class PlayerStations : NetworkBehaviour
 //TODO: check that this works properly w/ mutliplayer
         if (IsOwner)
         {
+            Debug.Log("Spawning buttons!");
             buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
             buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
             buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
