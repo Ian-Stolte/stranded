@@ -13,7 +13,6 @@ public class LANManager : NetworkBehaviour
 {
 	private GameObject singleplayerButton;
 	private GameObject multiplayerButton;
-	private bool pcAssigned;
 
 	[SerializeField] private TextMeshProUGUI ipText;
 	[SerializeField] private TMP_InputField ipInput;
@@ -28,7 +27,6 @@ public class LANManager : NetworkBehaviour
 	{
 		ipAddress = "0.0.0.0";
 		SetIpAddress(); //Set the Ip to the above address
-		pcAssigned = false;
 		singleplayerButton = GameObject.Find("Singleplayer Start");
 		singleplayerButton.GetComponent<Button>().interactable = false;
 		multiplayerButton = GameObject.Find("Multiplayer Start");
@@ -88,17 +86,18 @@ public class LANManager : NetworkBehaviour
 		multiplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 1);
 	}
 
-	public void LoadScene(string name)
+	/*public void LoadScene(string name)
     {
         if (name == "Multiplayer")
         {
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
             {
                 g.GetComponent<PlayerStations>().enabled = true;
+				//g.GetComponent<PlayerStations>().Setup();
             }
         }
         NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
-    }
+    }*/
 
 	//Gets the IP Address (only for host) 
 	public string GetLocalIPAddress()

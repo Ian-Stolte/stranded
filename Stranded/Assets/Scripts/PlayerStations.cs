@@ -9,6 +9,9 @@ using Unity.Collections;
 
 public class PlayerStations : NetworkBehaviour
 {
+    //Setup
+    private bool finishedSetup;
+
     //Stations
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     public string currentStation;
@@ -72,59 +75,50 @@ public class PlayerStations : NetworkBehaviour
     void OnEnable()
     {
         steering.Enable();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     void OnDisable()
     {
         steering.Disable();
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    /*void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log(scene.name);
         if (scene.name == "Multiplayer")
         {
             Setup();
-            if (IsServer)
-            {
-                Debug.Log("Spawning asteroids!");
-                for (int i = 0; i < 10; i++)
-                {
-                    GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
-                }
-            }
-            oldShipPos = ship.transform.position;
-            GameObject.Find("Shield").transform.position = new Vector3(0, 5, 0);
-        }
-    }
 
-    void Setup()
+        }
+    }*/
+
+    public void Setup()
     {
-        //TODO: fix naming players (works on host, not on client --- all spawn at same time)
-        name = "Player " + GameObject.FindGameObjectsWithTag("Player").Length;
+        //Naming players
+        if ((IsOwner && IsServer) || (!IsOwner && !IsServer))
+            name = "Player 1";
+        else
+            name = "Player 2";
 
-        currentStation = "none";
-        
-        ship = GameObject.Find("Spaceship");
-        shipScript = ship.GetComponent<Spaceship>();
-//TODO: check that this works properly w/ mutliplayer
-        if (IsOwner)
+        if (IsServer && IsOwner)
         {
-            Debug.Log("Spawning buttons!");
-            buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
-            buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
-            buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
-            buttons.GetComponent<Buttons>().target = gameObject;
-            buttons.transform.SetSiblingIndex(0);
-            buttonCircles = buttons.transform.GetChild(0).gameObject;
-            qIndicator = buttons.transform.GetChild(2).gameObject;
-            shipScript.player = this;
+            Debug.Log("Spawning asteroids!");
+            for (int i = 0; i < 10; i++)
+            {
+                GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
+            }
         }
 
+        //Set variables
+        currentStation = "none";
+        ship = GameObject.Find("Spaceship");
+        oldShipPos = ship.transform.position;
+        shipScript = ship.GetComponent<Spaceship>();
         GameObject.Find("Shop Manager").GetComponent<ShopManager>().player = this;        
         shield = GameObject.Find("Shield");
+        shield.transform.position = new Vector3(0, 5, 0);
         grabber = GameObject.Find("Grabber");
         grabScript = grabber.GetComponent<Grabber>();
         grabLine = GameObject.Find("Grabber Rope");
@@ -136,29 +130,42 @@ public class PlayerStations : NetworkBehaviour
         if (IsOwner)
             sync.player = this;
 
-        steerInstruction = GameObject.Find("Steering Instructions");
-        thrusterInstruction = GameObject.Find("Thruster Instructions");
-        shieldInstruction = GameObject.Find("Shield Instructions");
-        grabberInstruction = GameObject.Find("Grabber Instructions");
-        radarInstruction = GameObject.Find("Radar Instructions");
-
         steeringOutline = GameObject.Find("Steering Outline");
         thrusterOutline = GameObject.Find("Thruster Outline");
         shieldsOutline = GameObject.Find("Shields Outline");
         grabberOutline = GameObject.Find("Grabber Outline");
         radarOutline = GameObject.Find("Radar Outline");
 
-        HideInstructions();
-        buttonCircles.SetActive(true);
-        qIndicator.SetActive(false);
-
+        //Spawn buttons
         if (IsOwner)
+        {
+            buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
+            buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+            buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
+            buttons.GetComponent<Buttons>().target = gameObject;
+            buttons.transform.SetSiblingIndex(0);
+            buttonCircles = buttons.transform.GetChild(0).gameObject;
+            buttonCircles.SetActive(true);
+            qIndicator = buttons.transform.GetChild(2).gameObject;
+            qIndicator.SetActive(false);
+            
+            shipScript.player = this;
             StartCoroutine(Radar());
+        }
+
+        steerInstruction = GameObject.Find("Instructions").transform.GetChild(0).gameObject;
+        thrusterInstruction = GameObject.Find("Instructions").transform.GetChild(1).gameObject;
+        shieldInstruction = GameObject.Find("Instructions").transform.GetChild(2).gameObject;
+        grabberInstruction = GameObject.Find("Instructions").transform.GetChild(3).gameObject;
+        radarInstruction = GameObject.Find("Instructions").transform.GetChild(4).gameObject;
+        HideInstructions();
+        
+        finishedSetup = true;
     }
 
     void Update()
     {
-        if (IsOwner && SceneManager.GetActiveScene().name == "Multiplayer")
+        if (IsOwner && finishedSetup)
         {
             //Pause game
             if (Input.GetKeyDown(KeyCode.Escape) && !GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
@@ -312,7 +319,7 @@ public class PlayerStations : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (IsOwner && SceneManager.GetActiveScene().name == "Multiplayer")
+        if (IsOwner && finishedSetup)
         {
             //Steering
             if (currentStation == "steering")

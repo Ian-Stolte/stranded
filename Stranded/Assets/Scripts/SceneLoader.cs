@@ -17,4 +17,31 @@ public class SceneLoader : NetworkBehaviour
         }
         NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
     }
+
+     void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Multiplayer")
+        {
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                if (g.GetComponent<PlayerStations>().IsOwner)
+                    g.GetComponent<PlayerStations>().Setup();
+            }
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                if (!g.GetComponent<PlayerStations>().IsOwner)
+                    g.GetComponent<PlayerStations>().Setup();
+            }
+        }
+    }
 }

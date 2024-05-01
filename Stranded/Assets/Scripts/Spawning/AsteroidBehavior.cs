@@ -31,7 +31,7 @@ public class AsteroidBehavior : NetworkBehaviour
         }
         if (!isGrabbed)*/
 
-        if (GameObject.Find("Spaceship").GetComponent<Spaceship>().controlOfThrusters)
+        if (ship.GetComponent<Spaceship>().controlOfThrusters)
         {
             transform.position += speed.Value * direction.Value * Time.deltaTime;
             if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
