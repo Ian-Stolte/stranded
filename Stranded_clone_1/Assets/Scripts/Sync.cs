@@ -19,6 +19,8 @@ public class Sync : NetworkBehaviour
 
     void Start()
     {
+//TODO: wait until sync has started to begin calling rpcs? or just check if ship is null?
+        Debug.Log("Starting sync!");
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
@@ -104,6 +106,7 @@ public class Sync : NetworkBehaviour
         {
             if (player.currentStation != "steering")
             {
+                Debug.Log(ship);
                 ship.transform.rotation = newAngle;
             }
         }

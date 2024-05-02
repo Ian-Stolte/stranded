@@ -151,7 +151,7 @@ public class Spaceship : NetworkBehaviour
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
-                resourceText.GetComponent<NetworkObject>().Spawn(true);
+                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value);
                 stats.resourcesCollected.Value++;
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
@@ -174,6 +174,15 @@ public class Spaceship : NetworkBehaviour
             }
             shop.AddScraps();
         }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    void ResourceTextClientRpc(float value)
+    {
+        GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
+        Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
+        resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + value;
     }
 
     //deplete fuel
