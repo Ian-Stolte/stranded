@@ -113,7 +113,7 @@ public class Spaceship : NetworkBehaviour
             if (IsServer)
             {
                 shipHealth.Value -= asteroidDmg;
-                GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(shipHealth.Value, shipHealthMax);
+                GameObject.Find("Ship Damage Bar").GetComponent<Image>().fillAmount = shipHealth.Value/shipHealthMax;
                 sync.ChangeHealthClientRpc(shipHealth.Value, shipHealthMax);
                 StartCoroutine(HitImmunity());
                 Vector3 dir = collision.gameObject.transform.position - transform.position;
@@ -165,7 +165,7 @@ public class Spaceship : NetworkBehaviour
                 stats.resourcesCollected.Value++;
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
-                GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
+                GameObject.Find("Fuel Bar").GetComponent<Image>().fillAmount = fuelAmount.Value / fuelMax;
                 sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
         }
@@ -205,7 +205,7 @@ public class Spaceship : NetworkBehaviour
             {
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);
-                GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(fuelAmount.Value, fuelMax);
+                GameObject.Find("Fuel Bar").GetComponent<Image>().fillAmount = fuelAmount.Value/fuelMax;
                 sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
             }
         }

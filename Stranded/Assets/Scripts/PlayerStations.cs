@@ -98,6 +98,8 @@ public class PlayerStations : NetworkBehaviour
             }
         }
 
+        GameObject.Find("Host Button").SetActive(false);
+
         //Set variables
         currentStation = "none";
         ship = GameObject.Find("Spaceship");

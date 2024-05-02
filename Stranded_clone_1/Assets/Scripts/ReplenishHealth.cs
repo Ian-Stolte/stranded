@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "Boosts/ReplenishHealth")]
 public class ReplenishHealth : BoostEffect
@@ -13,7 +14,7 @@ public class ReplenishHealth : BoostEffect
         target.GetComponent<Spaceship>().shipHealth.Value += amount;
         
         // Update health bar
-        GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(target.GetComponent<Spaceship>().shipHealth.Value, target.GetComponent<Spaceship>().shipHealthMax);
+        GameObject.Find("Ship Damage Bar").GetComponent<Image>().fillAmount = target.GetComponent<Spaceship>().shipHealth.Value/target.GetComponent<Spaceship>().shipHealthMax;
         GameObject.Find("Sync Object").GetComponent<Sync>().ChangeHealthClientRpc(target.GetComponent<Spaceship>().shipHealth.Value, target.GetComponent<Spaceship>().shipHealthMax);
     }
 }

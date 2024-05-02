@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.Netcode;
 
 public class Sync : NetworkBehaviour
@@ -50,13 +51,13 @@ public class Sync : NetworkBehaviour
     [Rpc(SendTo.NotServer)]
     public void ChangeFuelClientRpc(float value, float max)
     {
-        GameObject.Find("Fuel Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
+        GameObject.Find("Fuel Bar").GetComponent<Image>().fillAmount = value/max;
     }
 
     [Rpc(SendTo.NotServer)]
     public void ChangeHealthClientRpc(float value, float max)
     {
-        GameObject.Find("Ship Damage Bar").GetComponent<ResourceBar>().ChangeResourceToAmount(value, max);
+        GameObject.Find("Ship Damage Bar").GetComponent<Image>().fillAmount = value/max;
     }
 
     //THRUSTER SYNC

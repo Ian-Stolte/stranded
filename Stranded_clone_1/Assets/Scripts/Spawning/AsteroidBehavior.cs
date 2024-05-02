@@ -36,8 +36,7 @@ public class AsteroidBehavior : NetworkBehaviour
             transform.position += speed.Value * direction.Value * Time.deltaTime;
             if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
             {
-                Debug.Log("Despawn!");
-                //GetComponent<NetworkObject>().Despawn(true);
+                GetComponent<NetworkObject>().Despawn(true);
             }
             if (GameObject.FindGameObjectsWithTag("Player").Length > 1)
             {    

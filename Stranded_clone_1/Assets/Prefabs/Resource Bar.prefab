@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5725137934043366784}
   - component: {fileID: 7459843335105263523}
   - component: {fileID: 1447290089153225068}
-  - component: {fileID: 5818755771451987103}
   m_Layer: 5
   m_Name: Ship Damage Bar
   m_TagString: Untagged
@@ -76,19 +75,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5818755771451987103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2258864847929953165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0527532abf66b6b4992a1b3570dcdf7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bar: {fileID: 1447290089153225068}
 --- !u!1 &8470870211481513142
 GameObject:
   m_ObjectHideFlags: 0
