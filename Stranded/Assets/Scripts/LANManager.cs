@@ -19,6 +19,7 @@ public class LANManager : NetworkBehaviour
 	[SerializeField] private GameObject lanElements;
 	[SerializeField] private GameObject dcClient;
 	[SerializeField] private GameObject dcHost;
+	[SerializeField] private GameObject slider;
 
 	[SerializeField] private string ipAddress;
 	[SerializeField] private UnityTransport transport;
@@ -40,6 +41,7 @@ public class LANManager : NetworkBehaviour
 		GetLocalIPAddress();
 		lanElements.SetActive(false);
 		dcHost.SetActive(true);
+		slider.SetActive(true);
 	}
 
 	// To Join a game
@@ -51,6 +53,7 @@ public class LANManager : NetworkBehaviour
 		NetworkManager.Singleton.StartClient();
 		lanElements.SetActive(false);
 		dcClient.SetActive(true);
+		slider.SetActive(true);
 		singleplayerButton.SetActive(false);
 		multiplayerButton.SetActive(false);
 	}
@@ -61,6 +64,7 @@ public class LANManager : NetworkBehaviour
 		NetworkManager.Singleton.Shutdown();
 		lanElements.SetActive(true);
 		dcHost.SetActive(false);
+		slider.SetActive(false);
 		singleplayerButton.SetActive(true);
 		multiplayerButton.SetActive(true);
 		ipText.text = "[IP Address]";
@@ -74,6 +78,7 @@ public class LANManager : NetworkBehaviour
 		NetworkManager.Singleton.Shutdown();
 		lanElements.SetActive(true);
 		dcClient.SetActive(false);
+		slider.SetActive(false);
 		singleplayerButton.SetActive(true);
 		multiplayerButton.SetActive(true);
 		ipText.text = "[IP Address]";
