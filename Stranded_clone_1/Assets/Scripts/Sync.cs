@@ -14,13 +14,13 @@ public class Sync : NetworkBehaviour
     public PlayerStations player;
 
     //pause
-    [SerializeField] private GameObject pauseMenu;
+    public GameObject pauseMenu;
     public NetworkVariable<bool> paused;
 
     void Start()
     {
 //TODO: wait until sync has started to begin calling rpcs? or just check if ship is null?
-        Debug.Log("Starting sync!");
+        //Debug.Log("Starting sync!");
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
@@ -63,7 +63,6 @@ public class Sync : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield)
     {
-        //Any benefit to not updating these if called from the server (b/c that would cause it to update twice)?
         shield.transform.position += addToShield;
         shield.transform.position = ship.transform.position + Vector3.Normalize(shield.transform.position - ship.transform.position) * 5;
         radarArrow.transform.position += addToShield;
@@ -106,7 +105,7 @@ public class Sync : NetworkBehaviour
         {
             if (player.currentStation != "steering")
             {
-                Debug.Log(ship);
+                //Debug.Log(ship);
                 ship.transform.rotation = newAngle;
             }
         }

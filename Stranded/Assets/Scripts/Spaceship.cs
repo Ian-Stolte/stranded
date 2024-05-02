@@ -12,7 +12,6 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private bool stun;
     [SerializeField] private bool slowSpeed;
     [SerializeField] private bool destroyAsteroid;
-    [SerializeField] private bool singlePlayer;
     [SerializeField] private float asteroidDmg;
     [SerializeField] private float knockbackAmount;
 
@@ -32,7 +31,7 @@ public class Spaceship : NetworkBehaviour
     [HideInInspector] public bool isStunned; // Indicates if the player is stunned
     public bool controlOfThrusters;
 
-    // Resource variables
+    //Resource variables
     [Header("Resource Variables")]
     public NetworkVariable<float> shipHealth;
     public int shipHealthMax;
@@ -56,6 +55,11 @@ public class Spaceship : NetworkBehaviour
     private StatTracker stats;
     [HideInInspector] public PlayerStations player;
 
+    //Difficulty levels
+    private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
+    //private float[] depletionAmounts = new float[] {0.5f, 0.5f, 0.5f, 0.5f};
+    private float[] depletionIntervals = new float[] {6, 5, 4, 3};
+
     void Start()
     {
         shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
@@ -65,6 +69,12 @@ public class Spaceship : NetworkBehaviour
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
+    }
+
+    public void SetupDifficulty(int difficulty)
+    {
+        asteroidDmg = dmgLevels[difficulty];
+        depletionInterval = depletionIntervals[difficulty];
     }
 
     void FixedUpdate()
@@ -191,7 +201,7 @@ public class Spaceship : NetworkBehaviour
         while (fuelAmount.Value > 0)
         {   
             yield return new WaitForSeconds(depletionInterval); // wait
-            if (IsServer && (GameObject.FindGameObjectsWithTag("Player").Length > 1 || singlePlayer))
+            if (IsServer)
             {
                 fuelAmount.Value -= depletionAmount;
                 fuelAmount.Value = Mathf.Max(fuelAmount.Value, 0);

@@ -29,7 +29,7 @@ public class LANManager : NetworkBehaviour
 	private int sliderValue;
 	private bool clientInitialized;
 	private string[] difficultyText = new string[]{"Easy", "Normal", "Hard", "Expert"};
-	public Color[] difficultyColors = new Color[4];
+	private Color[] difficultyColors = new Color[4];
 	
 	void Start()
 	{
@@ -39,6 +39,7 @@ public class LANManager : NetworkBehaviour
 		singleplayerButton.GetComponent<Button>().interactable = false;
 		multiplayerButton = GameObject.Find("Multiplayer Start");
 		multiplayerButton.GetComponent<Button>().interactable = false;
+		difficultyColors = GameObject.Find("Scene Loader").GetComponent<SceneLoader>().difficultyColors;
 	}
 
 	// To Host a game

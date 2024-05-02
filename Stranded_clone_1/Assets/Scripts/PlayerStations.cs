@@ -75,24 +75,12 @@ public class PlayerStations : NetworkBehaviour
     void OnEnable()
     {
         steering.Enable();
-        //SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     void OnDisable()
     {
         steering.Disable();
-        //SceneManager.sceneLoaded -= OnSceneLoaded;
     }
-
-    /*void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Debug.Log(scene.name);
-        if (scene.name == "Multiplayer")
-        {
-            Setup();
-
-        }
-    }*/
 
     public void Setup()
     {
@@ -104,7 +92,6 @@ public class PlayerStations : NetworkBehaviour
 
         if (IsServer && IsOwner)
         {
-            Debug.Log("Spawning asteroids!");
             for (int i = 0; i < 10; i++)
             {
                 GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>().SpawnAsteroid(10, 30);
