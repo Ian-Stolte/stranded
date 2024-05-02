@@ -1984,7 +1984,7 @@ MonoBehaviour:
     source: {fileID: 0}
   sfx:
   - name: Asteroid Collision
-    clip: {fileID: 8300000, guid: 4608c32604838de45aff6f741d89d148, type: 3}
+    clip: {fileID: 8300000, guid: f77aaf1adf0d4344bbde7e06a77d2751, type: 3}
     volume: 0.4
     pitch: 1
     loop: 0
