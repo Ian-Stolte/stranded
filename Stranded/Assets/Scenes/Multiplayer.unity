@@ -348,7 +348,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1913, y: 644.209}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &33167792
 MonoBehaviour:
@@ -5550,9 +5550,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 33167791}
     m_Modifications:
     - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2013286085}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 282882306}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Thruster Upgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5567,7 +5575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.x
@@ -5575,7 +5583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5615,11 +5623,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 569.5
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -322.1045
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5635,7 +5643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
-      value: Station Upgrade (1)
+      value: Thruster Upgrade
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6514,9 +6522,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 33167791}
     m_Modifications:
     - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2013286085}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 282882306}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Grabber Upgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6531,7 +6547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.x
@@ -6539,7 +6555,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -6579,11 +6595,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1343.5
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -322.1045
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6603,7 +6619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
-      value: Station Upgrade (3)
+      value: Grabber Upgrade
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6717,7 +6733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1230652802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7259,9 +7275,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 33167791}
     m_Modifications:
     - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2013286085}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 282882306}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Shield Upgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -7276,7 +7300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.x
@@ -7284,7 +7308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -7324,11 +7348,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 956.5
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -322.1045
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7348,7 +7372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
-      value: Station Upgrade (2)
+      value: Shield Upgrade
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8350,9 +8374,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 33167791}
     m_Modifications:
     - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2013286085}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 282882306}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Radar Upgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8367,7 +8399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.x
@@ -8375,7 +8407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -8415,11 +8447,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 1730.5
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -322.1045
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8439,7 +8471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
-      value: Station Upgrade (4)
+      value: Radar Upgrade
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9725,7 +9757,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 30, y: 12.8}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1837320505
 MonoBehaviour:
@@ -9950,7 +9982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1864062697
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10597,6 +10629,7 @@ MonoBehaviour:
   boostsPage: {fileID: 1500946236}
   upgradesPage: {fileID: 1230652801}
   cosmeticsPage: {fileID: 40633897}
+  upgradePanels: []
 --- !u!114 &2013286086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10973,6 +11006,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2013286085}
+    - target: {fileID: 2155918108632619820, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 282882307}
@@ -11002,7 +11039,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.x
@@ -11010,7 +11047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_SizeDelta.x
@@ -11050,11 +11087,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 182.5
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -322.1045
       objectReference: {fileID: 0}
     - target: {fileID: 3162303999223705694, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11074,7 +11111,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
-      value: Station Upgrade
+      value: Steering Upgrade
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

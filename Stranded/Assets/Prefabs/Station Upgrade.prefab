@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level 2: Increased power'
+  m_text: 'Next level: Increased power'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfb6a5ae6e6c7fb4b92680490fd444bf, type: 2}
   m_sharedMaterial: {fileID: 2415984587624857844, guid: dfb6a5ae6e6c7fb4b92680490fd444bf, type: 2}
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stationLevelText: {fileID: 6113216483652327647}
-  stationName: {fileID: 4927338782487184191}
+  nextLevelInfo: {fileID: 5149739367694228688}
   stationLevel: 1
 --- !u!1 &8811394687109464073
 GameObject:
