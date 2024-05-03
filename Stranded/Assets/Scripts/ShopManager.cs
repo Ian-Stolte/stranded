@@ -263,7 +263,17 @@ public class ShopManager : NetworkBehaviour
 
     public void StationUpgrade(string stationUpgrade)
     {
-        GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel + 1;
-        GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevelText.text = "Level " + (GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel.ToString());
+        int cost = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel;
+        Debug.Log("The cost is " + cost);
+        
+        if (shipScript.scraps.Value >= cost)
+        {
+            shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
+            AddScraps();
+
+            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel + 1; // Change the level
+            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevelText.text = "Level " + (GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel.ToString()); // Change the level text
+            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().currentCost.text = ((GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel).ToString()) + " Scraps"; // Change the cost text        
+        }
     }
 }

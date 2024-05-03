@@ -542,7 +542,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stationLevelText: {fileID: 6113216483652327647}
   nextLevelInfo: {fileID: 5149739367694228688}
+  currentCost: {fileID: 2303420439396130743}
   stationLevel: 1
+  baseCost: 1
 --- !u!1 &8811394687109464073
 GameObject:
   m_ObjectHideFlags: 0
