@@ -31,7 +31,10 @@ public class StatTracker : NetworkBehaviour
             }
             else
             {
-                formattedTime = Mathf.Round(totalTime.Value / 60) + ":" + Mathf.Round(totalTime.Value % 60);
+                string seconds = "" + Mathf.Round(totalTime.Value % 60);
+                if (seconds.Length == 1)
+                    seconds = "0" + seconds;
+                formattedTime = Mathf.Round(totalTime.Value / 60) + ":" + seconds;
             }
             GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You survived for " + formattedTime;
             GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected.Value;

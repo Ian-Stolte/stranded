@@ -11,7 +11,7 @@ public class EmergencyFuel : BoostEffect
     public override void Apply(GameObject target)
     {
         // Update fuel variable
-        target.GetComponent<Spaceship>().fuelAmount.Value += amount;
+        target.GetComponent<Spaceship>().fuelAmount.Value = Mathf.Min(target.GetComponent<Spaceship>().fuelAmount.Value+amount, target.GetComponent<Spaceship>().fuelMax);
         
         // Update fuel bar
         GameObject.Find("Fuel Bar").GetComponent<Image>().fillAmount = target.GetComponent<Spaceship>().fuelAmount.Value/target.GetComponent<Spaceship>().fuelMax;
