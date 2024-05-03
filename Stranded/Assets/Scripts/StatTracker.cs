@@ -39,6 +39,10 @@ public class StatTracker : NetworkBehaviour
         }
         else if (scene.name == "Multiplayer")
         {
+            if(!IsSpawned)
+            {
+                NetworkObject.Spawn();
+            }
             totalTime.Value = 0;
             resourcesCollected.Value = 0;
             scrapsCollected.Value = 0;

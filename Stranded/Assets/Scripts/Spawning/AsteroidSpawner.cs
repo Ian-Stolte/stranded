@@ -7,12 +7,12 @@ public class AsteroidSpawner : NetworkBehaviour
 {
     [SerializeField] private GameObject prefab;
     [SerializeField] private Sprite[] sprites;
-    [SerializeField] private float minDelay;
-    [SerializeField] private float maxDelay;
+    public float minDelay;
+    public float maxDelay;
     [SerializeField] private float minDistance;
     [SerializeField] private float maxDistance;
-    [SerializeField] private float minSpeed;
-    [SerializeField] private float maxSpeed;
+    public float minSpeed;
+    public float maxSpeed;
     [SerializeField] private float minSize;
     [SerializeField] private float maxSize;
     private float timer;
@@ -37,6 +37,7 @@ public class AsteroidSpawner : NetworkBehaviour
         //Set timer
         int asteroidDensity = Physics2D.OverlapCircleAll(transform.position, 40, LayerMask.GetMask("Asteroid")).Length;
         timer = Mathf.Max(0.5f, Random.Range(minDelay, maxDelay)*asteroidDensity/5 - elapsedTime/600);
+        //Debug.Log(timer);
 
         Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
         Vector3 veloAdd = new Vector3(GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.x, GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.y, 0);

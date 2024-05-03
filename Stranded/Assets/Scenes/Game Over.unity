@@ -268,9 +268,10 @@ GameObject:
   - component: {fileID: 228782917}
   - component: {fileID: 228782915}
   - component: {fileID: 228782918}
+  - component: {fileID: 228782919}
   m_Layer: 0
   m_Name: Scene Loader
-  m_TagString: Untagged
+  m_TagString: Scene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -323,6 +324,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4d5a0babde7ad4bbacd5623ee4a60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  singleplayer: 0
+  difficulty:
+    m_InternalValue: 0
+  difficultyColors:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &228782919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228782914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65679d5ae5e247b080a84cd7cb8b79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTag: Scene
 --- !u!1 &462638066
 GameObject:
   m_ObjectHideFlags: 0

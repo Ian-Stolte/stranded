@@ -36,9 +36,9 @@ public class LANManager : NetworkBehaviour
 		ipAddress = "0.0.0.0";
 		SetIpAddress(); //Set the Ip to the above address
 		singleplayerButton = GameObject.Find("Singleplayer Start");
-		singleplayerButton.GetComponent<Button>().interactable = false;
+		singleplayerButton.SetActive(false);
 		multiplayerButton = GameObject.Find("Multiplayer Start");
-		multiplayerButton.GetComponent<Button>().interactable = false;
+		multiplayerButton.SetActive(false);
 		difficultyColors = GameObject.Find("Scene Loader").GetComponent<SceneLoader>().difficultyColors;
 	}
 
@@ -102,7 +102,8 @@ public class LANManager : NetworkBehaviour
 
 	void Update()
 	{
-		singleplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 0);
+		singleplayerButton.SetActive(GameObject.FindGameObjectsWithTag("Player").Length > 0);
+		multiplayerButton.SetActive(GameObject.FindGameObjectsWithTag("Player").Length > 0);
 		multiplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 1);
 		
 		if ((int)slider.GetComponent<Slider>().value != sliderValue && IsSpawned && (clientInitialized || IsServer))
