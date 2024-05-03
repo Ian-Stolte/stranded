@@ -113,6 +113,17 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(true);
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
+
+        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+        boostsPage.SetActive(true);
+        upgradesPage.SetActive(false);
+        cosmeticsPage.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
         
         fuelBarRectTransform.anchoredPosition = new Vector2(750f, 64f);
         healthBarRectTransform.anchoredPosition = new Vector2(750f, -19f);
@@ -133,6 +144,17 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(true);
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
+
+        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+        boostsPage.SetActive(true);
+        upgradesPage.SetActive(false);
+        cosmeticsPage.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
 
         fuelBarRectTransform.anchoredPosition = new Vector2(750f, 90f);
         healthBarRectTransform.anchoredPosition = new Vector2(750f, 7f);
