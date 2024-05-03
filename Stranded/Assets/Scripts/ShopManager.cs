@@ -147,8 +147,12 @@ public class ShopManager : NetworkBehaviour
     {
         sync.PauseServerRpc(false);
         shop.SetActive(false);
+        
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
         fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
         CloseShopClientRpc();
@@ -160,6 +164,9 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
         fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
     }
