@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef662e67c330d6740acace6606d008f6, type: 3}
   m_Name: Radio Purchase
   m_EditorClassIdentifier: 
-  itemName: 
-  itemDescription: 
+  itemName: Radio Broadcast
+  itemDescription: Construct a radio to contact home.
   baseCost: 15
-  amount: 0

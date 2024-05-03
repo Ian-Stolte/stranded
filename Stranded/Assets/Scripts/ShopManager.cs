@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-// Based on shop tutorial by Flarvain on YouTube
+// Partially based on shop tutorial by Flarvain on YouTube
 // Link: https://www.youtube.com/watch?v=kUwnfkYcaFU
 public class ShopManager : NetworkBehaviour
 {
@@ -38,6 +38,10 @@ public class ShopManager : NetworkBehaviour
     public GameObject boostsPage;
     public GameObject upgradesPage;
     public GameObject cosmeticsPage;
+
+    [Header("Upgrade Info")]
+    [SerializeField] GameObject[] upgradePanels;
+
     
     void Start()
     {
@@ -255,5 +259,11 @@ public class ShopManager : NetworkBehaviour
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
         }
+    }
+
+    public void StationUpgrade(string stationUpgrade)
+    {
+        GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel + 1;
+        GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevelText.text = "Level " + (GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel.ToString());
     }
 }
