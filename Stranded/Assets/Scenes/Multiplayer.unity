@@ -10557,6 +10557,7 @@ MonoBehaviour:
   boostEffectsSO:
   - {fileID: 11400000, guid: b4e2bda4c5e080b4f911139006db1393, type: 2}
   - {fileID: 11400000, guid: 6afdcb13c3bd3a445b1206ee7d1d1fc6, type: 2}
+  - {fileID: 11400000, guid: ca21e998255d07549ac12c90c844c2f5, type: 2}
   shopPanelsGO:
   - {fileID: 138307488}
   - {fileID: 559862990}
