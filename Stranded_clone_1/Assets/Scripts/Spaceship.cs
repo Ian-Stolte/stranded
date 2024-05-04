@@ -25,7 +25,19 @@ public class Spaceship : NetworkBehaviour
     public float speedDecrease;
     private float maxSpeedRecord;
 
+    //Boost vars
+    [Header("Boost Variables")]
+    public bool boostUnlocked;
+    public float boostSpeed;
+    [HideInInspector] public int boostCount;
+    [HideInInspector] public bool boosting;
+    public float boostDuration;
+    public float boostCooldown;
+    [HideInInspector] public float boostTimer;
+    [SerializeField] GameObject boostIndicator;
+
     //Collision vars
+    [Header("Collision Variables")]
     public NetworkVariable<bool> asteroidImmunity;
     public float stunDuration; // Duration of the stun in seconds
     [HideInInspector] public bool isStunned; // Indicates if the player is stunned
@@ -86,6 +98,22 @@ public class Spaceship : NetworkBehaviour
         ShipwreckSpawner wreckSpawner = GameObject.Find("Shipwreck Spawner").GetComponent<ShipwreckSpawner>();
         wreckSpawner.minDelay = shipwreckDelays[difficulty].min;
         wreckSpawner.maxDelay = shipwreckDelays[difficulty].max;
+    }
+
+    void Update()
+    {
+        //Only works for 1 boost charge
+        boostTimer = Mathf.Max(0, boostTimer - Time.deltaTime);
+        if (boostTimer == 0 && boostUnlocked)
+        {
+            boostCount = 1;
+            boostIndicator.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Boost ready!";
+        }
+        else
+        {
+            boostIndicator.transform.GetChild(0).GetComponent<Image>().fillAmount = (boostCooldown-boostTimer)/boostCooldown;
+            boostIndicator.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Charging...";
+        }
     }
 
     void FixedUpdate()

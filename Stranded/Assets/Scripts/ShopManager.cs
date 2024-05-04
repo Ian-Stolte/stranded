@@ -41,6 +41,7 @@ public class ShopManager : NetworkBehaviour
 
     [Header("Upgrade Info")]
     [SerializeField] GameObject[] upgradePanels;
+    [SerializeField] GameObject boostIndicator;
 
     
     void Start()
@@ -296,6 +297,11 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel + 1; // Change the level
             GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevelText.text = "Level " + (GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel.ToString()); // Change the level text
             GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().currentCost.text = ((GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel).ToString()) + " Scraps"; // Change the cost text        
+            if (stationUpgrade == "Thruster Upgrade")
+            {
+                shipScript.boostUnlocked = true;
+                boostIndicator.SetActive(true);
+            }
         }
     }
 }

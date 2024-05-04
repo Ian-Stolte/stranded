@@ -9,6 +9,7 @@ public class CameraFollow : MonoBehaviour
     private float speed;
     private float pastSpeed;
     private bool inDecel;
+    private bool boosting;
 
     [SerializeField] private bool follow;
     [SerializeField] private bool rotWithShip;
@@ -30,7 +31,8 @@ public class CameraFollow : MonoBehaviour
         }
         pastSpeed = speed;
 
-        if (!inDecel)
+        transform.rotation = Quaternion.identity;
+        if (!inDecel && !boosting)
         {
             /*if (doOffset)
             {
@@ -54,14 +56,30 @@ public class CameraFollow : MonoBehaviour
             }
             else if (!rotWithShip)
             {*/
-                transform.rotation = Quaternion.identity;
+                //transform.rotation = Quaternion.identity;
             //}
             //Zoom out
             if (speed > 5)
-            {
                 GetComponent<Camera>().orthographicSize = 15 + Mathf.Pow((speed-5), 2) / 5; //quadratic growth from 5 to 10
-            }
+            else
+                GetComponent<Camera>().orthographicSize = 15;
         }
+    }
+
+    public IEnumerator Boost(float duration)
+    {
+        boosting = true;
+        float targetSize;
+        for (float i = 0; i < duration; i += 0.01f)
+        {
+            if (speed > 5)
+                targetSize = 15 + Mathf.Pow((speed - 5), 2) / 5; //quadratic growth from 5 to 10
+            else
+                targetSize = 15;
+            GetComponent<Camera>().orthographicSize = GetComponent<Camera>().orthographicSize + (targetSize - GetComponent<Camera>().orthographicSize) / 10;
+            yield return new WaitForSeconds(0.01f);
+        }
+        boosting = false;
     }
 
     IEnumerator Decelerate()

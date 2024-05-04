@@ -204,6 +204,12 @@ public class PlayerStations : NetworkBehaviour
                 qIndicator.SetActive(true);
             }
 
+            //Thruster Boosts
+            if (currentStation == "thrusters" && Input.GetMouseButtonDown(0) && !shipScript.isStunned && !sync.paused.Value && shipScript.boostCount > 0)
+            {
+                StartCoroutine(BoostShip());
+            }
+
             //Grabber
             grabLine.GetComponent<LineRenderer>().SetPosition(0, grabber.transform.localPosition);
             grabLine.GetComponent<LineRenderer>().SetPosition(1, ship.transform.localPosition);
@@ -336,7 +342,7 @@ public class PlayerStations : NetworkBehaviour
             {
                 thrusterInstruction.SetActive(true);
             }
-            if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space) && !shipScript.isStunned)
+            if (currentStation == "thrusters" && Input.GetKey(KeyCode.Space) && !shipScript.isStunned && !shipScript.boosting)
             {
                 hideThrusterInstruction = true;
                 thrusterInstruction.SetActive(false);
@@ -351,7 +357,7 @@ public class PlayerStations : NetworkBehaviour
             if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable))
             {
                 shipScript.controlOfThrusters = true;
-                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, thrustersOn, ship.transform.position - oldShipPos);
+                sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, (thrustersOn || shipScript.boosting), ship.transform.position - oldShipPos);
             }
             else
             {
@@ -449,5 +455,22 @@ public class PlayerStations : NetworkBehaviour
                 }
             }
         }
+    }
+
+    //Boosts
+    private IEnumerator BoostShip()
+    {
+        shipScript.boosting = true;
+        shipScript.boostTimer = shipScript.boostCooldown;
+        shipScript.boostCount -= 1;
+        StartCoroutine(GameObject.Find("Main Camera").GetComponent<CameraFollow>().Boost(shipScript.boostDuration));
+        for (int i = 0; i < 60*shipScript.boostDuration; i++)
+        {
+            float decelAmount = 1 - (i/(60*shipScript.boostDuration));
+            Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
+            ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.boostSpeed*decelAmount, Mathf.Sin(rot.z)*shipScript.boostSpeed*decelAmount), ForceMode2D.Force);
+            yield return new WaitForSeconds(1/60);
+        }
+        shipScript.boosting = false;
     }
 }
