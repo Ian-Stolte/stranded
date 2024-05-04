@@ -11,7 +11,7 @@ public class ReplenishHealth : BoostEffect
     public override void Apply(GameObject target)
     {
         // Update health variable
-        target.GetComponent<Spaceship>().shipHealth.Value += amount;
+        target.GetComponent<Spaceship>().fuelAmount.Value = Mathf.Min(target.GetComponent<Spaceship>().shipHealth.Value+amount, target.GetComponent<Spaceship>().shipHealthMax);
         
         // Update health bar
         GameObject.Find("Ship Damage Bar").GetComponent<Image>().fillAmount = target.GetComponent<Spaceship>().shipHealth.Value/target.GetComponent<Spaceship>().shipHealthMax;

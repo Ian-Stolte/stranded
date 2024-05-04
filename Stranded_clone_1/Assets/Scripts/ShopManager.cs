@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-// Based on shop tutorial by Flarvain on YouTube
+// Partially based on shop tutorial by Flarvain on YouTube
 // Link: https://www.youtube.com/watch?v=kUwnfkYcaFU
 public class ShopManager : NetworkBehaviour
 {
@@ -38,6 +38,10 @@ public class ShopManager : NetworkBehaviour
     public GameObject boostsPage;
     public GameObject upgradesPage;
     public GameObject cosmeticsPage;
+
+    [Header("Upgrade Info")]
+    [SerializeField] GameObject[] upgradePanels;
+
     
     void Start()
     {
@@ -109,6 +113,17 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(true);
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
+
+        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+        boostsPage.SetActive(true);
+        upgradesPage.SetActive(false);
+        cosmeticsPage.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
         
         fuelBarRectTransform.anchoredPosition = new Vector2(750f, 64f);
         healthBarRectTransform.anchoredPosition = new Vector2(750f, -19f);
@@ -130,6 +145,17 @@ public class ShopManager : NetworkBehaviour
         openShopBtn.SetActive(false);
         closeShopBtn.SetActive(true);
 
+        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
+        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+
+        boostsPage.SetActive(true);
+        upgradesPage.SetActive(false);
+        cosmeticsPage.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
+
         fuelBarRectTransform.anchoredPosition = new Vector2(750f, 90f);
         healthBarRectTransform.anchoredPosition = new Vector2(750f, 7f);
 
@@ -147,8 +173,12 @@ public class ShopManager : NetworkBehaviour
     {
         sync.PauseServerRpc(false);
         shop.SetActive(false);
+        
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
         fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
         CloseShopClientRpc();
@@ -160,6 +190,9 @@ public class ShopManager : NetworkBehaviour
         shop.SetActive(false);
         openShopBtn.SetActive(Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")));
         closeShopBtn.SetActive(false);
+
+        fuelBar.SetActive(true);
+        healthBar.SetActive(true);
         fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
     }
@@ -247,6 +280,22 @@ public class ShopManager : NetworkBehaviour
             
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
+        }
+    }
+
+    public void StationUpgrade(string stationUpgrade)
+    {
+        int cost = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel;
+        Debug.Log("The cost is " + cost);
+        
+        if (shipScript.scraps.Value >= cost)
+        {
+            shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
+            AddScraps();
+
+            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel + 1; // Change the level
+            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevelText.text = "Level " + (GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel.ToString()); // Change the level text
+            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().currentCost.text = ((GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel).ToString()) + " Scraps"; // Change the cost text        
         }
     }
 }

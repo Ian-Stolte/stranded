@@ -6,8 +6,8 @@ using Unity.Netcode;
 public class ShipwreckSpawner : NetworkBehaviour
 {
     [SerializeField] private GameObject prefab;
-    [SerializeField] private float minDelay;
-    [SerializeField] private float maxDelay;
+    public float minDelay;
+    public float maxDelay;
     [SerializeField] private float minDistance;
     [SerializeField] private float maxDistance;
     [SerializeField] private int maxAtOnce;

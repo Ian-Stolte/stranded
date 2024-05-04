@@ -58,7 +58,10 @@ public class Spaceship : NetworkBehaviour
     //Difficulty levels
     private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
     //private float[] depletionAmounts = new float[] {0.5f, 0.5f, 0.5f, 0.5f};
-    private float[] depletionIntervals = new float[] {6, 5, 4, 3};
+    private float[] depletionIntervals = new float[] {7, 5.5f, 4, 1};
+    private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (0.5f, 3), (1.5f, 3.5f)};
+    private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
+    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(10, 20), (15, 30), (15, 30), (20, 40)};
 
     void Start()
     {
@@ -75,6 +78,14 @@ public class Spaceship : NetworkBehaviour
     {
         asteroidDmg = dmgLevels[difficulty];
         depletionInterval = depletionIntervals[difficulty];
+        AsteroidSpawner spawner = GameObject.Find("Asteroid Spawner").GetComponent<AsteroidSpawner>();
+        spawner.minSpeed = asteroidSpeeds[difficulty].min;
+        spawner.maxSpeed = asteroidSpeeds[difficulty].max;
+        spawner.minDelay = asteroidDelays[difficulty].min;
+        spawner.maxDelay = asteroidDelays[difficulty].max;
+        ShipwreckSpawner wreckSpawner = GameObject.Find("Shipwreck Spawner").GetComponent<ShipwreckSpawner>();
+        wreckSpawner.minDelay = shipwreckDelays[difficulty].min;
+        wreckSpawner.maxDelay = shipwreckDelays[difficulty].max;
     }
 
     void FixedUpdate()
