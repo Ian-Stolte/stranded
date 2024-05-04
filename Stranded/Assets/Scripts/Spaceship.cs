@@ -53,6 +53,7 @@ public class Spaceship : NetworkBehaviour
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
     [Tooltip("How much fuel depletes each interval")] [SerializeField] private float depletionAmount;
     public GameObject resourceTextPrefab;
+    private float gameTime;
 
     // Text variables
     [Header("Text Variables")]
@@ -73,8 +74,7 @@ public class Spaceship : NetworkBehaviour
 
     //Difficulty levels
     private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
-    //private float[] depletionAmounts = new float[] {0.5f, 0.5f, 0.5f, 0.5f};
-    private float[] depletionIntervals = new float[] {7, 5.5f, 4, 1};
+    private float[] depletionIntervals = new float[] {8, 6.5f, 5, 4};
     private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (0.5f, 3), (1.5f, 3.5f)};
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
     private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(10, 20), (15, 30), (15, 30), (20, 40)};
@@ -106,6 +106,8 @@ public class Spaceship : NetworkBehaviour
 
     void Update()
     {
+        gameTime += Time.deltaTime;
+
         //Only works for 1 boost charge
         boostTimer = Mathf.Max(0, boostTimer - Time.deltaTime);
         if (boostTimer == 0 && boostUnlocked)
@@ -259,7 +261,7 @@ public class Spaceship : NetworkBehaviour
     {
         while (fuelAmount.Value > 0)
         {   
-            yield return new WaitForSeconds(depletionInterval); // wait
+            yield return new WaitForSeconds(depletionInterval - Mathf.Min(1, gameTime/600)); // wait
             if (IsServer)
             {
                 fuelAmount.Value -= depletionAmount;

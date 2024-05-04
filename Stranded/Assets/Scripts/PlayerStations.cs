@@ -463,6 +463,7 @@ public class PlayerStations : NetworkBehaviour
         shipScript.boosting = true;
         shipScript.boostTimer = shipScript.boostCooldown;
         shipScript.boostCount -= 1;
+        //ship.GetComponent<Rigidbody2D>().velocity *= 0.8f;
         StartCoroutine(GameObject.Find("Main Camera").GetComponent<CameraFollow>().Boost(shipScript.boostDuration));
         for (int i = 0; i < 60*shipScript.boostDuration; i++)
         {
