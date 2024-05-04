@@ -5,7 +5,7 @@ using TMPro;
 
 public class StationTemplate : MonoBehaviour
 {
-   public TMP_Text stationLevelText;
+    public TMP_Text stationLevelText;
     public TMP_Text nextLevelInfo;
     public TMP_Text currentCost;
 

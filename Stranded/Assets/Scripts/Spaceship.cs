@@ -67,6 +67,10 @@ public class Spaceship : NetworkBehaviour
     private StatTracker stats;
     [HideInInspector] public PlayerStations player;
 
+    //Upgrades
+    private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
+    private float[] maxSpeeds = new float[] {8, 10, 10, 12};
+
     //Difficulty levels
     private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
     //private float[] depletionAmounts = new float[] {0.5f, 0.5f, 0.5f, 0.5f};
@@ -200,6 +204,7 @@ public class Spaceship : NetworkBehaviour
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+                resourceText.transform.SetSiblingIndex(0);
                 ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value);
                 stats.resourcesCollected.Value++;
                 fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
@@ -210,6 +215,11 @@ public class Spaceship : NetworkBehaviour
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
+            if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
+            {
+                player.hideGrabberInstruction = true;
+                player.HideInstructions();
+            }
             if (player.usedRadar)
             {
                 player.hideRadarInstruction = true;
@@ -220,18 +230,28 @@ public class Spaceship : NetworkBehaviour
             {
                 scraps.Value++;
                 stats.scrapsCollected.Value++;
+                GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
+                Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
+                resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+                resourceText.transform.SetSiblingIndex(0);
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
+                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, true);
             }
             shop.AddScraps();
         }
     }
 
     [Rpc(SendTo.NotServer)]
-    void ResourceTextClientRpc(float value)
+    void ResourceTextClientRpc(float value, bool changeColor = false)
     {
         GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
         Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
         resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
         resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + value;
+        resourceText.transform.SetSiblingIndex(0);
+        if (changeColor)
+            resourceText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
     }
 
     //deplete fuel
@@ -284,5 +304,19 @@ public class Spaceship : NetworkBehaviour
     {
         isStunned = false;
         maxSpeed = maxSpeedRecord;
+    }
+
+    public void UpgradeStation(string type, int level)
+    {
+        if (type == "Thruster Upgrade")
+        {
+            thrustSpeed = thrustSpeeds[level-1];
+            maxSpeed = maxSpeeds[level-1];
+            if (level >= 3)
+            {
+                boostUnlocked = true;
+                boostIndicator.SetActive(true);
+            }
+        }
     }
 }

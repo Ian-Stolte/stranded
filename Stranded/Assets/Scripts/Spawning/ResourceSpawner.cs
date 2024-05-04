@@ -30,7 +30,9 @@ public class ResourceSpawner : NetworkBehaviour
 
     public void SpawnResource()
     {
-        timer = Random.Range(minDelay, maxDelay);
+        int resourceDensity = Physics2D.OverlapCircleAll(transform.position, 60, LayerMask.GetMask("Resource")).Length;
+        timer = Mathf.Max(0.5f, Random.Range(minDelay, maxDelay)*resourceDensity/3);
+
         Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
         distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
         GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation/*, GameObject.Find("Resources").transform*/);

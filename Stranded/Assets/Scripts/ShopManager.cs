@@ -43,6 +43,9 @@ public class ShopManager : NetworkBehaviour
     [SerializeField] GameObject[] upgradePanels;
     [SerializeField] GameObject boostIndicator;
 
+    //Level Info
+    private string[] thrustInfo = new string[] {"Speed 3 -> 4\nMax 8 -> 10", "Unlocks periodic boosts of speed", "Speed 4 -> 5\nMax 10 -> 12", "Fully upgraded!"};
+
     
     void Start()
     {
@@ -287,21 +290,32 @@ public class ShopManager : NetworkBehaviour
     public void StationUpgrade(string stationUpgrade)
     {
         int cost = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel;
-        Debug.Log("The cost is " + cost);
+        //Debug.Log("The cost is " + cost);
         
         if (shipScript.scraps.Value >= cost)
         {
             shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
             AddScraps();
 
-            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel + 1; // Change the level
-            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevelText.text = "Level " + (GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel.ToString()); // Change the level text
-            GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().currentCost.text = ((GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel).ToString()) + " Scraps"; // Change the cost text        
-            if (stationUpgrade == "Thruster Upgrade")
+            StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
+            upgrade.stationLevel += 1; // Change the level
+            upgrade.stationLevelText.text = "Level " + upgrade.stationLevel; // Change the level text
+            if (upgrade.stationLevel == 4)
             {
-                shipScript.boostUnlocked = true;
-                boostIndicator.SetActive(true);
+                upgrade.GetComponent<Button>().interactable = false;
+                upgrade.currentCost.gameObject.SetActive(false);
             }
+            else {
+                upgrade.currentCost.text = (upgrade.baseCost * upgrade.stationLevel) + " Scraps"; // Change the cost text    
+            }
+            var infoList = thrustInfo;
+            /*if (stationUpgrade == "Steering Upgrade")
+            {
+                infoList = steeringInfo;
+            }*/
+            upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
+            shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);
+
         }
     }
 }
