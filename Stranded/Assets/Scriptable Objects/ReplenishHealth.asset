@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Replenish Health
   itemDescription: Give your ship a little boost in health.
   baseCost: 2
-  amount: 2
+  amount: 4

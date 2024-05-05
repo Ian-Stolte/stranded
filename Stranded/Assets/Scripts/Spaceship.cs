@@ -232,6 +232,8 @@ public class Spaceship : NetworkBehaviour
             {
                 scraps.Value++;
                 stats.scrapsCollected.Value++;
+                Debug.Log("Scraps collected: " + scraps.Value);
+
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);

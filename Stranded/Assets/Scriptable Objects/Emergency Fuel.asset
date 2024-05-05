@@ -15,4 +15,4 @@ MonoBehaviour:
   itemName: Emergency Fuel
   itemDescription: Refill with a critical infusion of fuel.
   baseCost: 2
-  amount: 5
+  amount: 7
