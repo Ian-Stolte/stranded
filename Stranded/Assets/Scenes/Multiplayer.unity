@@ -2531,7 +2531,7 @@ MonoBehaviour:
   boostSpeed: 16
   boostCount: 0
   boosting: 0
-  boostDuration: 0.5
+  boostDuration: 1
   boostCooldown: 6
   boostTimer: 0
   boostIndicator: {fileID: 185161299}
