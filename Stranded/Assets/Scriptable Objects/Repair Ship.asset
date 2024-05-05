@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d96372bfe493004438009ad35e327afc, type: 3}
-  m_Name: ReplenishHealth
+  m_Script: {fileID: 11500000, guid: e3d918592e17c3a489a331a0d34efd3c, type: 3}
+  m_Name: Repair Ship
   m_EditorClassIdentifier: 
-  itemName: Minor Tune-Up
-  itemDescription: Fix up some of those dents and scratches.
-  baseCost: 1
-  amount: 2
+  itemName: Repair Ship
+  itemDescription: Restore it like new with a well-needed service.
+  baseCost: 5
+  amount: 10
