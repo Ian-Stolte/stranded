@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d96372bfe493004438009ad35e327afc, type: 3}
   m_Name: ReplenishHealth
   m_EditorClassIdentifier: 
-  itemName: Replenish Health
-  itemDescription: Give your ship a little boost in health.
-  baseCost: 2
+  itemName: Minor Tune-Up
+  itemDescription: Fix up some of those dents and scratches.
+  baseCost: 1
   amount: 2

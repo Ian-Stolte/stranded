@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(menuName = "Boosts/ReplenishHealth")]
-public class ReplenishHealth : BoostEffect
+[CreateAssetMenu(menuName = "Boosts/RepairShip")]
+public class RepairShip : BoostEffect
 {
     public int amount;
 

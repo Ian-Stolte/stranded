@@ -11,9 +11,7 @@ public class ShipwreckSpawner : NetworkBehaviour
     [SerializeField] private float minDistance;
     [SerializeField] private float maxDistance;
     [SerializeField] private int maxAtOnce;
-    /*[SerializeField] private float minSpeed;
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float resourceValue;*/
+    [SerializeField] private float resourceValue;
     private float timer;
 
     void Update()
@@ -43,10 +41,7 @@ public class ShipwreckSpawner : NetworkBehaviour
         
         //Set resource values
         ResourceBehavior res = obj.GetComponent<ResourceBehavior>();
-        /*res.value.Value = resourceValue; //could randomize this between a range
-        res.speed.Value = Random.Range(minSpeed, maxSpeed);
-        res.direction.Value = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-        res.direction.Value = Vector3.Normalize(res.direction.Value);*/
+        res.value.Value = resourceValue; //could randomize this between a range
         obj.GetComponent<NetworkObject>().Spawn(true);
     }
 }

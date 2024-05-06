@@ -15,6 +15,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private bool rotWithShip;
     [SerializeField] private bool doOffset;
     [SerializeField] private Vector2 offset;
+    //[SerializeField] private float boostMagnitude;
 
     void Start()
     {
@@ -24,10 +25,10 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         speed = Mathf.Sqrt(Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.x, 2) + Mathf.Pow(ship.GetComponent<Rigidbody2D>().velocity.y, 2));
-        if (speed - pastSpeed < -1)
+        if (speed - pastSpeed < -1 && !boosting)
         {
             inDecel = true;
-            StartCoroutine(Decelerate());
+            StartCoroutine("Decelerate");
         }
         pastSpeed = speed;
 
@@ -60,7 +61,7 @@ public class CameraFollow : MonoBehaviour
             //}
             //Zoom out
             if (speed > 5)
-                GetComponent<Camera>().orthographicSize = 15 + Mathf.Pow((speed-5), 2) / 5; //quadratic growth from 5 to 10
+                GetComponent<Camera>().orthographicSize = Mathf.Min(20, 15 + Mathf.Pow((speed-5), 2) / 5); //quadratic growth from 5 to 10
             else
                 GetComponent<Camera>().orthographicSize = 15;
         }
@@ -68,15 +69,21 @@ public class CameraFollow : MonoBehaviour
 
     public IEnumerator Boost(float duration)
     {
+        StopCoroutine("Decelerate");
         boosting = true;
         float targetSize;
+        //Vector3 shipPos = ship.transform.position;
         for (float i = 0; i < duration; i += 0.01f)
         {
             if (speed > 5)
                 targetSize = 15 + Mathf.Pow((speed - 5), 2) / 5; //quadratic growth from 5 to 10
             else
                 targetSize = 15;
-            GetComponent<Camera>().orthographicSize = GetComponent<Camera>().orthographicSize + (targetSize - GetComponent<Camera>().orthographicSize) / 10;
+            GetComponent<Camera>().orthographicSize = GetComponent<Camera>().orthographicSize + (targetSize - GetComponent<Camera>().orthographicSize) / 60;
+            //Debug.Log(GetComponent<Camera>().orthographicSize + " : " + targetSize);
+            /*offset = Vector3.Normalize(ship.transform.position - shipPos);
+            shipPos = ship.transform.position;
+            transform.localPosition = new Vector3(offset.x*boostMagnitude, offset.y*boostMagnitude, transform.localPosition.z);*/
             yield return new WaitForSeconds(0.01f);
         }
         boosting = false;
