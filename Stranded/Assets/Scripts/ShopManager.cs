@@ -44,8 +44,8 @@ public class ShopManager : NetworkBehaviour
     [SerializeField] GameObject boostIndicator;
 
     //Level Info
-    private string[] thrustInfo = new string[] {"Speed 3 -> 4\nMax 8 -> 10", "Unlocks periodic boosts of speed", "Speed 4 -> 5\nMax 10 -> 12", "Fully upgraded!"};
-    private string[] radarInfo = new string[] {"Range 100 -> 150", "Points toward all shipwrecks within range", "Range 150 -> 200", "Fully upgraded!"};
+    private string[] thrustInfo = new string[] {"Speed 3 → 4\nMax 8 → 10", "Unlocks periodic boosts of speed", "Speed 4 → 5\nMax 10 → 12", "Fully upgraded!"};
+    private string[] radarInfo = new string[] {"Range 100 → 150", "Points toward all shipwrecks within range", "Range 150 → 200", "Fully upgraded!"};
     
     void Start()
     {
@@ -305,7 +305,7 @@ public class ShopManager : NetworkBehaviour
                 upgrade.currentCost.gameObject.SetActive(false);
             }
             else {
-                upgrade.stationLevelText.text = "Level " + upgrade.stationLevel + " -> " + (upgrade.stationLevel+1);
+                upgrade.stationLevelText.text = "Level " + upgrade.stationLevel + " → " + (upgrade.stationLevel+1);
                 upgrade.currentCost.text = (upgrade.baseCost * upgrade.stationLevel) + " Scraps";  
             }
             var infoList = thrustInfo;

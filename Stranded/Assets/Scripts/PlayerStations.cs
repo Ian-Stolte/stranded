@@ -47,6 +47,7 @@ public class PlayerStations : NetworkBehaviour
     //Radar
     private TMPro.TextMeshProUGUI radarText;
     private GameObject radarArrow;
+    private GameObject radarSmallText;
     private Vector3 radarDir;
     private float cameraZoom;
     private float minDist;
@@ -112,6 +113,7 @@ public class PlayerStations : NetworkBehaviour
         grabLine = GameObject.Find("Grabber Rope");
         radarText = GameObject.Find("Radar Text").GetComponent<TMPro.TextMeshProUGUI>();
         radarArrow = GameObject.Find("Radar Arrow");
+        radarSmallText = GameObject.Find("Radar Small Text");
         shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop;
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
@@ -299,12 +301,14 @@ public class PlayerStations : NetworkBehaviour
             if (minDist >= 1.67 * cameraZoom && minDist <= 100 && currentStation == "radar")
             {
                 radarArrow.SetActive(true);
+                radarSmallText.SetActive(true);
                 radarArrow.transform.position = ship.transform.position + radarDir * (cameraZoom - 5);
                 radarArrow.transform.localScale = new Vector3(1f + (cameraZoom-15)/50, 1.7f + (cameraZoom-15)/50, 1);
             }
             else
             {
                 radarArrow.SetActive(false);
+                radarSmallText.SetActive(false);
             }
 
             radarText.enabled = (currentStation == "radar");
@@ -413,6 +417,7 @@ public class PlayerStations : NetworkBehaviour
         {
             yield return new WaitForSeconds(1.5f);
             radarArrow.SetActive(false);
+            radarSmallText.SetActive(false);
             yield return new WaitForSeconds(0.4f);
             yield return new WaitUntil(() => currentStation == "radar");
             if (shipScript.radarUnlocked)
@@ -423,6 +428,7 @@ public class PlayerStations : NetworkBehaviour
                 {
                     radarText.text = "Out of Range";
                     radarArrow.SetActive(false);
+                    radarSmallText.SetActive(false);
                 }
                 else
                 {
@@ -440,19 +446,21 @@ public class PlayerStations : NetworkBehaviour
                         radarText.text = "Out of Range";
                     else
                         radarText.text = "";
-                        radarArrow.transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().text = Mathf.Round(minDist) + " km";
-                        radarArrow.transform.GetChild(0).rotation = Quaternion.identity;
+                        radarSmallText.GetComponent<TMPro.TextMeshPro>().text = Mathf.Round(minDist) + " km";
                         //radarText.text = Mathf.Round(minDist) + " km";
                     if (minDist >= 1.67 * cameraZoom && minDist <= shipScript.radarRange)
                     {
                         radarArrow.SetActive(true);
+                        radarSmallText.SetActive(true);
                         radarDir = Vector3.Normalize(closestWreck.transform.position - ship.transform.position);
                         Vector3 rot = new Vector3(0, 0, Mathf.Atan2(radarDir.y, radarDir.x) * Mathf.Rad2Deg - 90);
                         radarArrow.transform.rotation = (Quaternion.Euler(rot));
+                        radarSmallText.transform.position = ship.transform.position + Vector3.Normalize(radarDir) * 13;
                     }
                     else
                     {
                         radarArrow.SetActive(false);
+                        radarSmallText.SetActive(false);
                     }
                 }
             }
