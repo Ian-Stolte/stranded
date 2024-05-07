@@ -469,7 +469,6 @@ public class PlayerStations : NetworkBehaviour
         for (float i = 0; i < 60*shipScript.boostDuration; i++)
         {        
             float decelAmount = 1 - i/(60*shipScript.boostDuration);
-            Debug.Log(decelAmount);
             shipScript.maxSpeed = oldMaxSpeed + 5*decelAmount;
             Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
             ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.boostSpeed*decelAmount, Mathf.Sin(rot.z)*shipScript.boostSpeed*decelAmount), ForceMode2D.Force);
