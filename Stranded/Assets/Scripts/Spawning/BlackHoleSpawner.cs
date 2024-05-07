@@ -56,12 +56,10 @@ public class BlackHoleSpawner : NetworkBehaviour
             GameObject ePoint = Instantiate(exclamationPoint, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
             if (Mathf.Abs((distance.y/distance.x)*screenX) < screenY) //going off side of screen
             {
-                Debug.Log("Off the side");
                 ePoint.GetComponent<RectTransform>().anchoredPosition = Mathf.Sign(distance.x) * new Vector2(screenX - 20, (distance.y/distance.x)*screenX - 30);
             }
             else //going off top/bottom of screen
             {
-                Debug.Log("Off the top/bottom");
                 ePoint.GetComponent<RectTransform>().anchoredPosition = Mathf.Sign(distance.y) * new Vector2((distance.x/distance.y)*screenY - 20, screenY - 30);
             }
         }

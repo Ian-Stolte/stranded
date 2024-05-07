@@ -40,7 +40,7 @@ public class Buttons : MonoBehaviour
         {
             ChangeTo("grabber");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5) && buttons.GetChild(4).GetComponent<Button>().interactable)
+        else if (Input.GetKeyDown(KeyCode.Alpha5) && buttons.GetChild(4).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().radarUnlocked)
         {
             ChangeTo("radar");
         }

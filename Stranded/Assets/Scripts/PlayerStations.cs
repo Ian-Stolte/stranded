@@ -45,7 +45,6 @@ public class PlayerStations : NetworkBehaviour
     private bool grabberHasGrabbed;
 
     //Radar
-    public bool radarUnlocked;
     private TMPro.TextMeshProUGUI radarText;
     private GameObject radarArrow;
     private Vector3 radarDir;
@@ -416,10 +415,10 @@ public class PlayerStations : NetworkBehaviour
             radarArrow.SetActive(false);
             yield return new WaitForSeconds(0.4f);
             yield return new WaitUntil(() => currentStation == "radar");
-            if (radarUnlocked)
+            if (shipScript.radarUnlocked)
             {
                 GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
-                minDist = 101;
+                minDist = shipScript.radarRange+1;
                 if (shipwrecks.Length == 0)
                 {
                     radarText.text = "Out of Range";
@@ -437,11 +436,14 @@ public class PlayerStations : NetworkBehaviour
                             closestWreck = g;
                         }
                     }
-                    if (minDist == 101)
+                    if (minDist == shipScript.radarRange+1)
                         radarText.text = "Out of Range";
                     else
-                        radarText.text = Mathf.Round(minDist) + " km";
-                    if (minDist >= 1.67 * cameraZoom && minDist <= 100)
+                        radarText.text = "";
+                        radarArrow.transform.GetChild(0).GetComponent<TMPro.TextMeshPro>().text = Mathf.Round(minDist) + " km";
+                        radarArrow.transform.GetChild(0).rotation = Quaternion.identity;
+                        //radarText.text = Mathf.Round(minDist) + " km";
+                    if (minDist >= 1.67 * cameraZoom && minDist <= shipScript.radarRange)
                     {
                         radarArrow.SetActive(true);
                         radarDir = Vector3.Normalize(closestWreck.transform.position - ship.transform.position);

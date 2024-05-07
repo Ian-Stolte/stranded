@@ -31,7 +31,8 @@ public class BlackHole : NetworkBehaviour
             GetComponent<NetworkObject>().Despawn(true);
         }
         pullStrength = maxPull * timer/lifetime;
-        transform.localScale = new Vector3(6, 6, 6) * ((timer/lifetime)/2 + 0.5f);
+//TODO: fix bug where scale is assigned (NaN, NaN, NaN)
+        transform.localScale = new Vector3(6, 6, 6) * Mathf.Sqrt((timer/lifetime));
         killRadius = killCollider.radius * transform.localScale.x;
 
         Collider2D[] nearbyObjs = Physics2D.OverlapCircleAll(transform.position, pullRadius, LayerMask.GetMask("Asteroid", "Resource", "Shipwreck", "Spaceship"));

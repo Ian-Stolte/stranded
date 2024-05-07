@@ -45,7 +45,7 @@ public class ShopManager : NetworkBehaviour
 
     //Level Info
     private string[] thrustInfo = new string[] {"Speed 3 -> 4\nMax 8 -> 10", "Unlocks periodic boosts of speed", "Speed 4 -> 5\nMax 10 -> 12", "Fully upgraded!"};
-
+    private string[] radarInfo = new string[] {"Range 100 -> 150", "Points toward all shipwrecks within range", "Range 150 -> 200", "Fully upgraded!"};
     
     void Start()
     {
@@ -290,7 +290,6 @@ public class ShopManager : NetworkBehaviour
     public void StationUpgrade(string stationUpgrade)
     {
         int cost = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel;
-        //Debug.Log("The cost is " + cost);
         
         if (shipScript.scraps.Value >= cost)
         {
@@ -298,24 +297,24 @@ public class ShopManager : NetworkBehaviour
             AddScraps();
 
             StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
-            upgrade.stationLevel += 1; // Change the level
-            upgrade.stationLevelText.text = "Level " + upgrade.stationLevel; // Change the level text
+            upgrade.stationLevel += 1;
             if (upgrade.stationLevel == 4)
             {
                 upgrade.GetComponent<Button>().interactable = false;
+                upgrade.stationLevelText.text = "Level " + upgrade.stationLevel;
                 upgrade.currentCost.gameObject.SetActive(false);
             }
             else {
-                upgrade.currentCost.text = (upgrade.baseCost * upgrade.stationLevel) + " Scraps"; // Change the cost text    
+                upgrade.stationLevelText.text = "Level " + upgrade.stationLevel + " -> " + (upgrade.stationLevel+1);
+                upgrade.currentCost.text = (upgrade.baseCost * upgrade.stationLevel) + " Scraps";  
             }
             var infoList = thrustInfo;
-            /*if (stationUpgrade == "Steering Upgrade")
+            if (stationUpgrade == "Radar Upgrade")
             {
-                infoList = steeringInfo;
-            }*/
+                infoList = radarInfo;
+            }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);
-
         }
     }
 }
