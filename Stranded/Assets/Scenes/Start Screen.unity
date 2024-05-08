@@ -2660,6 +2660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   singleplayer: 0
+  alreadyConnected: 0
   difficulty:
     m_InternalValue: 0
   difficultyColors:
@@ -3913,6 +3914,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd456ac649eebd34b91b5e8c585e2c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  singleplayerButton: {fileID: 1135627354}
+  multiplayerButton: {fileID: 1306424281}
   ipText: {fileID: 1257627639}
   ipInput: {fileID: 120880853}
   lanElements: {fileID: 1260797258}
