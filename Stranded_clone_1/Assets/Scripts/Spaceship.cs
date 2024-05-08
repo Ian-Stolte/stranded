@@ -68,9 +68,15 @@ public class Spaceship : NetworkBehaviour
     private StatTracker stats;
     [HideInInspector] public PlayerStations player;
 
+    //Radar
+    [HideInInspector] public bool radarUnlocked;
+    [HideInInspector] public int radarRange;
+    [HideInInspector] public bool multipleArrows;
+
     //Upgrades
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
+    private int[] radarRanges = new int[] {100, 150, 150, 200};
 
     //Difficulty levels
     private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
@@ -232,12 +238,11 @@ public class Spaceship : NetworkBehaviour
             {
                 scraps.Value++;
                 stats.scrapsCollected.Value++;
-                Debug.Log("Scraps collected: " + scraps.Value);
 
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
-                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value;
                 resourceText.transform.SetSiblingIndex(0);
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
                 ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, true);
@@ -320,6 +325,16 @@ public class Spaceship : NetworkBehaviour
             {
                 boostUnlocked = true;
                 boostIndicator.SetActive(true);
+            }
+        }
+        else if (type == "Radar Upgrade")
+        {
+            radarUnlocked = true;
+            player.buttonCircles.transform.GetChild(4).gameObject.SetActive(true);
+            radarRange = radarRanges[level-1];
+            if (level >= 3)
+            {
+                multipleArrows = true;
             }
         }
     }
