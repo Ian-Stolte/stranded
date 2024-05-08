@@ -8,27 +8,10 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : NetworkBehaviour
 {
     public bool singleplayer;
+    public bool alreadyConnected;
     public NetworkVariable<int> difficulty;
     private string[] difficultyText = new string[] { "Easy", "Normal", "Hard", "Expert" };
     public Color[] difficultyColors = new Color[4];
-
-    public void SetSingleplayer()
-    {
-        singleplayer = true;
-    }
-
-    public void LoadScene(string name)
-    {
-        if (name == "Multiplayer")
-        {
-            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
-            {
-                g.GetComponent<PlayerStations>().enabled = true;
-            }
-            difficulty.Value = (int)GameObject.Find("Slider").GetComponent<Slider>().value;
-        }
-        NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
-    }
 
     void OnEnable()
     {
@@ -45,6 +28,10 @@ public class SceneLoader : NetworkBehaviour
         if (scene.name == "Multiplayer")
         {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += DoSetup;
+        }
+        else if (scene.name == "Start Screen" && alreadyConnected)
+        {
+            GameObject.Find("LAN Manager").GetComponent<LANManager>().HideUI();
         }
     }
 

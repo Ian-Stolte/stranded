@@ -12,8 +12,8 @@ using System.Net.Sockets;
 
 public class LANManager : NetworkBehaviour
 {
-	private GameObject singleplayerButton;
-	private GameObject multiplayerButton;
+	[SerializeField] private GameObject singleplayerButton;
+	[SerializeField] private GameObject multiplayerButton;
 
 	[SerializeField] private TextMeshProUGUI ipText;
 	[SerializeField] private TMP_InputField ipInput;
@@ -35,11 +35,28 @@ public class LANManager : NetworkBehaviour
 	{
 		ipAddress = "0.0.0.0";
 		SetIpAddress(); //Set the Ip to the above address
-		singleplayerButton = GameObject.Find("Singleplayer Start");
 		singleplayerButton.SetActive(false);
-		multiplayerButton = GameObject.Find("Multiplayer Start");
 		multiplayerButton.SetActive(false);
 		difficultyColors = GameObject.Find("Scene Loader").GetComponent<SceneLoader>().difficultyColors;
+	}
+
+	public void HideUI()
+    {
+		if (IsServer)
+		{
+			lanElements.SetActive(false);
+			dcHost.SetActive(true);
+			slider.SetActive(true);
+		}
+		else
+        {
+			lanElements.SetActive(false);
+			dcClient.SetActive(true);
+			slider.SetActive(true);
+			singleplayerButton.SetActive(false);
+			multiplayerButton.SetActive(false);
+			StartCoroutine(UpdateDifficultyWhenSpawned());
+		}
 	}
 
 	// To Host a game
@@ -47,9 +64,7 @@ public class LANManager : NetworkBehaviour
 	{
 		NetworkManager.Singleton.StartHost();
 		GetLocalIPAddress();
-		lanElements.SetActive(false);
-		dcHost.SetActive(true);
-		slider.SetActive(true);
+		HideUI();
 	}
 
 	// To Join a game
@@ -59,12 +74,7 @@ public class LANManager : NetworkBehaviour
 		ipText.text = ipAddress;
 		SetIpAddress();
 		NetworkManager.Singleton.StartClient();
-		lanElements.SetActive(false);
-		dcClient.SetActive(true);
-		slider.SetActive(true);
-		singleplayerButton.SetActive(false);
-		multiplayerButton.SetActive(false);
-		StartCoroutine(UpdateDifficultyWhenSpawned());
+		HideUI();
 	}
 
 	IEnumerator UpdateDifficultyWhenSpawned()

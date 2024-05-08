@@ -9,6 +9,7 @@ TagManager:
   - Shipwreck
   - Stats
   - Scene
+  - Network
   layers:
   - Default
   - TransparentFX

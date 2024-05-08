@@ -10,7 +10,7 @@ using Unity.Collections;
 public class PlayerStations : NetworkBehaviour
 {
     //Setup
-    private bool finishedSetup;
+    public bool finishedSetup;
 
     //Stations
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
@@ -313,7 +313,7 @@ public class PlayerStations : NetworkBehaviour
                 }
             }
             //hide other arrows if multiple arrows not unlocked
-            if (!shipScript.multipleArrows)
+            if (!shipScript.multipleArrows && shipwrecks.Length > 0)
             {
                 minDist = shipScript.radarRange+1;
                 GameObject closestWreck = shipwrecks[0];
