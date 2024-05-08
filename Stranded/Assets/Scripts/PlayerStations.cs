@@ -298,19 +298,42 @@ public class PlayerStations : NetworkBehaviour
 
             //Radar
             float cameraZoom = GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize;
-            if (minDist >= 1.67 * cameraZoom && minDist <= 100 && currentStation == "radar")
-            {
-                radarArrow.SetActive(true);
-                radarSmallText.SetActive(true);
-                radarArrow.transform.position = ship.transform.position + radarDir * (cameraZoom - 5);
-                radarArrow.transform.localScale = new Vector3(1f + (cameraZoom-15)/50, 1.7f + (cameraZoom-15)/50, 1);
+            GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
+            foreach (GameObject obj in shipwrecks)
+            {   
+                float dist = Vector3.Distance(ship.transform.position, obj.transform.position);             
+                if (dist >= 1.5f * cameraZoom && dist <= shipScript.radarRange && currentStation == "radar")
+                {
+                    obj.GetComponent<ShipwreckBehavior>().radarArrow.transform.position = ship.transform.position + Vector3.Normalize(obj.transform.position - ship.transform.position) * (cameraZoom - 5);
+                    obj.GetComponent<ShipwreckBehavior>().radarArrow.transform.localScale = new Vector3(1 + (cameraZoom-15)/50, 1 + (cameraZoom-15)/50, 1);
+                }
+                else
+                {
+                    obj.GetComponent<ShipwreckBehavior>().radarArrow.SetActive(false);
+                }
             }
-            else
+            //hide other arrows if multiple arrows not unlocked
+            if (!shipScript.multipleArrows)
             {
-                radarArrow.SetActive(false);
-                radarSmallText.SetActive(false);
+                minDist = shipScript.radarRange+1;
+                GameObject closestWreck = shipwrecks[0];
+                foreach (GameObject g in shipwrecks)
+                {
+                    float dist = Vector3.Distance(ship.transform.position, g.transform.position)-3;
+                    if (dist < minDist)
+                    {
+                        minDist = dist;
+                        closestWreck = g;
+                    }
+                }
+                foreach (GameObject obj in shipwrecks)
+                {
+                    if (obj != closestWreck)
+                    {
+                        obj.GetComponent<ShipwreckBehavior>().radarArrow.SetActive(false);
+                    }
+                }
             }
-
             radarText.enabled = (currentStation == "radar");
         }
     }
@@ -411,56 +434,39 @@ public class PlayerStations : NetworkBehaviour
     }
 
     private IEnumerator Radar()
-//TODO: allow multiple arrows? (instantiate prefabs & destroy instead of setting inactive?)
     {
         while (true)
         {
             yield return new WaitForSeconds(1.5f);
-            radarArrow.SetActive(false);
-            radarSmallText.SetActive(false);
-            yield return new WaitForSeconds(0.4f);
-            yield return new WaitUntil(() => currentStation == "radar");
-            if (shipScript.radarUnlocked)
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Shipwreck"))
             {
-                GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
-                minDist = shipScript.radarRange+1;
-                if (shipwrecks.Length == 0)
+                obj.GetComponent<ShipwreckBehavior>().radarArrow.SetActive(false);
+            }
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => currentStation == "radar");
+            radarText.text = "Out of Range";
+            GameObject[] shipwrecks = GameObject.FindGameObjectsWithTag("Shipwreck");
+            if (shipwrecks.Length != 0)
+            {                
+                foreach (GameObject obj in shipwrecks)
                 {
-                    radarText.text = "Out of Range";
-                    radarArrow.SetActive(false);
-                    radarSmallText.SetActive(false);
-                }
-                else
-                {
-                    GameObject closestWreck = shipwrecks[0];
-                    foreach (GameObject g in shipwrecks)
+                    float dist = Vector3.Distance(ship.transform.position, obj.transform.position);
+                    ShipwreckBehavior script = obj.GetComponent<ShipwreckBehavior>();
+                    if (dist <= shipScript.radarRange)
                     {
-                        float dist = Vector3.Distance(ship.transform.position, g.transform.position)-3;
-                        if (dist < minDist)
-                        {
-                            minDist = dist;
-                            closestWreck = g;
-                        }
-                    }
-                    if (minDist == shipScript.radarRange+1)
-                        radarText.text = "Out of Range";
-                    else
                         radarText.text = "";
-                        radarSmallText.GetComponent<TMPro.TextMeshPro>().text = Mathf.Round(minDist) + " km";
-                        //radarText.text = Mathf.Round(minDist) + " km";
-                    if (minDist >= 1.67 * cameraZoom && minDist <= shipScript.radarRange)
+                        script.radarArrow.GetComponent<TMPro.TextMeshPro>().text = Mathf.Round(dist) + " km";
+                    }
+                    if (dist >= 1.5f * cameraZoom && dist <= shipScript.radarRange)
                     {
-                        radarArrow.SetActive(true);
-                        radarSmallText.SetActive(true);
-                        radarDir = Vector3.Normalize(closestWreck.transform.position - ship.transform.position);
+                        script.radarArrow.SetActive(true);
+                        radarDir = Vector3.Normalize(obj.transform.position - ship.transform.position);
                         Vector3 rot = new Vector3(0, 0, Mathf.Atan2(radarDir.y, radarDir.x) * Mathf.Rad2Deg - 90);
-                        radarArrow.transform.rotation = (Quaternion.Euler(rot));
-                        radarSmallText.transform.position = ship.transform.position + Vector3.Normalize(radarDir) * 13;
+                        script.radarArrow.transform.GetChild(0).transform.rotation = (Quaternion.Euler(rot));
                     }
                     else
                     {
-                        radarArrow.SetActive(false);
-                        radarSmallText.SetActive(false);
+                        script.radarArrow.SetActive(false);
                     }
                 }
             }

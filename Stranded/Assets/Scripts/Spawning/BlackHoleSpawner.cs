@@ -15,7 +15,7 @@ public class BlackHoleSpawner : NetworkBehaviour
 
     void Start()
     {
-        timer = 10; //could change based on difficulty
+        timer = 180; //could change based on difficulty
     }
 
     void Update()

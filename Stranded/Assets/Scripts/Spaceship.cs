@@ -242,7 +242,7 @@ public class Spaceship : NetworkBehaviour
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
-                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value;
                 resourceText.transform.SetSiblingIndex(0);
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
                 ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, true);

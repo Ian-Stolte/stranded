@@ -11,7 +11,6 @@ public class Sync : NetworkBehaviour
     private GameObject grabber;
     private GameObject thrusterFire;
     private GameObject radarArrow;
-    private GameObject radarSmallText;
     private CameraFollow camera;
     public PlayerStations player;
 
@@ -21,13 +20,11 @@ public class Sync : NetworkBehaviour
 
     void Start()
     {
-//TODO: wait until sync has started to begin calling rpcs? or just check if ship is null?
         //Debug.Log("Starting sync!");
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
-        radarArrow = GameObject.Find("Radar Arrow");
-        radarSmallText = GameObject.Find("Radar Small Text");
+        //radarArrow = GameObject.Find("Radar Arrow");
         camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
@@ -68,8 +65,7 @@ public class Sync : NetworkBehaviour
     {
         shield.transform.position += addToShield;
         shield.transform.position = ship.transform.position + Vector3.Normalize(shield.transform.position - ship.transform.position) * 5;
-        radarArrow.transform.position += addToShield;
-        radarSmallText.transform.position += addToShield;
+        //radarArrow.transform.position += addToShield;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
         thrusterFire.SetActive(thrustersOn);
@@ -89,8 +85,7 @@ public class Sync : NetworkBehaviour
             }
         }
         shield.transform.position += addToShield;
-        radarArrow.transform.position += addToShield;
-        radarSmallText.transform.position += addToShield;
+        //radarArrow.transform.position += addToShield;
         thrusterFire.SetActive(thrustersOn);
         //camera.UpdateCamera(addToShield);
     }
