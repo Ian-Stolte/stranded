@@ -62,8 +62,16 @@ public class ShipwreckSpawner : NetworkBehaviour
         //Set resource values
         ShipwreckBehavior script = wreck.GetComponent<ShipwreckBehavior>();
         script.value.Value = scrapValue;
-        script.radarArrow = arrow;
         wreck.GetComponent<NetworkObject>().Spawn(true);
         wreck.transform.SetParent(GameObject.Find("Shipwrecks").transform);
+
+        script.radarArrow = arrow;
+        //SetArrowClientRpc(script, arrow);
     }
+
+    /*[Rpc(SendTo.NotServer)]
+    public void SetArrowClientRpc(ShipwreckBehavior script, GameObject arrow)
+    {
+        script.radarArrow = arrow;
+    }*/
 }

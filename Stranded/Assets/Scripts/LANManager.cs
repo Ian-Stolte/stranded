@@ -90,8 +90,6 @@ public class LANManager : NetworkBehaviour
 		lanElements.SetActive(true);
 		dcHost.SetActive(false);
 		slider.SetActive(false);
-		singleplayerButton.SetActive(true);
-		multiplayerButton.SetActive(true);
 		ipText.text = "[IP Address]";
 		ipAddress = "0.0.0.0";
 		DisconnectClientRpc();
@@ -104,17 +102,18 @@ public class LANManager : NetworkBehaviour
 		lanElements.SetActive(true);
 		dcClient.SetActive(false);
 		slider.SetActive(false);
-		singleplayerButton.SetActive(true);
-		multiplayerButton.SetActive(true);
 		ipText.text = "[IP Address]";
 		ipAddress = "0.0.0.0";
 	}
 
 	void Update()
 	{
-		singleplayerButton.SetActive(GameObject.FindGameObjectsWithTag("Player").Length > 0);
-		multiplayerButton.SetActive(GameObject.FindGameObjectsWithTag("Player").Length > 0);
-		multiplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 1);
+		if (IsServer)
+		{
+			singleplayerButton.SetActive(GameObject.FindGameObjectsWithTag("Player").Length > 0 && !lanElements.activeSelf);
+			multiplayerButton.SetActive(GameObject.FindGameObjectsWithTag("Player").Length > 0 && !lanElements.activeSelf);
+			multiplayerButton.GetComponent<Button>().interactable = (GameObject.FindGameObjectsWithTag("Player").Length > 1);
+		}
 		
 		if ((int)slider.GetComponent<Slider>().value != sliderValue && IsSpawned && (clientInitialized || IsServer))
 		{
