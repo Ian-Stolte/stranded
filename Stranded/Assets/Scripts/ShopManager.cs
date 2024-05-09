@@ -46,6 +46,7 @@ public class ShopManager : NetworkBehaviour
     //Level Info
     private string[] thrustInfo = new string[] {"Speed 3 → 4\nMax 8 → 10", "Unlocks periodic boosts of speed", "Speed 4 → 5\nMax 10 → 12", "Fully upgraded!"};
     private string[] radarInfo = new string[] {"Range 100 → 150", "Points toward all shipwrecks within range", "Range 150 → 200", "Fully upgraded!"};
+    private string[] shieldInfo = new string[] { "Speed 1.5 → 3", "Width 4 → 6", "Speed 3 → 4.5", "Fully upgraded!" };
     
     void Start()
     {
