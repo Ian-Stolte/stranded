@@ -46,6 +46,7 @@ public class ShopManager : NetworkBehaviour
     //Level Info
     private string[] thrustInfo = new string[] {"Speed 3 → 4\nMax 8 → 10", "Unlocks periodic boosts of speed", "Speed 4 → 5\nMax 10 → 12", "Fully upgraded!"};
     private string[] radarInfo = new string[] {"Range 100 → 150", "Points toward all shipwrecks within range", "Range 150 → 200", "Fully upgraded!"};
+    private string[] shieldInfo = new string[] { "Speed 1.3 → 2", "Width 4 → 6", "Speed 2 → 3", "Fully upgraded!" };
     
     void Start()
     {
@@ -243,6 +244,8 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
+
+            Debug.Log("You just bought " + boostEffectsSO[btnNo] + " for " + boostEffectsSO[btnNo].baseCost);
         }
     }
 	
@@ -293,7 +296,7 @@ public class ShopManager : NetworkBehaviour
         
         if (shipScript.scraps.Value >= cost)
         {
-            shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
+            shipScript.scraps.Value = shipScript.scraps.Value - Mathf.Max(cost, 1); // Remove the money
             AddScraps();
 
             StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
@@ -312,6 +315,10 @@ public class ShopManager : NetworkBehaviour
             if (stationUpgrade == "Radar Upgrade")
             {
                 infoList = radarInfo;
+            }
+            else if (stationUpgrade == "Shield Upgrade")
+            {
+                infoList = shieldInfo;
             }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);

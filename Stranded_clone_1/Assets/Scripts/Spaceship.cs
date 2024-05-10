@@ -75,6 +75,7 @@ public class Spaceship : NetworkBehaviour
 
     //Upgrades
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
+    private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
     private int[] radarRanges = new int[] {100, 150, 150, 200};
 
@@ -336,6 +337,22 @@ public class Spaceship : NetworkBehaviour
             {
                 multipleArrows = true;
             }
+        }
+        else if (type == "Shield Upgrade")
+        {
+            if (level != 3)
+            {
+                shieldSpeed = shieldSpeeds[level - 1];
+            }
+            else
+            {
+                Vector3 shieldWidth = GameObject.Find("Shield").transform.localScale;
+                GameObject.Find("Shield").transform.localScale = new Vector3(6, shieldWidth.y, shieldWidth.z);
+            }
+        }
+        else if (type == "Grabber Upgrade")
+        {
+
         }
     }
 }
