@@ -47,6 +47,7 @@ public class ShopManager : NetworkBehaviour
     private string[] thrustInfo = new string[] {"Speed 3 → 4\nMax 8 → 10", "Unlocks periodic boosts of speed", "Speed 4 → 5\nMax 10 → 12", "Fully upgraded!"};
     private string[] radarInfo = new string[] {"Range 100 → 150", "Points toward all shipwrecks within range", "Range 150 → 200", "Fully upgraded!"};
     private string[] shieldInfo = new string[] { "Speed 1.3 → 2", "Width 4 → 6", "Speed 2 → 3", "Fully upgraded!" };
+    private string[] grabberInfo = new string[] { "Range 13", "Range 13 → 16", "30% Chance of Double Rewards, Range 16 → 20", "Fully upgraded!" };
     
     void Start()
     {
@@ -319,6 +320,11 @@ public class ShopManager : NetworkBehaviour
             else if (stationUpgrade == "Shield Upgrade")
             {
                 infoList = shieldInfo;
+            }
+            else if(stationUpgrade == "Grabber Upgrade")
+            {
+                infoList = grabberInfo;
+                Debug.Log("grabber checkkkk");
             }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);

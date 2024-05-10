@@ -213,6 +213,7 @@ public class PlayerStations : NetworkBehaviour
             }
 
             //Grabber
+            grabScript.maxDistance = shipScript.grabberRange;
             grabLine.GetComponent<LineRenderer>().SetPosition(0, grabber.transform.localPosition);
             grabLine.GetComponent<LineRenderer>().SetPosition(1, ship.transform.localPosition);
             if (currentStation == "grabber" && !shipScript.isStunned)
