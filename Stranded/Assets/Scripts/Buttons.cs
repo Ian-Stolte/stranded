@@ -36,7 +36,7 @@ public class Buttons : MonoBehaviour
         {
             ChangeTo("shields");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && buttons.GetChild(3).GetComponent<Button>().interactable)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && buttons.GetChild(3).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().grabberUnlocked)
         {
             ChangeTo("grabber");
         }

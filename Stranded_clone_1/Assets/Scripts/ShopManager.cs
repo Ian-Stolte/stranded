@@ -324,7 +324,6 @@ public class ShopManager : NetworkBehaviour
             else if(stationUpgrade == "Grabber Upgrade")
             {
                 infoList = grabberInfo;
-                Debug.Log("grabber checkkkk");
             }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);

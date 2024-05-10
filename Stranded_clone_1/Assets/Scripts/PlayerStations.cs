@@ -99,7 +99,10 @@ public class PlayerStations : NetworkBehaviour
         }
 
         if (GameObject.Find("Host Button") != null)
+        {
+            GameObject.Find("Host Button").GetComponent<HostButton>().pauseIndicator.SetActive(true);
             GameObject.Find("Host Button").SetActive(false);
+        }
 
         //Set variables
         currentStation = "none";

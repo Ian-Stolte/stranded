@@ -16,6 +16,7 @@ public class Sync : NetworkBehaviour
 
     //pause
     public GameObject pauseMenu;
+    public GameObject pauseIndicator;
     public NetworkVariable<bool> paused;
 
     void Start()
@@ -35,6 +36,7 @@ public class Sync : NetworkBehaviour
     {
         paused.Value = !paused.Value;
         pauseMenu.SetActive((paused.Value && showMenu));
+        pauseIndicator.SetActive(!pauseMenu.activeSelf);
         Time.timeScale = (paused.Value) ? 0 : 1;
         PauseClientRpc(paused.Value, showMenu);
     }
@@ -43,6 +45,7 @@ public class Sync : NetworkBehaviour
     public void PauseClientRpc(bool pause, bool showMenu)
     {
         pauseMenu.SetActive((pause && showMenu));
+        pauseIndicator.SetActive(!pauseMenu.activeSelf);
         Time.timeScale = (pause) ? 0 : 1;
     }
 
@@ -145,7 +148,6 @@ public class Sync : NetworkBehaviour
     {
         grabber.GetComponent<Grabber>().direction.Value = direction;
         grabber.transform.rotation = (Quaternion.Euler(rotation));
-        //ReadGrabberPosClientRpc(rotation);
     }
 
     [Rpc(SendTo.Server)]
@@ -164,16 +166,4 @@ public class Sync : NetworkBehaviour
         grabber.transform.GetChild(1).gameObject.SetActive(!closed);
         grabber.GetComponent<Grabber>().grabbedObj = obj;
     }
-
-    /*[Rpc(SendTo.NotServer)]
-    public void ReadGrabberPosClientRpc(Vector3 direction, Vector3 rotation)
-    {
-        if (player != null)
-        {
-            if (player.currentStation != "steering")
-            {
-                ship.transform.rotation = newAngle;
-            }
-        }
-    }*/
 }

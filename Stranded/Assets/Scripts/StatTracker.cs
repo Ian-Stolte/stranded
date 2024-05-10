@@ -42,7 +42,7 @@ public class StatTracker : NetworkBehaviour
         }
         else if (scene.name == "Multiplayer")
         {
-            if (!IsSpawned && IsServer)
+            if (!IsSpawned)
             {
                 NetworkObject.Spawn();
             }

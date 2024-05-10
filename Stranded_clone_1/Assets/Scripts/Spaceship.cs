@@ -81,6 +81,7 @@ public class Spaceship : NetworkBehaviour
     
 
     //Upgrades
+    public bool grabberUnlocked;
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
     private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
@@ -387,7 +388,6 @@ public class Spaceship : NetworkBehaviour
             {
                 multipleRewards = true;
             }
-
         }
     }
 }

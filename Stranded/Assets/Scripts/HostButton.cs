@@ -5,6 +5,8 @@ using Unity.Netcode;
 
 public class HostButton : MonoBehaviour
 {
+	public GameObject pauseIndicator;
+
 	public void StartHost()
 	{
 		NetworkManager.Singleton.StartHost();

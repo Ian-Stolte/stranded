@@ -34,4 +34,10 @@ public class ShipwreckBehavior : NetworkBehaviour
             GetComponent<NetworkObject>().Despawn(true);
         }
     }
+
+    [Rpc(SendTo.NotServer)]
+    public void SetArrowClientRpc(NetworkObjectReference arrow)
+    {
+        radarArrow = arrow;
+    }
 }
