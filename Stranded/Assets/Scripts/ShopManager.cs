@@ -244,6 +244,8 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
+
+            Debug.Log("You just bought " + boostEffectsSO[btnNo] + " for " + boostEffectsSO[btnNo].baseCost);
         }
     }
 	
