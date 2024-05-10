@@ -75,7 +75,7 @@ public class Spaceship : NetworkBehaviour
 
     //Upgrades
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
-    private float[] shieldSpeeds = new float[] { 1.5f, 3, 4.5f, 4.5f };
+    private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
     private int[] radarRanges = new int[] {100, 150, 150, 200};
 
