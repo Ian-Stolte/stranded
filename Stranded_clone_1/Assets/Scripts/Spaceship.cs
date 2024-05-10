@@ -78,15 +78,17 @@ public class Spaceship : NetworkBehaviour
     [HideInInspector] public int grabberRange;
     [HideInInspector] public bool multipleRewards;
     [HideInInspector] public bool grabberSpeed;
-    
+
 
     //Upgrades
-    public bool grabberUnlocked;
+    private float[] turnSpeeds = new float[] {1, 1.5f, 2, 2.5f};
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
     private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
     private int[] radarRanges = new int[] {100, 150, 150, 200};
-    private int[] grabberRanges = new int[] { 13, 13, 16, 20 };
+    private int[] grabberRanges = new int[] {13, 16, 16, 20};
+    private float[] grabberSpeeds = new float[] {0.5f, 0.55f, 0.55f, 0.7f};
+    private float[] grabberRetractSpeeds = new float[] {0.2f, 0.25f, 0.25f, 0.35f};
 
     //Difficulty levels
     private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
@@ -269,13 +271,13 @@ public class Spaceship : NetworkBehaviour
                     }
                 }
 
-                GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
+                GameObject wreckText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
-                resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
-                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + (collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value * multiplier);
-                resourceText.transform.SetSiblingIndex(0);
-                resourceText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
-                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier, true);
+                wreckText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
+                wreckText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + (collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value * multiplier);
+                wreckText.transform.SetSiblingIndex(0);
+                wreckText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
+                ResourceTextClientRpc(collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value * multiplier, true);
             }
             shop.AddScraps();
         }
@@ -384,10 +386,16 @@ public class Spaceship : NetworkBehaviour
             grabberUnlocked = true;
             player.buttonCircles.transform.GetChild(3).gameObject.SetActive(true);
             grabberRange = grabberRanges[level - 1];
+            GameObject.Find("Grabber").GetComponent<Grabber>().speed = grabberSpeeds[level-1];
+            GameObject.Find("Grabber").GetComponent<Grabber>().retractSpeed = grabberRetractSpeeds[level-1];
             if (level >= 3)
             {
                 multipleRewards = true;
             }
+        }
+        else if (type == "Steering Upgrade")
+        {
+            turnSpeed = turnSpeeds[level-1];
         }
     }
 }

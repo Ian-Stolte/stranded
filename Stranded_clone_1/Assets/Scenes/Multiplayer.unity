@@ -2594,7 +2594,7 @@ MonoBehaviour:
   destroyAsteroid: 0
   asteroidDmg: 1.5
   knockbackAmount: 0
-  turnSpeed: 1.3
+  turnSpeed: 1
   shieldSpeed: 1.3
   thrustSpeed: 3
   decelSpeed: 0.001
@@ -2632,6 +2632,10 @@ MonoBehaviour:
   radarUnlocked: 0
   radarRange: 0
   multipleArrows: 0
+  grabberUnlocked: 0
+  grabberRange: 0
+  multipleRewards: 0
+  grabberSpeed: 0
 --- !u!58 &412612940
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6412,7 +6416,7 @@ Transform:
   m_GameObject: {fileID: 1061898611}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.3, y: 0.3, z: 0}
   m_LocalScale: {x: 10000, y: 10000, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7419,8 +7423,20 @@ PrefabInstance:
       value: Grabber
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: Unlocks a grabber arm to help collect resources
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: "Level 0 \u2192 1"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6238971152191748939, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: stationLevel
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
@@ -12405,8 +12421,16 @@ PrefabInstance:
       value: Steering
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: "Speed 1 \u2192 1.5"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: "Level 1 \u2192 2"
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
