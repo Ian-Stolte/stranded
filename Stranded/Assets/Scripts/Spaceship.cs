@@ -73,11 +73,19 @@ public class Spaceship : NetworkBehaviour
     [HideInInspector] public int radarRange;
     [HideInInspector] public bool multipleArrows;
 
+    //Grabber
+    [HideInInspector] public bool grabberUnlocked;
+    [HideInInspector] public int grabberRange;
+    [HideInInspector] public bool multipleRewards;
+    [HideInInspector] public bool grabberSpeed;
+    
+
     //Upgrades
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
     private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
     private int[] radarRanges = new int[] {100, 150, 150, 200};
+    private int[] grabberRanges = new int[] { 13, 13, 16, 20 };
 
     //Difficulty levels
     private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
@@ -212,11 +220,22 @@ public class Spaceship : NetworkBehaviour
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
-                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+               
+                float multiplier = 1; //keeps it normal if multiplied by 1
+                if (multipleRewards) //set random chance
+                { 
+                    float randValue = Random.value;
+                    if (randValue > .7f) //30% chance
+                    {
+                        multiplier = 2; 
+                    }
+                }
+
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + (collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
                 resourceText.transform.SetSiblingIndex(0);
-                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value);
+                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
                 stats.resourcesCollected.Value++;
-                fuelAmount.Value += collider.gameObject.GetComponent<ResourceBehavior>().value.Value;
+                fuelAmount.Value += (collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
                 GameObject.Find("Fuel Bar").GetComponent<Image>().fillAmount = fuelAmount.Value / fuelMax;
                 sync.ChangeFuelClientRpc(fuelAmount.Value, fuelMax);
@@ -239,14 +258,23 @@ public class Spaceship : NetworkBehaviour
             {
                 scraps.Value++;
                 stats.scrapsCollected.Value++;
+                float multiplier = 1;
+                if (multipleRewards) //set random chance
+                {
+                    float randValue = Random.value;
+                    if (randValue > .7f)
+                    {
+                        multiplier = 2;
+                    }
+                }
 
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
-                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value;
+                resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + (collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value * multiplier);
                 resourceText.transform.SetSiblingIndex(0);
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().color = new Color32(231, 195, 34, 255);
-                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value, true);
+                ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier, true);
             }
             shop.AddScraps();
         }
@@ -352,6 +380,13 @@ public class Spaceship : NetworkBehaviour
         }
         else if (type == "Grabber Upgrade")
         {
+            grabberUnlocked = true;
+            player.buttonCircles.transform.GetChild(3).gameObject.SetActive(true);
+            grabberRange = grabberRanges[level - 1];
+            if (level >= 3)
+            {
+                multipleRewards = true;
+            }
 
         }
     }
