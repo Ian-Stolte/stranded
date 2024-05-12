@@ -2198,6 +2198,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &301205061 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1336557367}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &342506582
 GameObject:
   m_ObjectHideFlags: 0
@@ -2631,7 +2636,7 @@ MonoBehaviour:
     m_InternalValue: 0
   shipHealthMax: 10
   scraps:
-    m_InternalValue: 0
+    m_InternalValue: 20
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10
@@ -3891,6 +3896,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5656219727781858359, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
   m_PrefabInstance: {fileID: 559862987}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &561223648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1207647353}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &561250173
 GameObject:
   m_ObjectHideFlags: 0
@@ -4612,6 +4622,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659830534}
   m_CullTransparentMesh: 1
+--- !u!1 &689816657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1052645254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &736649308
 GameObject:
   m_ObjectHideFlags: 0
@@ -4746,6 +4761,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736649308}
   m_CullTransparentMesh: 1
+--- !u!1 &758330074 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 2826429282188208432}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &762150959
 GameObject:
   m_ObjectHideFlags: 0
@@ -6218,12 +6238,36 @@ PrefabInstance:
         Max Speed: 8 -> 10'
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
       value: "Level 1 \u2192 2"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
@@ -7441,12 +7485,36 @@ PrefabInstance:
       value: Unlocks a grabber arm to help collect resources
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
       value: "Level 0 \u2192 1"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
       objectReference: {fileID: 0}
     - target: {fileID: 6238971152191748939, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: stationLevel
@@ -8150,12 +8218,36 @@ PrefabInstance:
       value: "Speed 1.3 \u2192 2"
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
       value: "Level 1 \u2192 2"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name
@@ -8416,6 +8508,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1355197615}
   m_CullTransparentMesh: 1
+--- !u!1 &1355902716 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1493248024}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1366164867
 GameObject:
   m_ObjectHideFlags: 0
@@ -9470,12 +9567,36 @@ PrefabInstance:
       value: Unlock a radar to find the nearest shipwreck
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
       value: "Level 0 \u2192 1"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3019608
       objectReference: {fileID: 0}
     - target: {fileID: 6238971152191748939, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: stationLevel
@@ -11933,8 +12054,14 @@ MonoBehaviour:
   boostsPage: {fileID: 1500946236}
   upgradesPage: {fileID: 1230652801}
   cosmeticsPage: {fileID: 40633897}
-  upgradePanels: []
+  upgradePanels:
+  - {fileID: 758330074}
+  - {fileID: 689816657}
+  - {fileID: 301205061}
+  - {fileID: 561223648}
+  - {fileID: 1355902716}
   boostIndicator: {fileID: 185161299}
+  colorStart: <color=#2D824A>
 --- !u!114 &2013286086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12436,15 +12563,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
-      value: "Speed 1 \u2192 1.5"
+      value: "Speed 1 \u2192 <color=#2D824A>1.5</color>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3018868
       objectReference: {fileID: 0}
     - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_characterSpacing
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 5149739367694228688, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4283256141
+      objectReference: {fileID: 0}
     - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
-      value: "Level 1 \u2192 2"
+      value: "Lv 1 \u2192 <color=#2D824A>2</color>"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.3018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.3018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.3018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 6113216483652327647, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4283256141
       objectReference: {fileID: 0}
     - target: {fileID: 8012546825896904416, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_Name

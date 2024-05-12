@@ -44,14 +44,52 @@ public class ShopManager : NetworkBehaviour
     [SerializeField] GameObject boostIndicator;
 
     //Level Info
-    private string[] thrustInfo = new string[] {"Speed 3 → 4\nMax 8 → 10", "Unlocks periodic boosts of speed", "Speed 4 → 5\nMax 10 → 12", "Fully upgraded!"};
-    private string[] radarInfo = new string[] {"Range 75 → 125", "Points toward all shipwrecks within range", "Range 125 → 200", "Fully upgraded!"};
-    private string[] shieldInfo = new string[] {"Speed 1.3 → 2", "Width 4 → 6", "Speed 2 → 3", "Fully upgraded!"};
-    private string[] grabberInfo = new string[] {"Range 13 → 16\nSpeed 0.5 → 0.55", "30% chance of double rewards", "Range 16 → 20\nSpeed 0.55 → 0.7", "Fully upgraded!"};
-    private string[] steeringInfo = new string[] {"Speed 1 → 1.5", "Speed 1.5 → 2", "Speed 2 → 2.5", "Fully upgraded!" };
+    public string colorStart;
+    private string[] steeringInfo; 
+    private string[] thrustInfo;
+    private string[] shieldInfo;
+    private string[] grabberInfo;
+    private string[] radarInfo;
 
     void Start()
     {
+        steeringInfo = new string[] {"Speed 1 → " + colorStart + "1.5</color>", "Speed 1.5 → " + colorStart + "2</color>", "Speed 2 → " + colorStart + "2.5</color>", "Fully upgraded!" };
+        thrustInfo = new string[] {"Speed 3 → " + colorStart + "4</color>\nMax 8 → " + colorStart + "10</color>", "Unlocks periodic boosts of speed", "Speed 4 → " + colorStart + "5</color>\nMax 10 → " + colorStart + "12</color>", "Fully upgraded!"};
+        shieldInfo = new string[] {"Speed 1.3 → " + colorStart + "2</color>", "Width 4 → " + colorStart + "6</color>", "Speed 2 → " + colorStart + "3</color>", "Fully upgraded!"};
+        grabberInfo = new string[] {"Range 13 → " + colorStart + "16</color>\nSpeed 0.5 → " + colorStart + "0.55</color>", "30% chance of double rewards", "Range 16 → " + colorStart + "20</color>\nSpeed 0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
+        radarInfo = new string[] {"Range 75 → " + colorStart + "125</color>", "Points toward all shipwrecks within range", "Range 125 → " + colorStart + "200</color>", "Fully upgraded!"};
+        //Initialize text values
+        foreach (GameObject g in upgradePanels)
+        {
+            string[] infoList = new string[0];
+            if (g.name == "Steering Upgrade")
+            {
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 1 → " + colorStart + "2</color>";
+                infoList = steeringInfo;
+            }
+            else if (g.name == "Thruster Upgrade")
+            {
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 1 → " + colorStart + "2</color>";
+                infoList = thrustInfo;
+            }
+            else if (g.name == "Shield Upgrade")
+            {
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 1 → " + colorStart + "2</color>";
+                infoList = shieldInfo;
+            }
+            else if(g.name == "Grabber Upgrade")
+            {
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 0 → " + colorStart + "1</color>";
+                infoList = grabberInfo;
+            }
+            else if (g.name == "Radar Upgrade")
+            {
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 0 → " + colorStart + "1</color>";
+                infoList = radarInfo;
+            }
+            g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = infoList[0];
+        }
+
         fuelBarRectTransform = fuelBar.GetComponent<RectTransform>();
         healthBarRectTransform = healthBar.GetComponent<RectTransform>();
         fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Set initial position of resource bars
@@ -307,11 +345,11 @@ public class ShopManager : NetworkBehaviour
             if (upgrade.stationLevel == 4)
             {
                 upgrade.GetComponent<Button>().interactable = false;
-                upgrade.stationLevelText.text = "Level " + upgrade.stationLevel;
+                upgrade.stationLevelText.text = "Lv. " + upgrade.stationLevel;
                 upgrade.currentCost.gameObject.SetActive(false);
             }
             else {
-                upgrade.stationLevelText.text = "Level " + upgrade.stationLevel + " → " + (upgrade.stationLevel+1);
+                upgrade.stationLevelText.text = "Lv. " + upgrade.stationLevel + " → " + colorStart + (upgrade.stationLevel+1) + "</color>";
                 upgrade.currentCost.text = (upgrade.baseCost * upgrade.stationLevel) + " Scraps";  
             }
             var infoList = thrustInfo;
