@@ -10,6 +10,7 @@ TagManager:
   - Stats
   - Scene
   - Network
+  - Audio
   layers:
   - Default
   - TransparentFX

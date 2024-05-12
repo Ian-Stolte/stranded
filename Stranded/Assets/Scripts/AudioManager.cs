@@ -43,13 +43,35 @@ public class AudioManager : MonoBehaviour
         audios = gameObject.GetComponents<AudioSource>();
     }
 
-    void Start()
+    void OnEnable()
     {
-        Play("Stranded");
-        Play("Shop");
-        StartCoroutine(StartFade("Stranded", 2, 0.4f));
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        foreach (Sound s in music)
+        {
+            s.source.Stop();
+        }
+        if (scene.name == "Multiplayer")
+        {
+            Play("Stranded");
+            Play("Shop");
+            StartCoroutine(StartFade("Stranded", 2, 0.4f));
+        }
+        else if (scene.name == "Start Screen")
+        {
+            Play("Start Screen");
+            StartCoroutine(StartFade("Start Screen", 2, 0.4f));
+        }
+    }
+    
     public IEnumerator FadeOutAll(float duration)
     {
         foreach (Sound s in music)

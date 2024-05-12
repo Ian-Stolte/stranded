@@ -1679,7 +1679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &227065404
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1964,7 +1964,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278868765}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2087,9 +2087,10 @@ GameObject:
   m_Component:
   - component: {fileID: 282882308}
   - component: {fileID: 282882307}
+  - component: {fileID: 282882309}
   m_Layer: 0
   m_Name: Audio Manager
-  m_TagString: Untagged
+  m_TagString: Audio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2143,6 +2144,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &282882309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282882306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65679d5ae5e247b080a84cd7cb8b79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTag: Audio
 --- !u!1 &283339163
 GameObject:
   m_ObjectHideFlags: 0
@@ -2617,7 +2631,7 @@ MonoBehaviour:
     m_InternalValue: 0
   shipHealthMax: 10
   scraps:
-    m_InternalValue: 20
+    m_InternalValue: 0
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10

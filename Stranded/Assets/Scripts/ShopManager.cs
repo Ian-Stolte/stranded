@@ -45,7 +45,7 @@ public class ShopManager : NetworkBehaviour
 
     //Level Info
     private string[] thrustInfo = new string[] {"Speed 3 → 4\nMax 8 → 10", "Unlocks periodic boosts of speed", "Speed 4 → 5\nMax 10 → 12", "Fully upgraded!"};
-    private string[] radarInfo = new string[] {"Range 100 → 150", "Points toward all shipwrecks within range", "Range 150 → 200", "Fully upgraded!"};
+    private string[] radarInfo = new string[] {"Range 75 → 125", "Points toward all shipwrecks within range", "Range 125 → 200", "Fully upgraded!"};
     private string[] shieldInfo = new string[] {"Speed 1.3 → 2", "Width 4 → 6", "Speed 2 → 3", "Fully upgraded!"};
     private string[] grabberInfo = new string[] {"Range 13 → 16\nSpeed 0.5 → 0.55", "30% chance of double rewards", "Range 16 → 20\nSpeed 0.55 → 0.7", "Fully upgraded!"};
     private string[] steeringInfo = new string[] {"Speed 1 → 1.5", "Speed 1.5 → 2", "Speed 2 → 2.5", "Fully upgraded!" };
@@ -72,26 +72,27 @@ public class ShopManager : NetworkBehaviour
 
     void Update()
     {
-        if (Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")) && !shop.activeSelf)
-        {
+        
+        //if (Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")) && !shop.activeSelf)
+        //{
             openShopBtn.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E) && !sync.paused.Value)
+            if (Input.GetKeyDown(KeyCode.E) && !sync.paused.Value && !shop.activeSelf)
             {
                 OpenShopServerRpc();
             }
-        }
+        //}
         else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) && shop.activeSelf)
         {
             CloseShopServerRpc();
         }
-        else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")) && shop.activeSelf)
+        /*else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")) && shop.activeSelf)
         {
             CloseShopServerRpc();
         }
         else
         {
             openShopBtn.SetActive(false);
-        }
+        }*/
 
         //audio fade
         float distance = Vector2.Distance(transform.position, GameObject.Find("Spaceship").transform.position);
