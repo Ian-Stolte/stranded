@@ -65,35 +65,34 @@ public class ShopManager : NetworkBehaviour
             if (g.name == "Steering Upgrade")
             {
                 g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 1 → " + colorStart + "2</color>";
-                infoList = steeringInfo;
+                g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = steeringInfo[0];
             }
             else if (g.name == "Thruster Upgrade")
             {
                 g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 1 → " + colorStart + "2</color>";
-                infoList = thrustInfo;
+                g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = thrustInfo[0];
             }
             else if (g.name == "Shield Upgrade")
             {
                 g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 1 → " + colorStart + "2</color>";
-                infoList = shieldInfo;
+                g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = shieldInfo[0];
             }
             else if(g.name == "Grabber Upgrade")
             {
-                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 0 → " + colorStart + "1</color>";
-                infoList = grabberInfo;
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = colorStart + "Unlock</color>";
+                g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = "Unlocks a grabber arm to collect resources";
             }
             else if (g.name == "Radar Upgrade")
             {
-                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Lv. 0 → " + colorStart + "1</color>";
-                infoList = radarInfo;
+                g.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = colorStart + "Unlock</color>";
+                g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = "Unlock a radar to find the nearest shipwreck";
             }
-            g.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = infoList[0];
         }
 
         fuelBarRectTransform = fuelBar.GetComponent<RectTransform>();
         healthBarRectTransform = healthBar.GetComponent<RectTransform>();
-        fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Set initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Set initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
 
@@ -171,8 +170,8 @@ public class ShopManager : NetworkBehaviour
         fuelBar.SetActive(true);
         healthBar.SetActive(true);
         
-        fuelBarRectTransform.anchoredPosition = new Vector2(750f, 64f);
-        healthBarRectTransform.anchoredPosition = new Vector2(750f, -19f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(750, -350);
+        healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
         if (startMusic)
@@ -202,8 +201,8 @@ public class ShopManager : NetworkBehaviour
         fuelBar.SetActive(true);
         healthBar.SetActive(true);
 
-        fuelBarRectTransform.anchoredPosition = new Vector2(750f, 90f);
-        healthBarRectTransform.anchoredPosition = new Vector2(750f, 7f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(750, -350);
+        healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
         if (startMusic)
@@ -225,8 +224,8 @@ public class ShopManager : NetworkBehaviour
 
         fuelBar.SetActive(true);
         healthBar.SetActive(true);
-        fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
         CloseShopClientRpc();
     }
 
@@ -239,8 +238,8 @@ public class ShopManager : NetworkBehaviour
 
         fuelBar.SetActive(true);
         healthBar.SetActive(true);
-        fuelBarRectTransform.anchoredPosition = new Vector2(-730f, -326f); // Back to initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-730f, -423f);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
     }
 
     public void AddScraps()
@@ -266,15 +265,18 @@ public class ShopManager : NetworkBehaviour
 
     public void CheckPurchaseable()
     {
-        for (int i = 0; i < boostEffectsSO.Length; i++)
+        foreach (GameObject g in upgradePanels)
         {
-            if (shipScript.scraps.Value >= boostEffectsSO[i].baseCost) // If player has enough money
+            int cost = g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
+            if (g.GetComponent<StationTemplate>().stationLevel == 0)
+                cost = 2;
+            if (shipScript.scraps.Value >= cost) // If player has enough money
             {
-                myPurchaseBtns[i].interactable = true;
+                g.GetComponent<Button>().interactable = true;
             } 
             else 
             {
-                myPurchaseBtns[i].interactable = false;
+                g.GetComponent<Button>().interactable = false;
             }
         }
     }
@@ -285,15 +287,13 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
-
-            Debug.Log("You just bought " + boostEffectsSO[btnNo] + " for " + boostEffectsSO[btnNo].baseCost);
         }
     }
 	
     public void ChangeTab(int tabNo)
     {
-        if (tabNo == 1){
-            // Debug.Log("Opening Boost Tab");
+        if (tabNo == 1)
+        {
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
@@ -304,8 +304,9 @@ public class ShopManager : NetworkBehaviour
 
             fuelBar.SetActive(true);
             healthBar.SetActive(true);
-        } else if (tabNo == 2){
-            // Debug.Log("Opening Upgrades Tab");
+        }
+        else if (tabNo == 2)
+        {
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
@@ -316,8 +317,10 @@ public class ShopManager : NetworkBehaviour
 
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
-        } else if (tabNo == 3){
-            // Debug.Log("Opening Cosmetics Tab");
+            CheckPurchaseable();
+        }
+        else if (tabNo == 3)
+        {
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
@@ -333,14 +336,16 @@ public class ShopManager : NetworkBehaviour
 
     public void StationUpgrade(string stationUpgrade)
     {
-        int cost = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().baseCost * GameObject.Find(stationUpgrade).GetComponent<StationTemplate>().stationLevel;
+        StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
+        int cost = upgrade.baseCost * upgrade.stationLevel;
+        if (upgrade.stationLevel == 0)
+            cost = 2;
         
         if (shipScript.scraps.Value >= cost)
         {
-            shipScript.scraps.Value = shipScript.scraps.Value - Mathf.Max(cost, 1); // Remove the money
+            shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
             AddScraps();
 
-            StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
             upgrade.stationLevel += 1;
             if (upgrade.stationLevel == 4)
             {
