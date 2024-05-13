@@ -85,7 +85,7 @@ public class Spaceship : NetworkBehaviour
     private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
     private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {8, 10, 10, 12};
-    private int[] radarRanges = new int[] {100, 150, 150, 200};
+    private int[] radarRanges = new int[] {75, 125, 125, 200};
     private int[] grabberRanges = new int[] {13, 16, 16, 20};
     private float[] grabberSpeeds = new float[] {0.5f, 0.55f, 0.55f, 0.7f};
     private float[] grabberRetractSpeeds = new float[] {0.2f, 0.25f, 0.25f, 0.35f};

@@ -1686,6 +1686,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65ee41ed7230c5449c4174268845f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1092653147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1092653150}
+  - component: {fileID: 1092653149}
+  - component: {fileID: 1092653148}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Audio
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1092653148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092653147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65679d5ae5e247b080a84cd7cb8b79a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectTag: Audio
+--- !u!114 &1092653149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092653147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5feec0266feb24c669bc6224b5f9f184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music:
+  - name: Stranded
+    clip: {fileID: 8300000, guid: 28321fe3a6eda439486a9bba404d171c, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Shop
+    clip: {fileID: 8300000, guid: cad667ffb185b45248f041f4b67b4b9a, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Start Screen
+    clip: {fileID: 8300000, guid: a81d89357ccaf4606b2502c2948f1df7, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  sfx:
+  - name: Asteroid Collision
+    clip: {fileID: 8300000, guid: ddf897d2c02dc4748bad65d39577c0a1, type: 3}
+    volume: 0.05
+    pitch: 0.6
+    loop: 0
+    source: {fileID: 0}
+  audios: []
+  currentSong: 
+--- !u!4 &1092653150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092653147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1135627354
 GameObject:
   m_ObjectHideFlags: 0
@@ -3970,6 +4056,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1560267906}
+  - {fileID: 1092653150}
   - {fileID: 1270375226}
   - {fileID: 2081162074}
   - {fileID: 1341348480}
