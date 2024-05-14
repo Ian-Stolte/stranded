@@ -287,6 +287,7 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Success");
         }
     }
 	
@@ -347,6 +348,7 @@ public class ShopManager : NetworkBehaviour
             AddScraps();
 
             upgrade.stationLevel += 1;
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");
             if (upgrade.stationLevel == 4)
             {
                 upgrade.GetComponent<Button>().interactable = false;
