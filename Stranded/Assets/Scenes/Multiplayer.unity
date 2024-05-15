@@ -7006,7 +7006,8 @@ MonoBehaviour:
   minDistance: 50
   maxDistance: 150
   maxAtOnce: 6
-  scrapValue: 1
+  minValue: 1
+  maxValue: 3
 --- !u!1 &1119141195
 GameObject:
   m_ObjectHideFlags: 0

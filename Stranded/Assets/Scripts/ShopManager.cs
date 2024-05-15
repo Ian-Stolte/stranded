@@ -338,9 +338,9 @@ public class ShopManager : NetworkBehaviour
     public void StationUpgrade(string stationUpgrade)
     {
         StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
-        int cost = upgrade.baseCost * upgrade.stationLevel;
+        int cost = upgrade.baseCost * upgrade.stationLevel * 2;
         if (upgrade.stationLevel == 0)
-            cost = 2;
+            cost = 3;
         
         if (shipScript.scraps.Value >= cost)
         {
