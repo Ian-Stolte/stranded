@@ -48,6 +48,7 @@ public class Spaceship : NetworkBehaviour
     public NetworkVariable<float> shipHealth;
     public int shipHealthMax;
     public NetworkVariable<int> scraps;
+    public NetworkVariable<int> radioParts;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
