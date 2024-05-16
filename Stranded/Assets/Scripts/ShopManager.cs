@@ -269,19 +269,27 @@ public class ShopManager : NetworkBehaviour
         {
             int cost = g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
             if (g.GetComponent<StationTemplate>().stationLevel == 0)
-                cost = 2;
-            if (shipScript.scraps.Value >= cost) // If player has enough money
+                cost = 3;
+            if (shipScript.scraps.Value >= cost && g.GetComponent<StationTemplate>().stationLevel != 4) // If player has enough money
             {
                 g.GetComponent<Button>().interactable = true;
+                g.GetComponent<StationTemplate>().currentCost.GetComponent<CanvasGroup>().alpha = 1;
             } 
             else 
             {
                 g.GetComponent<Button>().interactable = false;
+                g.GetComponent<StationTemplate>().currentCost.GetComponent<CanvasGroup>().alpha = 0.3f;
             }
         }
+        /*foreach (GameObject g in boostEffectsSO)
+        {
+            
+        }*/
+
     }
 
-    public void PurchaseItem(int btnNo)
+    [Rpc(SendTo.Server)]
+    public void PurchaseBoostServerRpc(int btnNo)
     {
         if (shipScript.scraps.Value >= boostEffectsSO[btnNo].baseCost)
         {
@@ -289,20 +297,28 @@ public class ShopManager : NetworkBehaviour
             AddScraps();
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Success");
         }
+        PurchaseBoostClientRpc(btnNo);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void PurchaseBoostClientRpc(int btnNo)
+    {
+        AddScraps();
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Success");
     }
 	
+    //Maybe sync this?
     public void ChangeTab(int tabNo)
     {
+        CheckPurchaseable();
+        boostsPage.SetActive(tabNo == 1);
+        upgradesPage.SetActive(tabNo == 2);
+        cosmeticsPage.SetActive(tabNo == 3);
         if (tabNo == 1)
         {
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
-
-            boostsPage.SetActive(true);
-            upgradesPage.SetActive(false);
-            cosmeticsPage.SetActive(false);
-
             fuelBar.SetActive(true);
             healthBar.SetActive(true);
         }
@@ -311,43 +327,34 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
-
-            boostsPage.SetActive(false);
-            upgradesPage.SetActive(true);
-            cosmeticsPage.SetActive(false);
-
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
-            CheckPurchaseable();
         }
         else if (tabNo == 3)
         {
             GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
-
-            boostsPage.SetActive(false);
-            upgradesPage.SetActive(false);
-            cosmeticsPage.SetActive(true);
-            
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
         }
     }
 
-    public void StationUpgrade(string stationUpgrade)
+    [Rpc(SendTo.Server)]
+    public void StationUpgradeServerRpc(string stationUpgrade)
     {
         StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
         int cost = upgrade.baseCost * upgrade.stationLevel * 2;
         if (upgrade.stationLevel == 0)
             cost = 3;
-        
+
         if (shipScript.scraps.Value >= cost)
         {
             shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
             AddScraps();
 
             upgrade.stationLevel += 1;
+            int newCost = upgrade.baseCost * upgrade.stationLevel * 2;
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");
             if (upgrade.stationLevel == 4)
             {
@@ -357,7 +364,8 @@ public class ShopManager : NetworkBehaviour
             }
             else {
                 upgrade.stationLevelText.text = "Lv. " + upgrade.stationLevel + " → " + colorStart + (upgrade.stationLevel+1) + "</color>";
-                upgrade.currentCost.text = (upgrade.baseCost * upgrade.stationLevel) + " Scraps";  
+                
+                upgrade.currentCost.text = newCost + " Scraps";
             }
             var infoList = thrustInfo;
             if (stationUpgrade == "Radar Upgrade")
@@ -378,6 +386,48 @@ public class ShopManager : NetworkBehaviour
             }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);
+            StationUpgradeClientRpc(stationUpgrade, newCost);
         }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void StationUpgradeClientRpc(string stationUpgrade, int cost)
+    {
+        StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
+        scrapsText.text = "Scraps: " + (shipScript.scraps.Value - cost);
+        CheckPurchaseable();
+
+        upgrade.stationLevel += 1;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");
+        if (upgrade.stationLevel == 4)
+        {
+            upgrade.GetComponent<Button>().interactable = false;
+            upgrade.stationLevelText.text = "Lv. " + upgrade.stationLevel;
+            upgrade.currentCost.gameObject.SetActive(false);
+        }
+        else
+        {
+            upgrade.stationLevelText.text = "Lv. " + upgrade.stationLevel + " → " + colorStart + (upgrade.stationLevel + 1) + "</color>";
+            upgrade.currentCost.text = cost + " Scraps";
+        }
+        var infoList = thrustInfo;
+        if (stationUpgrade == "Radar Upgrade")
+        {
+            infoList = radarInfo;
+        }
+        else if (stationUpgrade == "Shield Upgrade")
+        {
+            infoList = shieldInfo;
+        }
+        else if (stationUpgrade == "Grabber Upgrade")
+        {
+            infoList = grabberInfo;
+        }
+        else if (stationUpgrade == "Steering Upgrade")
+        {
+            infoList = steeringInfo;
+        }
+        upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel - 1];
+        shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);
     }
 }

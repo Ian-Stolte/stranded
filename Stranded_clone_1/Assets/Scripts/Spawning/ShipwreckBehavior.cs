@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class ShipwreckBehavior : NetworkBehaviour
 {
-    [Tooltip ("How many scraps this shipwreck gives")] public NetworkVariable<float> value;
+    [Tooltip ("How many scraps this shipwreck gives")] public NetworkVariable<int> value;
     [SerializeField] private float despawnDistance;
     public GameObject radarArrow;
 

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Repair Ship
   itemDescription: Restore it like new with a well-needed service.
-  baseCost: 3
+  baseCost: 5
   amount: 10

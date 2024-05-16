@@ -2690,7 +2690,7 @@ MonoBehaviour:
     m_InternalValue: 0
   shipHealthMax: 10
   scraps:
-    m_InternalValue: 20
+    m_InternalValue: 0
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10
@@ -2917,6 +2917,23 @@ Transform:
   - {fileID: 369253879}
   m_Father: {fileID: 554494292}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &459998658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1207647353}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &459998662
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459998658}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &462864537
 GameObject:
   m_ObjectHideFlags: 0
@@ -4995,7 +5012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &793794884
 Transform:
   m_ObjectHideFlags: 0
@@ -6199,7 +6216,7 @@ PrefabInstance:
       objectReference: {fileID: 2013286085}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StationUpgrade
+      value: StationUpgradeServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -6410,7 +6427,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1952273851}
   m_SourcePrefab: {fileID: 100100000, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
 --- !u!224 &1052645255 stripped
 RectTransform:
@@ -6724,6 +6744,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1064507360}
   m_CullTransparentMesh: 1
+--- !u!1 &1074319519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1493248024}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1074319523
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074319519}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1090671827
 GameObject:
   m_ObjectHideFlags: 0
@@ -7501,7 +7538,7 @@ PrefabInstance:
       objectReference: {fileID: 2013286085}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StationUpgrade
+      value: StationUpgradeServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -7722,7 +7759,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 459998662}
   m_SourcePrefab: {fileID: 100100000, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
 --- !u!224 &1207647354 stripped
 RectTransform:
@@ -8294,7 +8334,7 @@ PrefabInstance:
       objectReference: {fileID: 2013286085}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StationUpgrade
+      value: StationUpgradeServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -8507,7 +8547,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1544254818}
   m_SourcePrefab: {fileID: 100100000, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
 --- !u!224 &1336557368 stripped
 RectTransform:
@@ -9128,6 +9171,23 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5656219727781858359, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
   m_PrefabInstance: {fileID: 1406532837}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1416813052 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 2826429282188208432}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1416813056
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1416813052}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1423545457
 GameObject:
   m_ObjectHideFlags: 0
@@ -9719,7 +9779,7 @@ PrefabInstance:
       objectReference: {fileID: 2013286085}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StationUpgrade
+      value: StationUpgradeServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -9944,7 +10004,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1074319523}
   m_SourcePrefab: {fileID: 100100000, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
 --- !u!224 &1493248025 stripped
 RectTransform:
@@ -10217,6 +10280,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1544254814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1336557367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1544254818
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544254814}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1546697234
 GameObject:
   m_ObjectHideFlags: 0
@@ -11993,6 +12073,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945739619}
   m_CullTransparentMesh: 1
+--- !u!1 &1952273847 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+  m_PrefabInstance: {fileID: 1052645254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1952273851
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952273847}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1956639466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12798,7 +12895,7 @@ PrefabInstance:
       objectReference: {fileID: 2013286085}
     - target: {fileID: 383203075192275486, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StationUpgrade
+      value: StationUpgradeServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 1411177160482084112, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -13019,7 +13116,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8811394687109464073, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1416813056}
   m_SourcePrefab: {fileID: 100100000, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
 --- !u!1001 &8582321033330457737
 PrefabInstance:

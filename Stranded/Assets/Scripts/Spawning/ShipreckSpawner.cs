@@ -11,9 +11,9 @@ public class ShipwreckSpawner : NetworkBehaviour
     public float maxDelay;
     [SerializeField] private float minDistance;
     [SerializeField] private float maxDistance;
-    [SerializeField] private int maxAtOnce;
-    [SerializeField] private float minValue;
-    [SerializeField] private float maxValue;
+    public int maxAtOnce;
+    [SerializeField] private int minValue;
+    [SerializeField] private int maxValue;
     private float timer;
     
     private GameObject ship;
@@ -62,7 +62,7 @@ public class ShipwreckSpawner : NetworkBehaviour
 
         //Set resource values
         ShipwreckBehavior script = wreck.GetComponent<ShipwreckBehavior>();
-        script.value.Value = Random.Range(minValue, maxValue);
+        script.value.Value = Random.Range(minValue, maxValue+1);
         script.radarArrow = arrow;
         wreck.GetComponent<NetworkObject>().Spawn(true);
         wreck.transform.SetParent(GameObject.Find("Shipwrecks").transform);

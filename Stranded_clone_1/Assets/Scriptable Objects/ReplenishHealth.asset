@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Minor Tune-Up
   itemDescription: Fix up some of those dents and scratches.
-  baseCost: 1
+  baseCost: 2
   amount: 2

@@ -34,5 +34,28 @@ public class ResourceBehavior : NetworkBehaviour
         {
             GetComponent<NetworkObject>().Despawn(true);
         }
+        if (GameObject.FindGameObjectsWithTag("Player").Length > 1)
+        {
+            if (IsServer)
+                WritePosClientRpc(transform.position, transform.rotation, GetComponent<Rigidbody2D>().velocity);
+            else
+                WritePosServerRpc(transform.position, transform.rotation, GetComponent<Rigidbody2D>().velocity);
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void WritePosServerRpc(Vector3 pos, Quaternion rot, Vector2 vel)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
+        GetComponent<Rigidbody2D>().velocity = vel;
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void WritePosClientRpc(Vector3 pos, Quaternion rot, Vector2 vel)
+    {
+        transform.position = pos;
+        transform.rotation = rot;
+        GetComponent<Rigidbody2D>().velocity = vel;
     }
 }

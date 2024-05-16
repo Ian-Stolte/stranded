@@ -95,7 +95,8 @@ public class Spaceship : NetworkBehaviour
     private float[] depletionIntervals = new float[] {8, 6.5f, 5, 4};
     private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (0.5f, 3), (1.5f, 3.5f)};
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
-    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(10, 20), (15, 30), (15, 30), (20, 40)};
+    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(10, 20), (15, 25), (15, 25), (20, 35)};
+    private int[] maxShipwrecks = new int[] {8, 8, 6, 6};
 
     void Start()
     {
@@ -120,6 +121,7 @@ public class Spaceship : NetworkBehaviour
         ShipwreckSpawner wreckSpawner = GameObject.Find("Shipwreck Spawner").GetComponent<ShipwreckSpawner>();
         wreckSpawner.minDelay = shipwreckDelays[difficulty].min;
         wreckSpawner.maxDelay = shipwreckDelays[difficulty].max;
+        wreckSpawner.maxAtOnce = maxShipwrecks[difficulty];
     }
 
     void Update()
@@ -208,7 +210,7 @@ public class Spaceship : NetworkBehaviour
     }
 
 
-    //Collect Resource
+    //Collect Resource/Shipwreck
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.name == "Resource(Clone)")
@@ -259,7 +261,7 @@ public class Spaceship : NetworkBehaviour
             }
             if (IsServer)
             {
-                scraps.Value++;
+                scraps.Value += collider.GetComponent<ShipwreckBehavior>().value.Value;
                 stats.scrapsCollected.Value++;
                 float multiplier = 1;
                 if (multipleRewards) //set random chance
