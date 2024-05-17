@@ -431,6 +431,7 @@ GameObject:
   - component: {fileID: 3756596008028146631}
   - component: {fileID: 3260097637055136741}
   - component: {fileID: 1271292983902658299}
+  - component: {fileID: 6256916048960625496}
   m_Layer: 5
   m_Name: Item Price
   m_TagString: Untagged
@@ -554,6 +555,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!225 &6256916048960625496
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6634306753875241495}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7681016343955081526
 GameObject:
   m_ObjectHideFlags: 0

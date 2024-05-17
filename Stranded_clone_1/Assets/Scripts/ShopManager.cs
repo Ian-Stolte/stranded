@@ -245,7 +245,7 @@ public class ShopManager : NetworkBehaviour
     public void AddScraps()
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
-        CheckPurchaseable();
+        CheckPurchaseable(shipScript.scraps.Value);
     }
 
     public void LoadPanels()
@@ -263,14 +263,14 @@ public class ShopManager : NetworkBehaviour
         }
     }
 
-    public void CheckPurchaseable()
+    public void CheckPurchaseable(int scraps)
     {
         foreach (GameObject g in upgradePanels)
         {
-            int cost = g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
+            int cost = 2 * g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
             if (g.GetComponent<StationTemplate>().stationLevel == 0)
                 cost = 3;
-            if (shipScript.scraps.Value >= cost && g.GetComponent<StationTemplate>().stationLevel != 4) // If player has enough money
+            if (scraps >= cost && g.GetComponent<StationTemplate>().stationLevel != 4) // If player has enough money
             {
                 g.GetComponent<Button>().interactable = true;
                 g.GetComponent<StationTemplate>().currentCost.GetComponent<CanvasGroup>().alpha = 1;
@@ -281,10 +281,19 @@ public class ShopManager : NetworkBehaviour
                 g.GetComponent<StationTemplate>().currentCost.GetComponent<CanvasGroup>().alpha = 0.3f;
             }
         }
-        /*foreach (GameObject g in boostEffectsSO)
+        for (int i = 0; i < boostEffectsSO.Length; i++)
         {
-            
-        }*/
+            if (scraps >= boostEffectsSO[i].baseCost)
+            {
+                shopPanelsGO[i].GetComponent<Button>().interactable = true;
+                shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
+            }
+            else
+            {
+                shopPanelsGO[i].GetComponent<Button>().interactable = false;
+                shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 0.3f;
+            }
+        }
 
     }
 
@@ -304,13 +313,15 @@ public class ShopManager : NetworkBehaviour
     public void PurchaseBoostClientRpc(int btnNo)
     {
         AddScraps();
-        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Success");
+        scrapsText.text = "Scraps: " + (shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost);
+        CheckPurchaseable(shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost);
     }
-	
-    //Maybe sync this?
-    public void ChangeTab(int tabNo)
+
+    //Change Tab
+    [Rpc(SendTo.Server)]
+    public void ChangeTabServerRpc(int tabNo)
     {
-        CheckPurchaseable();
+        CheckPurchaseable(shipScript.scraps.Value);
         boostsPage.SetActive(tabNo == 1);
         upgradesPage.SetActive(tabNo == 2);
         cosmeticsPage.SetActive(tabNo == 3);
@@ -338,23 +349,58 @@ public class ShopManager : NetworkBehaviour
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
         }
+        ChangeTabClientRpc();
     }
+
+    [Rpc(SendTo.NotServer)]
+    public void ChangeTabClientRpc(int tabNo)
+    {
+        CheckPurchaseable(shipScript.scraps.Value);
+        boostsPage.SetActive(tabNo == 1);
+        upgradesPage.SetActive(tabNo == 2);
+        cosmeticsPage.SetActive(tabNo == 3);
+        if (tabNo == 1)
+        {
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44, 44, 44, 255);
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
+            fuelBar.SetActive(true);
+            healthBar.SetActive(true);
+        }
+        else if (tabNo == 2)
+        {
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44, 44, 44, 255);
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
+            fuelBar.SetActive(false);
+            healthBar.SetActive(false);
+        }
+        else if (tabNo == 3)
+        {
+            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44, 44, 44, 255);
+            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
+            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
+            fuelBar.SetActive(false);
+            healthBar.SetActive(false);
+        }
+    }
+
 
     [Rpc(SendTo.Server)]
     public void StationUpgradeServerRpc(string stationUpgrade)
     {
         StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
-        int cost = upgrade.baseCost * upgrade.stationLevel * 2;
+        int cost = 2 * upgrade.baseCost * upgrade.stationLevel;
         if (upgrade.stationLevel == 0)
             cost = 3;
 
         if (shipScript.scraps.Value >= cost)
         {
-            shipScript.scraps.Value = shipScript.scraps.Value - cost; // Remove the money
+            shipScript.scraps.Value = shipScript.scraps.Value - cost;
             AddScraps();
 
             upgrade.stationLevel += 1;
-            int newCost = upgrade.baseCost * upgrade.stationLevel * 2;
+            int newCost = 2 * upgrade.baseCost * upgrade.stationLevel;
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");
             if (upgrade.stationLevel == 4)
             {
@@ -395,7 +441,7 @@ public class ShopManager : NetworkBehaviour
     {
         StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
         scrapsText.text = "Scraps: " + (shipScript.scraps.Value - cost);
-        CheckPurchaseable();
+        CheckPurchaseable(shipScript.scraps.Value - cost);
 
         upgrade.stationLevel += 1;
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");

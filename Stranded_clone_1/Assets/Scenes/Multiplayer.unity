@@ -1054,7 +1054,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PurchaseItem
+      value: PurchaseBoostServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -1980,7 +1980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &278868766
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1988,7 +1988,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 278868765}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2046,7 +2046,6 @@ Transform:
   m_LocalScale: {x: 3.5455997, y: 3.5455997, z: 3.5455997}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2013286084}
   - {fileID: 227065404}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2691,6 +2690,8 @@ MonoBehaviour:
   shipHealthMax: 10
   scraps:
     m_InternalValue: 0
+  radioParts:
+    m_InternalValue: 0
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10
@@ -3126,7 +3127,7 @@ PrefabInstance:
       objectReference: {fileID: 2013286085}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PurchaseItem
+      value: PurchaseBoostServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3745,7 +3746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PurchaseItem
+      value: PurchaseBoostServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -6247,6 +6248,10 @@ PrefabInstance:
       value: -34.99999
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: 2 Scraps
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_fontSize
       value: 40
       objectReference: {fileID: 0}
@@ -7570,7 +7575,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
-      value: 2 Scraps
+      value: 3 Scraps
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_fontSize
@@ -8365,6 +8370,10 @@ PrefabInstance:
       value: -34.999966
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: 2 Scraps
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_fontSize
       value: 40
       objectReference: {fileID: 0}
@@ -8920,7 +8929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PurchaseItem
+      value: PurchaseBoostServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -9811,7 +9820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_text
-      value: 2 Scraps
+      value: 3 Scraps
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_fontSize
@@ -12128,7 +12137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PurchaseItem
+      value: PurchaseBoostServerRpc
       objectReference: {fileID: 0}
     - target: {fileID: 980984162853991630, guid: 5710d4216a96ea24bb69ac2e77fd635d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -12458,12 +12467,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2013286082}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 278868767}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2013286085
 MonoBehaviour:
@@ -12934,6 +12943,10 @@ PrefabInstance:
       value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
+      propertyPath: m_text
+      value: 2 Scraps
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303420439396130743, guid: f8c1f837b2907fb4e9302179e4c748bf, type: 3}
       propertyPath: m_fontSize
       value: 40
       objectReference: {fileID: 0}
@@ -13236,6 +13249,7 @@ SceneRoots:
   - {fileID: 282882308}
   - {fileID: 619394802}
   - {fileID: 407631692}
+  - {fileID: 2013286084}
   - {fileID: 278868767}
   - {fileID: 412612937}
   - {fileID: 910736333}
