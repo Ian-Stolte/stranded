@@ -1953,7 +1953,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2013286085}
           m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-          m_MethodName: ChangeTab
+          m_MethodName: ChangeTabServerRpc
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -9649,7 +9649,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2013286085}
           m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-          m_MethodName: ChangeTab
+          m_MethodName: ChangeTabServerRpc
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -11938,7 +11938,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2013286085}
           m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-          m_MethodName: ChangeTab
+          m_MethodName: ChangeTabServerRpc
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

@@ -30,6 +30,8 @@ public class ShopManager : NetworkBehaviour
 
     private AudioManager audio;
     private bool startMusic;
+    private Sound shopMusic;
+    private Sound strandedMusic;
 
     private RectTransform fuelBarRectTransform;
     private RectTransform healthBarRectTransform;
@@ -95,6 +97,8 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        shopMusic = Array.Find(audio.music, sound => sound.name == "Shop");
+        strandedMusic = Array.Find(audio.music, sound => sound.name == "Stranded");
 
         openShopBtn.SetActive(true);
         closeShopBtn.SetActive(false);
@@ -132,7 +136,7 @@ public class ShopManager : NetworkBehaviour
         }*/
 
         //audio fade
-        float distance = Vector2.Distance(transform.position, GameObject.Find("Spaceship").transform.position);
+        /*float distance = Vector2.Distance(transform.position, GameObject.Find("Spaceship").transform.position);
         Sound shopMusic = Array.Find(audio.music, sound => sound.name == "Shop");
         Sound strandedMusic = Array.Find(audio.music, sound => sound.name == "Stranded");
         if (distance < 50)
@@ -148,7 +152,7 @@ public class ShopManager : NetworkBehaviour
             startMusic = true;
             shopMusic.source.volume = 0;
             strandedMusic.source.volume = 0.4f;
-        }
+        }*/
     }
     
     //OPEN SHOP
@@ -174,11 +178,13 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
-        if (startMusic)
-        {
-            Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
-            s.source.volume = 0;
-        }
+        
+        //shopMusic.source.volume = 0.4f;
+        //strandedMusic.source.volume = 0;
+//TODO: Fix fade in not working b/c paused (manually add like 0.01 every frame in Update?)
+        StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
+        StartCoroutine(audio.StartFade("Stranded", 1, 0));
+        
         sync.PauseServerRpc(false);
         OpenShopClientRpc();
     }
@@ -205,11 +211,10 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
-        if (startMusic)
-        {
-            Sound s = Array.Find(audio.music, sound => sound.name == "Stranded");
-            s.source.volume = 0;
-        }
+        //shopMusic.source.volume = 0.4f;
+        //strandedMusic.source.volume = 0;
+        StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
+        StartCoroutine(audio.StartFade("Stranded", 1, 0));
     }
 
     //CLOSE SHOP
@@ -226,6 +231,12 @@ public class ShopManager : NetworkBehaviour
         healthBar.SetActive(true);
         fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
+
+        shopMusic.source.volume = 0;
+        //strandedMusic.source.volume = 0.4f;
+        //StartCoroutine(audio.StartFade("Shop", 1, 0f));
+        StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
+
         CloseShopClientRpc();
     }
 
@@ -240,6 +251,11 @@ public class ShopManager : NetworkBehaviour
         healthBar.SetActive(true);
         fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
+
+        shopMusic.source.volume = 0;
+        //strandedMusic.source.volume = 0.4f;
+        //StartCoroutine(audio.StartFade("Shop", 1, 0f));
+        StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
     }
 
     public void AddScraps()
@@ -318,8 +334,7 @@ public class ShopManager : NetworkBehaviour
     }
 
     //Change Tab
-    [Rpc(SendTo.Server)]
-    public void ChangeTabServerRpc(int tabNo)
+    void ChangeTab(int tabNo)
     {
         CheckPurchaseable(shipScript.scraps.Value);
         boostsPage.SetActive(tabNo == 1);
@@ -349,40 +364,19 @@ public class ShopManager : NetworkBehaviour
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
         }
-        ChangeTabClientRpc();
+    }
+
+    [Rpc(SendTo.Server)]
+    public void ChangeTabServerRpc(int tabNo)
+    {
+        ChangeTab(tabNo);
+        ChangeTabClientRpc(tabNo);
     }
 
     [Rpc(SendTo.NotServer)]
     public void ChangeTabClientRpc(int tabNo)
     {
-        CheckPurchaseable(shipScript.scraps.Value);
-        boostsPage.SetActive(tabNo == 1);
-        upgradesPage.SetActive(tabNo == 2);
-        cosmeticsPage.SetActive(tabNo == 3);
-        if (tabNo == 1)
-        {
-            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44, 44, 44, 255);
-            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
-            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
-            fuelBar.SetActive(true);
-            healthBar.SetActive(true);
-        }
-        else if (tabNo == 2)
-        {
-            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44, 44, 44, 255);
-            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
-            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
-            fuelBar.SetActive(false);
-            healthBar.SetActive(false);
-        }
-        else if (tabNo == 3)
-        {
-            GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44, 44, 44, 255);
-            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
-            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72, 72, 72, 255);
-            fuelBar.SetActive(false);
-            healthBar.SetActive(false);
-        }
+        ChangeTab(tabNo);
     }
 
 
@@ -432,12 +426,12 @@ public class ShopManager : NetworkBehaviour
             }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);
-            StationUpgradeClientRpc(stationUpgrade, newCost);
+            StationUpgradeClientRpc(stationUpgrade, cost, newCost);
         }
     }
 
     [Rpc(SendTo.NotServer)]
-    public void StationUpgradeClientRpc(string stationUpgrade, int cost)
+    public void StationUpgradeClientRpc(string stationUpgrade, int cost, int newCost)
     {
         StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
         scrapsText.text = "Scraps: " + (shipScript.scraps.Value - cost);
@@ -454,7 +448,7 @@ public class ShopManager : NetworkBehaviour
         else
         {
             upgrade.stationLevelText.text = "Lv. " + upgrade.stationLevel + " → " + colorStart + (upgrade.stationLevel + 1) + "</color>";
-            upgrade.currentCost.text = cost + " Scraps";
+            upgrade.currentCost.text = newCost + " Scraps";
         }
         var infoList = thrustInfo;
         if (stationUpgrade == "Radar Upgrade")

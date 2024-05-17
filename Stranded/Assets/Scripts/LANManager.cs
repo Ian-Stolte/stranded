@@ -120,6 +120,8 @@ public class LANManager : NetworkBehaviour
 			sliderValue = (int)slider.GetComponent<Slider>().value;
 			UpdateSliderServerRpc(sliderValue);
 		}
+		
+		lanElements.transform.GetChild(2).GetComponent<Button>().interactable = (lanElements.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text.Length > 1);
 	}
 
 	[Rpc(SendTo.Server)]
