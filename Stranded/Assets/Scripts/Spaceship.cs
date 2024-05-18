@@ -174,7 +174,7 @@ public class Spaceship : NetworkBehaviour
         if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
         {
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Collision");
-            GameObject.Find("Screen Flash").GetComponent<Animator>().Play("ScreenFlash");
+            GameObject.Find("Screen Flash Red").GetComponent<Animator>().Play("ScreenFlash");
             // Updates the health bar
             if (IsServer)
             {
@@ -354,7 +354,11 @@ public class Spaceship : NetworkBehaviour
 
     public void UpgradeStation(string type, int level)
     {
-        if (type == "Thruster Upgrade")
+        if (type == "Steering Upgrade")
+        {
+            turnSpeed = turnSpeeds[level-1];
+        }
+        else if (type == "Thruster Upgrade")
         {
             thrustSpeed = thrustSpeeds[level-1];
             maxSpeed = maxSpeeds[level-1];
@@ -362,16 +366,6 @@ public class Spaceship : NetworkBehaviour
             {
                 boostUnlocked = true;
                 boostIndicator.SetActive(true);
-            }
-        }
-        else if (type == "Radar Upgrade")
-        {
-            radarUnlocked = true;
-            player.buttonCircles.transform.GetChild(4).gameObject.SetActive(true);
-            radarRange = radarRanges[level-1];
-            if (level >= 3)
-            {
-                multipleArrows = true;
             }
         }
         else if (type == "Shield Upgrade")
@@ -389,6 +383,7 @@ public class Spaceship : NetworkBehaviour
         else if (type == "Grabber Upgrade")
         {
             grabberUnlocked = true;
+            GameObject.Find("Storm").GetComponent<Storm>().stationsUnlocked.Add(4);
             player.buttonCircles.transform.GetChild(3).gameObject.SetActive(true);
             grabberRange = grabberRanges[level - 1];
             GameObject.Find("Grabber").GetComponent<Grabber>().speed = grabberSpeeds[level-1];
@@ -398,9 +393,16 @@ public class Spaceship : NetworkBehaviour
                 multipleRewards = true;
             }
         }
-        else if (type == "Steering Upgrade")
+        else if (type == "Radar Upgrade")
         {
-            turnSpeed = turnSpeeds[level-1];
+            radarUnlocked = true;
+            GameObject.Find("Storm").GetComponent<Storm>().stationsUnlocked.Add(5);
+            player.buttonCircles.transform.GetChild(4).gameObject.SetActive(true);
+            radarRange = radarRanges[level-1];
+            if (level >= 3)
+            {
+                multipleArrows = true;
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ public class Buttons : MonoBehaviour
     public GameObject target;
     private GameObject[] players;
     private Transform buttons;
+    public Storm storm;
 
     void Start()
     {
@@ -17,30 +18,27 @@ public class Buttons : MonoBehaviour
     void Update()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        CheckInUse(buttons.GetChild(0));
-        CheckInUse(buttons.GetChild(1));
-        CheckInUse(buttons.GetChild(2));
-        CheckInUse(buttons.GetChild(3));
-        CheckInUse(buttons.GetChild(4));
+        for (int i = 0; i < 5; i++)
+            CheckInUse(i);
 
         //swap between stations with number keys
-        if (Input.GetKeyDown(KeyCode.Alpha1) && buttons.GetChild(0).GetComponent<Button>().interactable)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && buttons.GetChild(0).GetComponent<Button>().interactable && !storm.disabledStations.Contains(1))
         {
             ChangeTo("steering");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && buttons.GetChild(1).GetComponent<Button>().interactable)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && buttons.GetChild(1).GetComponent<Button>().interactable && !storm.disabledStations.Contains(2))
         {
             ChangeTo("thrusters");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && buttons.GetChild(2).GetComponent<Button>().interactable)
+        else if (Input.GetKeyDown(KeyCode.Alpha3) && buttons.GetChild(2).GetComponent<Button>().interactable && !storm.disabledStations.Contains(3))
         {
             ChangeTo("shields");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4) && buttons.GetChild(3).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().grabberUnlocked)
+        else if (Input.GetKeyDown(KeyCode.Alpha4) && buttons.GetChild(3).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().grabberUnlocked && !storm.disabledStations.Contains(4))
         {
             ChangeTo("grabber");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5) && buttons.GetChild(4).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().radarUnlocked)
+        else if (Input.GetKeyDown(KeyCode.Alpha5) && buttons.GetChild(4).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().radarUnlocked && !storm.disabledStations.Contains(5))
         {
             ChangeTo("radar");
         }
@@ -66,8 +64,9 @@ public class Buttons : MonoBehaviour
         }
     }
     
-    public void CheckInUse(Transform child)
+    public void CheckInUse(int index)
     {
+        Transform child = buttons.GetChild(index);
         bool inUse = false;
         foreach (GameObject p in players)
         {
@@ -77,10 +76,8 @@ public class Buttons : MonoBehaviour
                 inUse = true;
             }
         }
-        if (!inUse)
-        {
-            child.GetComponent<Button>().interactable = true;
-        }
+        child.GetComponent<Button>().interactable = (!inUse && !storm.disabledStations.Contains(index+1));
+        child.GetChild(2).gameObject.SetActive(storm.disabledStations.Contains(index+1));
     }
 
     public void SetStation(string s)

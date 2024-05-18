@@ -15,7 +15,7 @@ public class PlayerStations : NetworkBehaviour
     //Stations
     public NetworkVariable<FixedString64Bytes> station = new NetworkVariable<FixedString64Bytes>(writePerm: NetworkVariableWritePermission.Owner);
     public string currentStation;
-    private Sync sync;
+    [HideInInspector] public Sync sync;
 
     //Buttons
     [SerializeField] private GameObject buttonPrefab;
@@ -137,6 +137,7 @@ public class PlayerStations : NetworkBehaviour
             buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
             buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";
             buttons.GetComponent<Buttons>().target = gameObject;
+            buttons.GetComponent<Buttons>().storm = GameObject.Find("Storm").GetComponent<Storm>();
             buttons.transform.SetSiblingIndex(0);
             buttonCircles = buttons.transform.GetChild(0).gameObject;
             buttonCircles.SetActive(true);
@@ -144,6 +145,7 @@ public class PlayerStations : NetworkBehaviour
             qIndicator.SetActive(false);
             
             shipScript.player = this;
+            GameObject.Find("Storm").GetComponent<Storm>().player = this;
             StartCoroutine(Radar());
         }
 
@@ -203,11 +205,11 @@ public class PlayerStations : NetworkBehaviour
                 buttonCircles.SetActive(true);
                 qIndicator.SetActive(false);
             }
-            else
+            /*else
             {
                 buttonCircles.SetActive(false);
                 qIndicator.SetActive(true);
-            }
+            }*/
 
             //Thruster Boosts
             if (currentStation == "thrusters" && Input.GetMouseButtonDown(0) && !shipScript.isStunned && !sync.paused.Value && shipScript.boostCount > 0)
@@ -363,7 +365,7 @@ public class PlayerStations : NetworkBehaviour
                 }
             }
             //write ship rotation
-            if (currentStation == "steering" || (IsServer && buttonCircles.transform.GetChild(0).GetComponent<Button>().interactable))
+            if (currentStation == "steering" || (IsServer && (buttonCircles.transform.GetChild(0).GetComponent<Button>().interactable || GameObject.Find("Storm").GetComponent<Storm>().disabledStations.Contains(1))))
             {
                 sync.WriteShipRotServerRpc(ship.transform.rotation);
             }
@@ -385,7 +387,7 @@ public class PlayerStations : NetworkBehaviour
                 thrustersOn = false;
             }
             //write ship position & velocity
-            if (currentStation == "thrusters" || (IsServer && buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable))
+            if (currentStation == "thrusters" || (IsServer && (buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable || GameObject.Find("Storm").GetComponent<Storm>().disabledStations.Contains(2))))
             {
                 shipScript.controlOfThrusters = true;
                 sync.WriteShipMoveServerRpc(ship.GetComponent<Rigidbody2D>().velocity, ship.transform.position, (thrustersOn || shipScript.boosting), ship.transform.position - oldShipPos);
