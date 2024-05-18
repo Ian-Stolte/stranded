@@ -113,7 +113,6 @@ public class ShopManager : NetworkBehaviour
 
     void Update()
     {
-        
         //if (Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")) && !shop.activeSelf)
         //{
             openShopBtn.SetActive(true);
@@ -179,11 +178,11 @@ public class ShopManager : NetworkBehaviour
 
         AddScraps();
         
-        //shopMusic.source.volume = 0.4f;
-        //strandedMusic.source.volume = 0;
+        shopMusic.source.volume = 0.4f;
+        strandedMusic.source.volume = 0;
 //TODO: Fix fade in not working b/c paused (manually add like 0.01 every frame in Update?)
-        StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
-        StartCoroutine(audio.StartFade("Stranded", 1, 0));
+        //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
+        //StartCoroutine(audio.StartFade("Stranded", 1, 0));
         
         sync.PauseServerRpc(false);
         OpenShopClientRpc();
@@ -211,10 +210,10 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
-        //shopMusic.source.volume = 0.4f;
-        //strandedMusic.source.volume = 0;
-        StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
-        StartCoroutine(audio.StartFade("Stranded", 1, 0));
+        shopMusic.source.volume = 0.4f;
+        strandedMusic.source.volume = 0;
+        //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
+        //StartCoroutine(audio.StartFade("Stranded", 1, 0));
     }
 
     //CLOSE SHOP
@@ -233,9 +232,9 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
         shopMusic.source.volume = 0;
-        //strandedMusic.source.volume = 0.4f;
+        strandedMusic.source.volume = 0.4f;
         //StartCoroutine(audio.StartFade("Shop", 1, 0f));
-        StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
+        //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
 
         CloseShopClientRpc();
     }
@@ -253,9 +252,9 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
         shopMusic.source.volume = 0;
-        //strandedMusic.source.volume = 0.4f;
+        strandedMusic.source.volume = 0.4f;
         //StartCoroutine(audio.StartFade("Shop", 1, 0f));
-        StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
+        //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
     }
 
     public void AddScraps()
@@ -320,9 +319,9 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
             AddScraps();
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Success");
-        }
-        PurchaseBoostClientRpc(btnNo);
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
+            PurchaseBoostClientRpc(btnNo);
+        }   
     }
 
     [Rpc(SendTo.NotServer)]
@@ -331,6 +330,7 @@ public class ShopManager : NetworkBehaviour
         AddScraps();
         scrapsText.text = "Scraps: " + (shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost);
         CheckPurchaseable(shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost);
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
     }
 
     //Change Tab
@@ -395,7 +395,7 @@ public class ShopManager : NetworkBehaviour
 
             upgrade.stationLevel += 1;
             int newCost = 2 * upgrade.baseCost * upgrade.stationLevel;
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade");
             if (upgrade.stationLevel == 4)
             {
                 upgrade.GetComponent<Button>().interactable = false;
@@ -438,7 +438,7 @@ public class ShopManager : NetworkBehaviour
         CheckPurchaseable(shipScript.scraps.Value - cost);
 
         upgrade.stationLevel += 1;
-        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade Success");
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade");
         if (upgrade.stationLevel == 4)
         {
             upgrade.GetComponent<Button>().interactable = false;

@@ -443,6 +443,8 @@ public class PlayerStations : NetworkBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1.5f);
+            if (currentStation == "radar")
+                GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Radar");
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Shipwreck"))
             {
                 obj.GetComponent<ShipwreckBehavior>().radarArrow.SetActive(false);

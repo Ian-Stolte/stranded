@@ -216,6 +216,7 @@ public class Spaceship : NetworkBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Resource Collect");
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
                 player.hideGrabberInstruction = true;
@@ -249,6 +250,7 @@ public class Spaceship : NetworkBehaviour
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Scrap Collect");
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
                 player.hideGrabberInstruction = true;
