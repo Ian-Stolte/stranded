@@ -139,9 +139,9 @@ public class PlayerStations : NetworkBehaviour
             buttons.GetComponent<Buttons>().target = gameObject;
             buttons.GetComponent<Buttons>().storm = GameObject.Find("Storm").GetComponent<Storm>();
             buttons.transform.SetSiblingIndex(0);
-            buttonCircles = buttons.transform.GetChild(0).gameObject;
+            buttonCircles = buttons.transform.GetChild(1).gameObject;
             buttonCircles.SetActive(true);
-            qIndicator = buttons.transform.GetChild(2).gameObject;
+            qIndicator = buttons.transform.GetChild(3).gameObject;
             qIndicator.SetActive(false);
             
             shipScript.player = this;

@@ -18,7 +18,7 @@ public class Storm : NetworkBehaviour
 
     void Start()
     {
-        timer = 5; //could change based on difficulty
+        timer = 180; //could change based on difficulty
         stationsUnlocked.Add(1);
         stationsUnlocked.Add(2);
         stationsUnlocked.Add(3);
@@ -29,11 +29,24 @@ public class Storm : NetworkBehaviour
         if (IsServer && !doingStorm)
         {
             timer -= Time.deltaTime;
+            if (timer <= 0)
+            {
+                StartStormServerRpc();
+            }
         }
-        if (timer <= 0 && !doingStorm)
-        {
-            StartCoroutine(StartStorm());
-        }
+    }
+
+    [Rpc(SendTo.Server)]
+    public void StartStormServerRpc()
+    {
+        StartCoroutine(StartStorm());
+        StartStormClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    public void StartStormClientRpc()
+    {
+        StartCoroutine(StartStorm());
     }
 
     public IEnumerator StartStorm()
@@ -42,7 +55,6 @@ public class Storm : NetworkBehaviour
         GameObject.Find("Storm Text").GetComponent<Animator>().Play("StormText");
         yield return new WaitForSeconds(4);
         GameObject.Find("Screen Flash White").GetComponent<Animator>().Play("ScreenFlashLong");
-
         if (IsServer)
         {
             if (stationsUnlocked.Count == 3)

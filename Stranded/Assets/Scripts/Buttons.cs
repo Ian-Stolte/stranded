@@ -12,7 +12,7 @@ public class Buttons : MonoBehaviour
 
     void Start()
     {
-        buttons = transform.GetChild(0);
+        buttons = transform.GetChild(1);
     }
 
     void Update()
@@ -68,14 +68,25 @@ public class Buttons : MonoBehaviour
     {
         Transform child = buttons.GetChild(index);
         bool inUse = false;
+        transform.GetChild(0).GetChild(index).gameObject.SetActive(false);
+        
         foreach (GameObject p in players)
         {
             if (child.name.ToLower() == p.GetComponent<PlayerStations>().station.Value)
             {
-                child.GetComponent<Button>().interactable = false;
-                inUse = true;
+                if (p == target)
+                {
+                    transform.GetChild(0).GetChild(index).gameObject.SetActive(true);
+                }
+                else
+                {
+                    child.GetComponent<Button>().interactable = false;
+                    inUse = true;
+                }   
             }
         }
+        //if (storm.disabledStations.Contains(index+1))
+        //    child.GetComponent<Button>().interactable = false;
         child.GetComponent<Button>().interactable = (!inUse && !storm.disabledStations.Contains(index+1));
         child.GetChild(2).gameObject.SetActive(storm.disabledStations.Contains(index+1));
     }
