@@ -29,11 +29,10 @@ public class Storm : NetworkBehaviour
         if (IsServer && !doingStorm)
         {
             timer -= Time.deltaTime;
-            
-            if (timer <= 0)
-            {
-                StartCoroutine(StartStorm());
-            }
+        }
+        if (timer <= 0 && !doingStorm)
+        {
+            StartCoroutine(StartStorm());
         }
     }
 
@@ -44,12 +43,15 @@ public class Storm : NetworkBehaviour
         yield return new WaitForSeconds(4);
         GameObject.Find("Screen Flash White").GetComponent<Animator>().Play("ScreenFlashLong");
 
-        if (stationsUnlocked.Count == 3)
-            DisableStation();
-        else
+        if (IsServer)
         {
-            DisableStation();
-            DisableStation();
+            if (stationsUnlocked.Count == 3)
+                DisableStationServerRpc();
+            else
+            {
+                DisableStationServerRpc();
+                DisableStationServerRpc();
+            }
         }
         yield return new WaitForSeconds(10);
         disabledStations = new List<int>();
@@ -57,16 +59,32 @@ public class Storm : NetworkBehaviour
         doingStorm = false;
     }
 
-    private void DisableStation()
+    [Rpc(SendTo.Server)]
+    private void DisableStationServerRpc()
     {
         int index = Random.Range(0, stationsUnlocked.Count);
         disabledStations.Add(stationsUnlocked[index]);
         if ((player.currentStation == "steering" && stationsUnlocked[index] == 1) || (player.currentStation == "thrusters" && stationsUnlocked[index] == 2) || (player.currentStation == "shields" && stationsUnlocked[index] == 3) || (player.currentStation == "grabber" && stationsUnlocked[index] == 4) || (player.currentStation == "radar" && stationsUnlocked[index] == 5))
         {
-            Debug.Log("Kick player out!");
             if (player.currentStation == "grabber")
                 {
                     player.sync.WriteGrabberFiringRpc(false);
+                    player.grabberFired = false;
+                }
+            player.currentStation = "none";
+            player.HideInstructions();
+        }
+        DisableStationClientRpc(index);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void DisableStationClientRpc(int index)
+    {
+        disabledStations.Add(stationsUnlocked[index]);
+        if ((player.currentStation == "steering" && stationsUnlocked[index] == 1) || (player.currentStation == "thrusters" && stationsUnlocked[index] == 2) || (player.currentStation == "shields" && stationsUnlocked[index] == 3) || (player.currentStation == "grabber" && stationsUnlocked[index] == 4) || (player.currentStation == "radar" && stationsUnlocked[index] == 5))
+        {
+            if (player.currentStation == "grabber")
+                {
                     player.grabberFired = false;
                 }
             player.currentStation = "none";
