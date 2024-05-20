@@ -83,11 +83,11 @@ public class Spaceship : NetworkBehaviour
 
     //Upgrades
     private float[] turnSpeeds = new float[] {1, 1.5f, 2, 2.5f};
-    private float[] thrustSpeeds = new float[] {3, 4, 4, 5};
+    private float[] thrustSpeeds = new float[] {2, 3, 3, 4.5f};
     private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
-    private float[] maxSpeeds = new float[] {8, 10, 10, 12};
+    private float[] maxSpeeds = new float[] {7, 9, 9, 12};
     private int[] radarRanges = new int[] {75, 125, 125, 200};
-    private int[] grabberRanges = new int[] {13, 16, 16, 20};
+    private int[] grabberRanges = new int[] {11, 14, 14, 20};
     private float[] grabberSpeeds = new float[] {0.5f, 0.55f, 0.55f, 0.7f};
     private float[] grabberRetractSpeeds = new float[] {0.2f, 0.25f, 0.25f, 0.35f};
 
@@ -96,8 +96,8 @@ public class Spaceship : NetworkBehaviour
     private float[] depletionIntervals = new float[] {8, 6.5f, 5, 4};
     private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (0.5f, 3), (1.5f, 3.5f)};
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
-    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(10, 20), (15, 25), (15, 25), (20, 35)};
-    private int[] maxShipwrecks = new int[] {8, 8, 6, 6};
+    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(5, 15), (10, 20), (10, 20), (15, 30)};
+    private int[] maxShipwrecks = new int[] {10, 10, 8, 8};
 
     void Start()
     {

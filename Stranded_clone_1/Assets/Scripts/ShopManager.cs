@@ -160,6 +160,7 @@ public class ShopManager : NetworkBehaviour
     {
         shop.SetActive(true);
         openShopBtn.SetActive(false);
+        GameObject.Find("Event System").GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         closeShopBtn.SetActive(true);
 
         GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
@@ -193,6 +194,7 @@ public class ShopManager : NetworkBehaviour
     {
         shop.SetActive(true);
         openShopBtn.SetActive(false);
+        GameObject.Find("Event System").GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         closeShopBtn.SetActive(true);
 
         GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
@@ -282,9 +284,13 @@ public class ShopManager : NetworkBehaviour
     {
         foreach (GameObject g in upgradePanels)
         {
-            int cost = 2 * g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
-            if (g.GetComponent<StationTemplate>().stationLevel == 0)
-                cost = 3;
+            //int cost = 2 * g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
+            StationTemplate upgrade = g.GetComponent<StationTemplate>();
+            int cost = 3;
+            if (upgrade.stationLevel == 1)
+                cost = 2;
+            if (upgrade.stationLevel == 3)
+                cost = 5;
             if (scraps >= cost && g.GetComponent<StationTemplate>().stationLevel != 4) // If player has enough money
             {
                 g.GetComponent<Button>().interactable = true;
@@ -384,9 +390,11 @@ public class ShopManager : NetworkBehaviour
     public void StationUpgradeServerRpc(string stationUpgrade)
     {
         StationTemplate upgrade = GameObject.Find(stationUpgrade).GetComponent<StationTemplate>();
-        int cost = 2 * upgrade.baseCost * upgrade.stationLevel;
-        if (upgrade.stationLevel == 0)
-            cost = 3;
+        int cost = 3;
+        if (upgrade.stationLevel == 1)
+            cost = 2;
+        if (upgrade.stationLevel == 3)
+            cost = 5;
 
         if (shipScript.scraps.Value >= cost)
         {
@@ -394,7 +402,11 @@ public class ShopManager : NetworkBehaviour
             AddScraps();
 
             upgrade.stationLevel += 1;
-            int newCost = 2 * upgrade.baseCost * upgrade.stationLevel;
+            int newCost = 3;
+            if (upgrade.stationLevel == 1)
+                newCost = 2;
+            if (upgrade.stationLevel == 3)
+                newCost = 5;
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade");
             if (upgrade.stationLevel == 4)
             {

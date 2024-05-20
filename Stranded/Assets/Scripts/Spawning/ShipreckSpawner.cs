@@ -15,7 +15,8 @@ public class ShipwreckSpawner : NetworkBehaviour
     [SerializeField] private int minValue;
     [SerializeField] private int maxValue;
     private float timer;
-    
+    private float elapsedTime;
+
     private GameObject ship;
 
     void Start()
@@ -28,8 +29,9 @@ public class ShipwreckSpawner : NetworkBehaviour
         if (IsServer)
         {
             timer -= Time.deltaTime;
-            
-            if (timer <= 0 && GameObject.FindGameObjectsWithTag("Shipwreck").Length < maxAtOnce)
+            elapsedTime += Time.deltaTime;
+
+            if (timer <= 0 && GameObject.FindGameObjectsWithTag("Shipwreck").Length < maxAtOnce - Mathf.Min(2, 2*elapsedTime/600))
             {
                 SpawnShipwreck();
             }
@@ -38,7 +40,7 @@ public class ShipwreckSpawner : NetworkBehaviour
 
     public void SpawnShipwreck()
     {
-        timer = Random.Range(minDelay, maxDelay);
+        timer = Random.Range(minDelay, maxDelay) + Mathf.Min(5, 5*elapsedTime/600);
         Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
         distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
         while (Physics2D.OverlapCircle(transform.position + distance, 20, LayerMask.GetMask("Shipwreck")))
