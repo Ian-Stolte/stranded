@@ -2768,7 +2768,7 @@ MonoBehaviour:
   scraps:
     m_InternalValue: 0
   radioParts:
-    m_InternalValue: 0
+    m_InternalValue: 30
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10

@@ -55,6 +55,7 @@ public class ShopManager : NetworkBehaviour
 
     void Start()
     {
+        shopPanelsGO[3].SetActive(false);
         steeringInfo = new string[] {"Speed 1 → " + colorStart + "1.5</color>", "Speed 1.5 → " + colorStart + "2</color>", "Speed 2 → " + colorStart + "2.5</color>", "Fully upgraded!" };
         thrustInfo = new string[] {"Speed 3 → " + colorStart + "4</color>\nMax 8 → " + colorStart + "10</color>", "Unlocks periodic boosts of speed", "Speed 4 → " + colorStart + "5</color>\nMax 10 → " + colorStart + "12</color>", "Fully upgraded!"};
         shieldInfo = new string[] {"Speed 1.3 → " + colorStart + "2</color>", "Width 4 → " + colorStart + "6</color>", "Speed 2 → " + colorStart + "3</color>", "Fully upgraded!"};
@@ -280,7 +281,7 @@ public class ShopManager : NetworkBehaviour
 
     public void CheckPurchaseable(int scraps)
     {
-        foreach (GameObject g in upgradePanels)
+        foreach (GameObject g in upgradePanels) // Checks if upgrades are purchaseable
         {
             int cost = 2 * g.GetComponent<StationTemplate>().baseCost * g.GetComponent<StationTemplate>().stationLevel;
             if (g.GetComponent<StationTemplate>().stationLevel == 0)
@@ -310,18 +311,37 @@ public class ShopManager : NetworkBehaviour
             }
         }
 
+        if (shipScript.radioParts.Value >= boostEffectsSO[3].baseCost){
+            shopPanelsGO[3].SetActive(true);
+            shopPanelsGO[3].GetComponent<Button>().interactable = true;
+            shopPanelsGO[3].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
+        } else {
+            shopPanelsGO[3].SetActive(false);
+        }
+
     }
 
     [Rpc(SendTo.Server)]
     public void PurchaseBoostServerRpc(int btnNo)
     {
-        if (shipScript.scraps.Value >= boostEffectsSO[btnNo].baseCost)
-        {
-            shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
-            AddScraps();
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
-            PurchaseBoostClientRpc(btnNo);
-        }   
+
+        if (btnNo != 3){
+            if (shipScript.scraps.Value >= boostEffectsSO[btnNo].baseCost)
+            {
+                shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
+                AddScraps();
+                GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
+                PurchaseBoostClientRpc(btnNo);
+            }  
+        } else {
+            Debug.Log("Radio Parts: " + shipScript.radioParts.Value.ToString());
+            if (shipScript.radioParts.Value >= boostEffectsSO[btnNo].baseCost)
+            {
+                shipScript.radioParts.Value = shipScript.radioParts.Value - boostEffectsSO[btnNo].baseCost;
+                GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
+            }
+        }
+         
     }
 
     [Rpc(SendTo.NotServer)]
