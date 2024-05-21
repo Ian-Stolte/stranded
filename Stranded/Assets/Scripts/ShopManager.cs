@@ -56,11 +56,11 @@ public class ShopManager : NetworkBehaviour
     void Start()
     {
         shopPanelsGO[3].SetActive(false);
-        steeringInfo = new string[] {"Speed 1 → " + colorStart + "1.5</color>", "Speed 1.5 → " + colorStart + "2</color>", "Speed 2 → " + colorStart + "2.5</color>", "Fully upgraded!" };
-        thrustInfo = new string[] {"Speed 3 → " + colorStart + "4</color>\nMax 8 → " + colorStart + "10</color>", "Unlocks periodic boosts of speed", "Speed 4 → " + colorStart + "5</color>\nMax 10 → " + colorStart + "12</color>", "Fully upgraded!"};
-        shieldInfo = new string[] {"Speed 1.3 → " + colorStart + "2</color>", "Width 4 → " + colorStart + "6</color>", "Speed 2 → " + colorStart + "3</color>", "Fully upgraded!"};
-        grabberInfo = new string[] {"Range 13 → " + colorStart + "16</color>\nSpeed 0.5 → " + colorStart + "0.55</color>", "30% chance of double rewards", "Range 16 → " + colorStart + "20</color>\nSpeed 0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
-        radarInfo = new string[] {"Range 75 → " + colorStart + "125</color>", "Points toward all shipwrecks within range", "Range 125 → " + colorStart + "200</color>", "Fully upgraded!"};
+        steeringInfo = new string[] {"Speed  1 → " + colorStart + "1.5</color>", "Speed  1.5 → " + colorStart + "2</color>", "Speed  2 → " + colorStart + "2.5</color>", "Fully upgraded!" };
+        thrustInfo = new string[] {"Acceleration  2 → " + colorStart + "3</color>\nMax Speed  7 → " + colorStart + "9</color>", "Unlocks periodic boosts of speed", "Acceleration  3 → " + colorStart + "4.5</color>\nMax Speed  9 → " + colorStart + "12</color>", "Fully upgraded!"};
+        shieldInfo = new string[] {"Speed  1.3 → " + colorStart + "2</color>", "Width  4 → " + colorStart + "6</color>", "Speed  2 → " + colorStart + "3</color>", "Fully upgraded!"};
+        grabberInfo = new string[] {"30% chance of double resources", "Range  12 → " + colorStart + "15</color>\nSpeed  0.5 → " + colorStart + "0.55</color>", "Double  30% → " + colorStart + "60%</color>\nRange  15 → " + colorStart + "20</color>\nSpeed  0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
+        radarInfo = new string[] {"Range  75 → " + colorStart + "125</color>", "Points toward all shipwrecks within range", "Range  125 → " + colorStart + "200</color>", "Fully upgraded!"};
         //Initialize text values
         foreach (GameObject g in upgradePanels)
         {

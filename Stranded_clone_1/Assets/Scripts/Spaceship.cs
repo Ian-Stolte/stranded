@@ -77,9 +77,8 @@ public class Spaceship : NetworkBehaviour
     //Grabber
     [HideInInspector] public bool grabberUnlocked;
     [HideInInspector] public int grabberRange;
-    [HideInInspector] public bool multipleRewards;
     [HideInInspector] public bool grabberSpeed;
-
+    private float multiplierThreshold;
 
     //Upgrades
     private float[] turnSpeeds = new float[] {1, 1.5f, 2, 2.5f};
@@ -87,14 +86,15 @@ public class Spaceship : NetworkBehaviour
     private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
     private float[] maxSpeeds = new float[] {7, 9, 9, 12};
     private int[] radarRanges = new int[] {75, 125, 125, 200};
-    private int[] grabberRanges = new int[] {11, 14, 14, 20};
-    private float[] grabberSpeeds = new float[] {0.5f, 0.55f, 0.55f, 0.7f};
-    private float[] grabberRetractSpeeds = new float[] {0.2f, 0.25f, 0.25f, 0.35f};
+    private int[] grabberRanges = new int[] {12, 12, 15, 20};
+    private float[] grabberMultiplierThresholds = new float[] {1, 0.7f, 0.7f, 0.4f};
+    private float[] grabberSpeeds = new float[] {0.5f, 0.5f, 0.55f, 0.7f};
+    private float[] grabberRetractSpeeds = new float[] {0.2f, 0.2f, 0.25f, 0.35f};
 
     //Difficulty levels
-    private float[] dmgLevels = new float[] {1, 1.5f, 1.5f, 2};
+    private float[] dmgLevels = new float[] {0.5f, 1, 1.5f, 2};
     private float[] depletionIntervals = new float[] {8, 6.5f, 5, 4};
-    private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (0.5f, 3), (1.5f, 3.5f)};
+    private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (1, 3), (1.5f, 3.5f)};
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
     private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(5, 15), (10, 20), (10, 20), (15, 30)};
     private int[] maxShipwrecks = new int[] {10, 10, 8, 8};
@@ -217,26 +217,22 @@ public class Spaceship : NetworkBehaviour
         if(collider.gameObject.name == "Resource(Clone)")
         {
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Resource Collect");
+            float multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
+                float randValue = Random.value;
+                if (randValue > multiplierThreshold)
+                {
+                    multiplier = 2;
+                }
             }
             if (IsServer)
             {
                 GameObject resourceText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 resourceText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
-               
-                float multiplier = 1; //keeps it normal if multiplied by 1
-                if (multipleRewards) //set random chance
-                { 
-                    float randValue = Random.value;
-                    if (randValue > .7f) //30% chance
-                    {
-                        multiplier = 2; 
-                    }
-                }
 
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + (collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
                 resourceText.transform.SetSiblingIndex(0);
@@ -251,10 +247,16 @@ public class Spaceship : NetworkBehaviour
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Scrap Collect");
+            float multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
+                float randValue = Random.value;
+                if (randValue > multiplierThreshold)
+                {
+                    multiplier = 2;
+                }
             }
             if (player.usedRadar)
             {
@@ -266,15 +268,6 @@ public class Spaceship : NetworkBehaviour
             {
                 scraps.Value += collider.GetComponent<ShipwreckBehavior>().value.Value;
                 stats.scrapsCollected.Value++;
-                float multiplier = 1;
-                if (multipleRewards) //set random chance
-                {
-                    float randValue = Random.value;
-                    if (randValue > .7f)
-                    {
-                        multiplier = 2;
-                    }
-                }
 
                 GameObject wreckText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
@@ -386,12 +379,9 @@ public class Spaceship : NetworkBehaviour
             GameObject.Find("Storm").GetComponent<Storm>().stationsUnlocked.Add(4);
             player.buttonCircles.transform.GetChild(3).gameObject.SetActive(true);
             grabberRange = grabberRanges[level - 1];
+            multiplierThreshold = grabberMultiplierThresholds[level - 1];
             GameObject.Find("Grabber").GetComponent<Grabber>().speed = grabberSpeeds[level-1];
             GameObject.Find("Grabber").GetComponent<Grabber>().retractSpeed = grabberRetractSpeeds[level-1];
-            if (level >= 3)
-            {
-                multipleRewards = true;
-            }
         }
         else if (type == "Radar Upgrade")
         {
