@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public class StatTracker : NetworkBehaviour
+public class StatTracker : MonoBehaviour
 {
-    public NetworkVariable<float> totalTime;
-    public NetworkVariable<int> resourcesCollected;
-    public NetworkVariable<int> scrapsCollected;
+    public float totalTime;
+    public float resourcesCollected;
+    public int scrapsCollected;
+    public string causeOfDeath;
 
     void OnEnable()
     {
@@ -24,39 +25,44 @@ public class StatTracker : NetworkBehaviour
     {
         if (scene.name == "Game Over")
         {
+            Time.timeScale = 1;
             string formattedTime;
-            if (totalTime.Value < 60)
+            if (totalTime < 60)
             {
-                formattedTime = Mathf.Round(totalTime.Value) + "s";
+                formattedTime = Mathf.Round(totalTime) + "s";
             }
             else
             {
-                string seconds = "" + Mathf.Round(totalTime.Value % 60);
+                string seconds = "" + Mathf.Round(totalTime % 60);
                 if (seconds.Length == 1)
                     seconds = "0" + seconds;
-                formattedTime = Mathf.Round(totalTime.Value / 60) + ":" + seconds;
+                formattedTime = Mathf.Round(totalTime / 60) + ":" + seconds;
             }
             GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You survived for " + formattedTime;
-            GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected.Value;
-            GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected.Value;
+            GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected;
+            GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected;
+            GameObject.Find("Cause of Death").GetComponent<TMPro.TextMeshProUGUI>().text = causeOfDeath;
         }
         else if (scene.name == "Multiplayer")
         {
-            if (!IsSpawned)
-            {
-                NetworkObject.Spawn();
-            }
-            totalTime.Value = 0;
-            resourcesCollected.Value = 0;
-            scrapsCollected.Value = 0;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += InitializeVals;
         }
+    }
+
+    void InitializeVals(
+        string sceneName,
+        UnityEngine.SceneManagement.LoadSceneMode loadSceneMode,
+        List<ulong> clientsCompleted,
+        List<ulong> clientsTimedOut)
+    {
+        totalTime = 0;
+        resourcesCollected = 0;
+        scrapsCollected = 0;
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= InitializeVals;
     }
 
     void Update()
     {
-        if (IsServer)
-        {
-            totalTime.Value += Time.deltaTime;
-        }
+        totalTime += Time.deltaTime;
     }
 }

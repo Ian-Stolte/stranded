@@ -163,7 +163,7 @@ public class Spaceship : NetworkBehaviour
         //show coordinates and resource/scrap count
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
-        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected.Value;
+        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected;
         scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
     }
 
@@ -187,7 +187,7 @@ public class Spaceship : NetworkBehaviour
             }
 
             if (shipHealth.Value <= 0) {
-                GameOver();
+                GameOver("Your ship was too damaged to continue");
             }
 
             // Slows down the ship's maximum speed
@@ -217,6 +217,7 @@ public class Spaceship : NetworkBehaviour
         if(collider.gameObject.name == "Resource(Clone)")
         {
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Resource Collect");
+            stats.resourcesCollected++;
             float multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
@@ -237,7 +238,6 @@ public class Spaceship : NetworkBehaviour
                 resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "+" + (collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
                 resourceText.transform.SetSiblingIndex(0);
                 ResourceTextClientRpc(collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
-                stats.resourcesCollected.Value++;
                 fuelAmount.Value += (collider.gameObject.GetComponent<ResourceBehavior>().value.Value * multiplier);
                 fuelAmount.Value = Mathf.Min(fuelAmount.Value, fuelMax);
                 GameObject.Find("Fuel Bar").GetComponent<Image>().fillAmount = fuelAmount.Value / fuelMax;
@@ -247,6 +247,7 @@ public class Spaceship : NetworkBehaviour
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Scrap Collect");
+            stats.scrapsCollected++;
             float multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
@@ -267,8 +268,6 @@ public class Spaceship : NetworkBehaviour
             if (IsServer)
             {
                 scraps.Value += collider.GetComponent<ShipwreckBehavior>().value.Value;
-                stats.scrapsCollected.Value++;
-
                 GameObject wreckText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 wreckText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);
@@ -311,18 +310,28 @@ public class Spaceship : NetworkBehaviour
         // Game over
         if (fuelAmount.Value <= 0)
         {
-            GameOver();
+            GameOver("You ran out of fuel");
         }
     }
 
-    void GameOver()
+    public void GameOver(string cause)
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
             g.GetComponent<PlayerStations>().enabled = false;
         }
+        stats.causeOfDeath = cause;
+        CauseOfDeathClientRpc(cause);
         if (IsServer)
+        {   
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
+        }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    void CauseOfDeathClientRpc(string cause)
+    {
+        stats.causeOfDeath = cause;
     }
 
     // Stun

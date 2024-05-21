@@ -130,9 +130,9 @@ public class PlayerStations : NetworkBehaviour
         grabberOutline = GameObject.Find("Grabber Outline");
         radarOutline = GameObject.Find("Radar Outline");
 
-        //Spawn buttons
         if (IsOwner)
         {
+            //Spawn buttons
             buttons = Instantiate(buttonPrefab, new Vector3(0, 0, 0), transform.rotation, GameObject.Find("Canvas").transform);
             buttons.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
             buttons.name = "Buttons (" + GameObject.FindGameObjectsWithTag("Buttons").Length + ")";

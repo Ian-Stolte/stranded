@@ -54,10 +54,11 @@ public class SceneLoader : NetworkBehaviour
                 g.GetComponent<PlayerStations>().Setup();
         }
         GameObject pauseMenu = GameObject.Find("Sync Object").GetComponent<Sync>().pauseMenu;
-        pauseMenu.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = difficultyText[difficulty.Value];
-        pauseMenu.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().color = difficultyColors[difficulty.Value];
-        pauseMenu.transform.GetChild(2).gameObject.SetActive(singleplayer);
+        pauseMenu.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = difficultyText[difficulty.Value];
+        pauseMenu.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().color = difficultyColors[difficulty.Value];
+        pauseMenu.transform.GetChild(4).gameObject.SetActive(singleplayer);
         GameObject.Find("Spaceship").GetComponent<Spaceship>().SetupDifficulty(difficulty.Value);
+        GameObject.Find("Loading Screen").SetActive(false);
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= DoSetup;
     }
 }
