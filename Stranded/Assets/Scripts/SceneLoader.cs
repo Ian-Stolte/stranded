@@ -58,6 +58,7 @@ public class SceneLoader : NetworkBehaviour
         pauseMenu.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().color = difficultyColors[difficulty.Value];
         pauseMenu.transform.GetChild(2).gameObject.SetActive(singleplayer);
         GameObject.Find("Spaceship").GetComponent<Spaceship>().SetupDifficulty(difficulty.Value);
+        GameObject.Find("Loading Screen").SetActive(false);
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= DoSetup;
     }
 }

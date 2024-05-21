@@ -10,6 +10,7 @@ public class HostButton : MonoBehaviour
 	public void StartHost()
 	{
 		NetworkManager.Singleton.StartHost();
+		GameObject.Find("Loading Screen").SetActive(false);
 		GameObject.Find("Player(Clone)").GetComponent<PlayerStations>().Setup();
 	}
 }

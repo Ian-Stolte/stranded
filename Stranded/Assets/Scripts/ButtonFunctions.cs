@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : NetworkBehaviour
 {
+    [SerializeField] private GameObject loadingScreen;
+
     public void SetSingleplayer()
     {
         GameObject.Find("Scene Loader").GetComponent<SceneLoader>().singleplayer = true;
@@ -16,6 +18,8 @@ public class ButtonFunctions : NetworkBehaviour
     {
         if (name == "Multiplayer")
         {
+            loadingScreen.SetActive(true);
+            LoadingScreenClientRpc();
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
             {
                 g.GetComponent<PlayerStations>().enabled = true;
@@ -35,5 +39,11 @@ public class ButtonFunctions : NetworkBehaviour
         }
 
         NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void LoadingScreenClientRpc()
+    {
+        loadingScreen.SetActive(true);
     }
 }
