@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +65,17 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject scrapText;
     [SerializeField] private GameObject radioPartsText;
 
+    //Audio
+    [Header("Audio Variables")]
+    private AudioManager audio;
+    private Sound danger1;
+    private Sound danger2;
+    private float dangerPct;
+    [SerializeField] private float danger1Start;
+    [SerializeField] private float danger1Max;
+    [SerializeField] private float danger2Start;
+    [SerializeField] private float danger2Max;
+
     //References
     private Sync sync;
     private ShopManager shop;
@@ -109,6 +121,10 @@ public class Spaceship : NetworkBehaviour
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
+
+        audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        danger1 = Array.Find(audio.music, sound => sound.name == "Danger 1");
+        danger2 = Array.Find(audio.music, sound => sound.name == "Danger 2");
     }
 
     public void SetupDifficulty(int difficulty)
@@ -130,7 +146,6 @@ public class Spaceship : NetworkBehaviour
     {
         gameTime += Time.deltaTime;
 
-        //Only works for 1 boost charge
         boostTimer = Mathf.Max(0, boostTimer - Time.deltaTime);
         if (boostTimer == 0 && boostUnlocked)
         {
@@ -141,6 +156,13 @@ public class Spaceship : NetworkBehaviour
         {
             boostIndicator.transform.GetChild(0).GetComponent<Image>().fillAmount = (boostCooldown-boostTimer)/boostCooldown;
             boostIndicator.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Charging...";
+        }
+
+        if (dangerPct != Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax)) //if danger changes...
+        {
+            dangerPct = Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax);
+            StartCoroutine(audio.StartFade("Danger 1", 1, danger1Max - (danger1Max/danger1Start)*dangerPct));
+            StartCoroutine(audio.StartFade("Danger 2", 1, danger2Max - (danger2Max/danger2Start)*dangerPct));
         }
     }
 
@@ -225,7 +247,7 @@ public class Spaceship : NetworkBehaviour
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
-                float randValue = Random.value;
+                float randValue = UnityEngine.Random.value;
                 if (randValue > multiplierThreshold)
                 {
                     multiplier = 2;
@@ -255,14 +277,14 @@ public class Spaceship : NetworkBehaviour
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
-                float randValue = Random.value;
+                float randValue = UnityEngine.Random.value;
                 if (randValue > multiplierThreshold)
                 {
                     multiplier = 2;
                 }
             }
             //radio parts chance
-            float radioRandValue = Random.value;
+            float radioRandValue = UnityEngine.Random.value;
             if (radioRandValue < 0.05)
             {
                 radioParts.Value += 1 ;

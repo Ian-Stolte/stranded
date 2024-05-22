@@ -63,6 +63,8 @@ public class AudioManager : MonoBehaviour
         {
             Play("Stranded");
             Play("Shop");
+            Play("Danger 1");
+            Play("Danger 2");
             StartCoroutine(StartFade("Stranded", 2, 0.4f));
         }
         else if (scene.name == "Start Screen")
