@@ -48,7 +48,7 @@ public class Spaceship : NetworkBehaviour
     public NetworkVariable<float> shipHealth;
     public int shipHealthMax;
     public NetworkVariable<int> scraps;
-    public NetworkVariable<int> radioParts;
+    public NetworkVariable<float> radioParts;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
     [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
@@ -62,6 +62,7 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
     [SerializeField] private GameObject scrapText;
+    [SerializeField] private GameObject radioPartsText;
 
     //References
     private Sync sync;
@@ -165,6 +166,7 @@ public class Spaceship : NetworkBehaviour
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
         resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected;
         scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
+        radioPartsText.GetComponent<TMPro.TextMeshProUGUI>().text = "Radio Parts: " + radioParts.Value;
     }
 
 
@@ -259,6 +261,12 @@ public class Spaceship : NetworkBehaviour
                     multiplier = 2;
                 }
             }
+            //radio parts chance
+            float radioRandValue = Random.value;
+            if (radioRandValue < 0.05)
+            {
+                radioParts.Value += 1 ;
+            }
             if (player.usedRadar)
             {
                 player.hideRadarInstruction = true;
@@ -277,6 +285,7 @@ public class Spaceship : NetworkBehaviour
                 ResourceTextClientRpc(collider.gameObject.GetComponent<ShipwreckBehavior>().value.Value * multiplier, true);
             }
             shop.AddScraps();
+            shop.AddRadioParts();
         }
     }
 

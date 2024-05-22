@@ -20,6 +20,7 @@ public class ShopManager : NetworkBehaviour
     private Sync sync;
 
     public TMP_Text scrapsText;
+    public TMP_Text radioPartsText;
     public BoostEffect[] boostEffectsSO;
     [SerializeField] GameObject[] shopPanelsGO;
     public ShopTemplate[] shopPanels;
@@ -264,6 +265,12 @@ public class ShopManager : NetworkBehaviour
     {
         scrapsText.text =  "Scraps: " + shipScript.scraps.Value;
         CheckPurchaseable(shipScript.scraps.Value);
+    }
+
+    public void AddRadioParts()
+    {
+        radioPartsText.text = "Radio Parts: " + shipScript.radioParts.Value;
+            //add in value and extra functionality--not sure what check purchaseable is
     }
 
     public void LoadPanels()
