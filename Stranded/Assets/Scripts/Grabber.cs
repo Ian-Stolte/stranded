@@ -45,7 +45,7 @@ public class Grabber : NetworkBehaviour
                 currentRetractSpeed *= retractDecel;
             if (grabbedObj != ship && grabbedObj != null)
             {
-                grabbedObj.transform.position = transform.position;
+                grabbedObj.transform.position = transform.position + Vector3.Normalize(transform.position - ship.transform.position)*0.7f;
             }
         }
         else
