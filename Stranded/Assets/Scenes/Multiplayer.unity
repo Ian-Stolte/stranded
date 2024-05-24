@@ -398,7 +398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &33129798
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2960,7 +2960,7 @@ MonoBehaviour:
   scraps:
     m_InternalValue: 100
   radioParts:
-    m_InternalValue: 30
+    m_InternalValue: 0
   fuelAmount:
     m_InternalValue: 0
   fuelMax: 10
@@ -10720,7 +10720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -744, y: -3}
+  m_AnchoredPosition: {x: -315, y: -3}
   m_SizeDelta: {x: 436.656, y: 183}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1439681757
@@ -10736,7 +10736,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.17254902, g: 0.17254902, b: 0.17254902, a: 1}
+  m_Color: {r: 0.28235295, g: 0.28235295, b: 0.28235295, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13454,7 +13454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -315.29218, y: -3.0000153}
+  m_AnchoredPosition: {x: -745, y: -3.0000153}
   m_SizeDelta: {x: 432.078, y: 183}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1891905962
@@ -13470,7 +13470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  m_Color: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14149,6 +14149,7 @@ MonoBehaviour:
   shop: {fileID: 1864062696}
   fuelBar: {fileID: 103641953}
   healthBar: {fileID: 639217421}
+  radioPartsObject: {fileID: 1122542978}
   player: {fileID: 0}
   scrapsText: {fileID: 876314053}
   radioPartsText: {fileID: 1122542980}
