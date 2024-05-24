@@ -7,7 +7,7 @@ public class Storm : NetworkBehaviour
 {
     public float minDelay;
     public float maxDelay;
-    private float timer;
+    public float timer;
     private bool doingStorm;
 
     public List<int> disabledStations;
@@ -18,7 +18,6 @@ public class Storm : NetworkBehaviour
 
     void Start()
     {
-        timer = 180; //could change based on difficulty
         stationsUnlocked.Add(1);
         stationsUnlocked.Add(2);
         stationsUnlocked.Add(3);
