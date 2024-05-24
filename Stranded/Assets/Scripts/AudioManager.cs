@@ -55,36 +55,54 @@ public class AudioManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        foreach (Sound s in music)
+        /*foreach (Sound s in music)
         {
             s.source.Stop();
-        }
+        }*/
+        StartCoroutine(FadeOutAll(0.5f));
         if (scene.name == "Multiplayer")
         {
             Play("Stranded");
             Play("Shop");
             Play("Danger 1");
             Play("Danger 2");
+            Sound s = Array.Find(music, sound => sound.name == "Stranded");
+            s.source.volume = 0;
             StartCoroutine(StartFade("Stranded", 2, 0.4f));
+            
         }
         else if (scene.name == "Start Screen")
         {
             Play("Start Screen");
-            StartCoroutine(StartFade("Start Screen", 2, 0.4f));
+            Sound s = Array.Find(music, sound => sound.name == "Start Screen");
+            s.source.volume = 0;
+            StartCoroutine(StartFade("Start Screen", 1, 0.4f));
+        }
+        else if (scene.name == "Game Over")
+        {
+            Play("Game Over");
+            Sound s = Array.Find(music, sound => sound.name == "Game Over");
+            s.source.volume = 0;
+            StartCoroutine(StartFade("Game Over", 2, 0.3f));
         }
     }
     
     public IEnumerator FadeOutAll(float duration)
     {
+        List<string> songsToFade = new List<string>();
         foreach (Sound s in music)
         {
             if (s.source.volume != 0)
+            {
                 StartCoroutine(StartFade(s.name, duration, 0));
+                songsToFade.Add(s.name);
+            }
         }
         yield return new WaitForSeconds(duration);
         foreach (Sound s in music)
         {
-            s.source.Stop();
+            if (songsToFade.Contains(s.name))
+                s.source.Stop();
         }
     }
 

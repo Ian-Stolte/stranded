@@ -68,13 +68,14 @@ public class Spaceship : NetworkBehaviour
     //Audio
     [Header("Audio Variables")]
     private AudioManager audio;
-    private Sound danger1;
-    private Sound danger2;
     private float dangerPct;
     [SerializeField] private float danger1Start;
     [SerializeField] private float danger1Max;
     [SerializeField] private float danger2Start;
     [SerializeField] private float danger2Max;
+    [SerializeField] private float vignetteStart;
+    [SerializeField] private float vignetteMax;
+
 
     //References
     private Sync sync;
@@ -109,12 +110,14 @@ public class Spaceship : NetworkBehaviour
     private float[] depletionIntervals = new float[] {8, 6.5f, 5, 4};
     private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (1, 3), (1.5f, 3.5f)};
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
-    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(5, 15), (10, 20), (10, 20), (15, 30)};
+    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(5, 15), (10, 20), (10, 20), (15, 25)};
     private int[] maxShipwrecks = new int[] {10, 10, 8, 8};
+    private int[] stormStart = new int[] {180, 180, 150, 120};
+    private (int min, int max)[] stormDelays = new (int min, int max)[] {(30, 90), (30, 90), (25, 80), (20, 70)};
 
     void Start()
     {
-        shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
+        shipHealth.Value = shipHealthMax;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
         
@@ -123,8 +126,6 @@ public class Spaceship : NetworkBehaviour
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        danger1 = Array.Find(audio.music, sound => sound.name == "Danger 1");
-        danger2 = Array.Find(audio.music, sound => sound.name == "Danger 2");
     }
 
     public void SetupDifficulty(int difficulty)
@@ -140,6 +141,10 @@ public class Spaceship : NetworkBehaviour
         wreckSpawner.minDelay = shipwreckDelays[difficulty].min;
         wreckSpawner.maxDelay = shipwreckDelays[difficulty].max;
         wreckSpawner.maxAtOnce = maxShipwrecks[difficulty];
+        Storm storm = GameObject.Find("Storm").GetComponent<Storm>();
+        storm.timer = stormStart[difficulty];
+        storm.minDelay = stormDelays[difficulty].min;
+        storm.maxDelay = stormDelays[difficulty].max;
     }
 
     void Update()
@@ -161,9 +166,10 @@ public class Spaceship : NetworkBehaviour
         if (dangerPct != Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax)) //if danger changes...
         {
             dangerPct = Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax);
-            StartCoroutine(audio.StartFade("Danger 1", 1, danger1Max - (danger1Max/danger1Start)*dangerPct));
-            StartCoroutine(audio.StartFade("Danger 2", 1, danger2Max - (danger2Max/danger2Start)*dangerPct));
+            StartCoroutine(audio.StartFade("Danger 1", 2, danger1Max - (danger1Max/danger1Start)*dangerPct));
+            StartCoroutine(audio.StartFade("Danger 2", 2, danger2Max - (danger2Max/danger2Start)*dangerPct));
         }
+        GameObject.Find("Vignette").GetComponent<CanvasGroup>().alpha = vignetteMax - (vignetteMax/vignetteStart)*dangerPct;
     }
 
     void FixedUpdate()
