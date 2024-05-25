@@ -220,7 +220,7 @@ public class Spaceship : NetworkBehaviour
             }
 
             if (shipHealth.Value <= 0) {
-                GameOver("Your ship was too damaged to continue");
+                GameOverServerRpc("Your ship was too damaged to continue");
             }
 
             // Slows down the ship's maximum speed
@@ -350,11 +350,12 @@ public class Spaceship : NetworkBehaviour
         // Game over
         if (fuelAmount.Value <= 0)
         {
-            GameOver("You ran out of fuel");
+            GameOverServerRpc("You ran out of fuel");
         }
     }
 
-    public void GameOver(string cause)
+    [Rpc(SendTo.Server)]
+    public void GameOverServerRpc(string cause)
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
@@ -362,10 +363,7 @@ public class Spaceship : NetworkBehaviour
         }
         stats.causeOfDeath = cause;
         GameOverClientRpc(cause);
-        if (IsServer)
-        {   
-            NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
-        }
+        NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
     }
 
     [Rpc(SendTo.NotServer)]

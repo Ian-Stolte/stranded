@@ -72,11 +72,11 @@ public class Sync : NetworkBehaviour
         Vector3 rot = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
         shield.transform.rotation = (Quaternion.Euler(rot));
         thrusterFire.SetActive(thrustersOn);
-        ReadShipMoveClientRpc(newVel, newPos, thrustersOn, shield.transform.position, shield.transform.rotation);
+        ReadShipMoveClientRpc(newVel, newPos, thrustersOn, addToShield /*shield.transform.position, shield.transform.rotation*/);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 shieldPos, Quaternion shieldRot)
+    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield /*Vector3 shieldPos, Quaternion shieldRot*/)
     {
         if (player != null)
         {
@@ -86,8 +86,12 @@ public class Sync : NetworkBehaviour
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
-        shield.transform.position = shieldPos;
-        shield.transform.rotation = shieldRot;
+        shield.transform.position += addToShield;
+        Vector3 direction = shield.transform.position - ship.transform.position;
+        Vector3 rot = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
+        shield.transform.rotation = (Quaternion.Euler(rot));
+        //shield.transform.position = shieldPos;
+        //shield.transform.rotation = shieldRot;
         thrusterFire.SetActive(thrustersOn);
     }
 

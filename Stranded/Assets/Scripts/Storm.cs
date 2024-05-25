@@ -7,7 +7,7 @@ public class Storm : NetworkBehaviour
 {
     public float minDelay;
     public float maxDelay;
-    public float timer;
+    public float timer = 120;
     private bool doingStorm;
 
     public List<int> disabledStations;

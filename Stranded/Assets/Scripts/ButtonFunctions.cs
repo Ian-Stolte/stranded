@@ -14,7 +14,8 @@ public class ButtonFunctions : NetworkBehaviour
         GameObject.Find("Scene Loader").GetComponent<SceneLoader>().singleplayer = true;
     }
 
-    public void LoadScene(string name)
+    [Rpc(SendTo.Server)]
+    public void LoadSceneServerRpc(string name)
     {
         if (name == "Multiplayer")
         {

@@ -2982,6 +2982,7 @@ MonoBehaviour:
   radarUnlocked: 0
   radarRange: 0
   multipleArrows: 0
+  radioChance: 0
   grabberUnlocked: 0
   grabberRange: 0
   grabberSpeed: 0
@@ -14338,7 +14339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minDelay: 30
   maxDelay: 90
-  timer: 0
+  timer: 120
   disabledStations: 
   stationsUnlocked: 
   player: {fileID: 0}
