@@ -7515,7 +7515,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 412612939}
         m_TargetAssemblyTypeName: Spaceship, Assembly-CSharp
-        m_MethodName: GameOver
+        m_MethodName: GameOverServerRpc
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
