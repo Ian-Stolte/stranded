@@ -21,11 +21,9 @@ public class Sync : NetworkBehaviour
 
     void Start()
     {
-        //Debug.Log("Starting sync!");
         ship = GameObject.Find("Spaceship");
         shield = GameObject.Find("Shield");
         grabber = GameObject.Find("Grabber");
-        //radarArrow = GameObject.Find("Radar Arrow");
         camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         thrusterFire = ship.transform.GetChild(1).gameObject;
     }
@@ -66,18 +64,19 @@ public class Sync : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void WriteShipMoveServerRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield)
     {
-        shield.transform.position += addToShield;
-        shield.transform.position = ship.transform.position + Vector3.Normalize(shield.transform.position - ship.transform.position) * 5;
-        //radarArrow.transform.position += addToShield;
         ship.transform.position = newPos;
         ship.GetComponent<Rigidbody2D>().velocity = newVel;
+        shield.transform.position += addToShield;
+        shield.transform.position = ship.transform.position + Vector3.Normalize(shield.transform.position - ship.transform.position) * 5;
+        Vector3 direction = shield.transform.position - ship.transform.position;
+        Vector3 rot = new Vector3(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90);
+        shield.transform.rotation = (Quaternion.Euler(rot));
         thrusterFire.SetActive(thrustersOn);
-        //camera.UpdateCamera(addToShield);
-        ReadShipMoveClientRpc(newVel, newPos, thrustersOn, addToShield);
+        ReadShipMoveClientRpc(newVel, newPos, thrustersOn, shield.transform.position, shield.transform.rotation);
     }
 
     [Rpc(SendTo.NotServer)]
-    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 addToShield)
+    public void ReadShipMoveClientRpc(Vector3 newVel, Vector3 newPos, bool thrustersOn, Vector3 shieldPos, Quaternion shieldRot)
     {
         if (player != null)
         {
@@ -87,10 +86,9 @@ public class Sync : NetworkBehaviour
                 ship.GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
-        shield.transform.position += addToShield;
-        //radarArrow.transform.position += addToShield;
+        shield.transform.position = shieldPos;
+        shield.transform.rotation = shieldRot;
         thrusterFire.SetActive(thrustersOn);
-        //camera.UpdateCamera(addToShield);
     }
 
     //STEERING SYNC
