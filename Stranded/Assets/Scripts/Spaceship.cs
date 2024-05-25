@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +65,18 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject scrapText;
     [SerializeField] private GameObject radioPartsText;
 
+    //Audio
+    [Header("Audio Variables")]
+    private AudioManager audio;
+    private float dangerPct;
+    [SerializeField] private float danger1Start;
+    [SerializeField] private float danger1Max;
+    [SerializeField] private float danger2Start;
+    [SerializeField] private float danger2Max;
+    [SerializeField] private float vignetteStart;
+    [SerializeField] private float vignetteMax;
+
+
     //References
     private Sync sync;
     private ShopManager shop;
@@ -101,16 +114,20 @@ public class Spaceship : NetworkBehaviour
     private (float min, float max)[] shipwreckDelays = new (float min, float max)[] { (5, 15), (10, 20), (10, 20), (15, 30) };
     private float[] radioChances = new float[] {0.10f, 0.05f, 0.035f, 0.02f};
     private int[] maxShipwrecks = new int[] {10, 10, 8, 8};
+    private int[] stormStart = new int[] {180, 180, 150, 120};
+    private (int min, int max)[] stormDelays = new (int min, int max)[] {(30, 90), (30, 90), (25, 80), (20, 70)};
 
     void Start()
     {
-        shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
+        shipHealth.Value = shipHealthMax;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
+
+        audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
 
     public void SetupDifficulty(int difficulty)
@@ -127,13 +144,16 @@ public class Spaceship : NetworkBehaviour
         wreckSpawner.maxDelay = shipwreckDelays[difficulty].max;
         wreckSpawner.maxAtOnce = maxShipwrecks[difficulty];
         radioChance = radioChances[difficulty];
+        Storm storm = GameObject.Find("Storm").GetComponent<Storm>();
+        storm.timer = stormStart[difficulty];
+        storm.minDelay = stormDelays[difficulty].min;
+        storm.maxDelay = stormDelays[difficulty].max;
     }
 
     void Update()
     {
         gameTime += Time.deltaTime;
 
-        //Only works for 1 boost charge
         boostTimer = Mathf.Max(0, boostTimer - Time.deltaTime);
         if (boostTimer == 0 && boostUnlocked)
         {
@@ -145,6 +165,14 @@ public class Spaceship : NetworkBehaviour
             boostIndicator.transform.GetChild(0).GetComponent<Image>().fillAmount = (boostCooldown-boostTimer)/boostCooldown;
             boostIndicator.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Charging...";
         }
+
+        if (dangerPct != Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax)) //if danger changes...
+        {
+            dangerPct = Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax);
+            StartCoroutine(audio.StartFade("Danger 1", 2, danger1Max - (danger1Max/danger1Start)*dangerPct));
+            StartCoroutine(audio.StartFade("Danger 2", 2, danger2Max - (danger2Max/danger2Start)*dangerPct));
+        }
+        GameObject.Find("Vignette").GetComponent<CanvasGroup>().alpha = vignetteMax - (vignetteMax/vignetteStart)*dangerPct;
     }
 
     void FixedUpdate()
@@ -228,7 +256,7 @@ public class Spaceship : NetworkBehaviour
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
-                float randValue = Random.value;
+                float randValue = UnityEngine.Random.value;
                 if (randValue > multiplierThreshold)
                 {
                     multiplier = 2;
@@ -258,14 +286,14 @@ public class Spaceship : NetworkBehaviour
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
-                float randValue = Random.value;
+                float randValue = UnityEngine.Random.value;
                 if (randValue > multiplierThreshold)
                 {
                     multiplier = 2;
                 }
             }
             //radio parts chance
-            float radioRandValue = Random.value;
+            float radioRandValue = UnityEngine.Random.value;
             if (radarUnlocked == true && radioRandValue < radioChance) //A radio part is found
             {
                 radioParts.Value += 1 ;
@@ -330,10 +358,10 @@ public class Spaceship : NetworkBehaviour
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
-            g.GetComponent<PlayerStations>().enabled = false;
+            g.GetComponent<PlayerStations>().enabled = false;  
         }
         stats.causeOfDeath = cause;
-        CauseOfDeathClientRpc(cause);
+        GameOverClientRpc(cause);
         if (IsServer)
         {   
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
@@ -341,8 +369,12 @@ public class Spaceship : NetworkBehaviour
     }
 
     [Rpc(SendTo.NotServer)]
-    void CauseOfDeathClientRpc(string cause)
+    void GameOverClientRpc(string cause)
     {
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            g.GetComponent<PlayerStations>().enabled = false;  
+        }
         stats.causeOfDeath = cause;
     }
 

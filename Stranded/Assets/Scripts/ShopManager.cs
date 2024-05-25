@@ -16,6 +16,7 @@ public class ShopManager : NetworkBehaviour
     private Spaceship shipScript;
     public GameObject fuelBar;
     public GameObject healthBar;
+    public GameObject radioPartsObject;
     [HideInInspector] public PlayerStations player;
     private Sync sync;
 
@@ -111,6 +112,8 @@ public class ShopManager : NetworkBehaviour
 
         AddScraps();  
         LoadPanels();
+        radioPartsObject.SetActive(false);
+        
     }
 
     void Update()
@@ -165,21 +168,22 @@ public class ShopManager : NetworkBehaviour
         GameObject.Find("Event System").GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         closeShopBtn.SetActive(true);
 
-        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
-        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
         GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
-        boostsPage.SetActive(true);
-        upgradesPage.SetActive(false);
+        boostsPage.SetActive(false);
+        upgradesPage.SetActive(true);
         cosmeticsPage.SetActive(false);
 
-        fuelBar.SetActive(true);
-        healthBar.SetActive(true);
+        fuelBar.SetActive(false);
+        healthBar.SetActive(false);
         
         fuelBarRectTransform.anchoredPosition = new Vector2(750, -350);
         healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
+        AddRadioParts();
         
         shopMusic.source.volume = 0.4f;
         strandedMusic.source.volume = 0;
@@ -199,21 +203,22 @@ public class ShopManager : NetworkBehaviour
         GameObject.Find("Event System").GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         closeShopBtn.SetActive(true);
 
-        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
-        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
+        GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
         GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
-        boostsPage.SetActive(true);
-        upgradesPage.SetActive(false);
+        boostsPage.SetActive(false);
+        upgradesPage.SetActive(true);
         cosmeticsPage.SetActive(false);
 
-        fuelBar.SetActive(true);
-        healthBar.SetActive(true);
+        fuelBar.SetActive(false);
+        healthBar.SetActive(false);
 
         fuelBarRectTransform.anchoredPosition = new Vector2(750, -350);
         healthBarRectTransform.anchoredPosition = new Vector2(750, -450);
 
         AddScraps();
+        AddRadioParts();
         shopMusic.source.volume = 0.4f;
         strandedMusic.source.volume = 0;
         //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
@@ -269,8 +274,12 @@ public class ShopManager : NetworkBehaviour
 
     public void AddRadioParts()
     {
-        radioPartsText.text = "Radio Parts: " + shipScript.radioParts.Value;
-            //add in value and extra functionality--not sure what check purchaseable is
+        if (shipScript.radioParts.Value > 0){
+            radioPartsObject.SetActive(true);
+            radioPartsText.text = "Radio Parts: " + shipScript.radioParts.Value;
+        } else {
+            radioPartsObject.SetActive(false);
+        }
     }
 
     public void LoadPanels()

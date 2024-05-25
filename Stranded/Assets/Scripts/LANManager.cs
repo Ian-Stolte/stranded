@@ -40,10 +40,11 @@ public class LANManager : NetworkBehaviour
 		difficultyColors = GameObject.Find("Scene Loader").GetComponent<SceneLoader>().difficultyColors;
 	}
 
-	public void HideUI()
+	public void HideUI(bool server)
     {
-		if (IsServer)
+		if (server)
 		{
+			GetLocalIPAddress();
 			lanElements.SetActive(false);
 			dcHost.SetActive(true);
 			slider.SetActive(true);
@@ -64,7 +65,7 @@ public class LANManager : NetworkBehaviour
 	{
 		NetworkManager.Singleton.StartHost();
 		GetLocalIPAddress();
-		HideUI();
+		HideUI(true);
 	}
 
 	// To Join a game
@@ -74,7 +75,7 @@ public class LANManager : NetworkBehaviour
 		ipText.text = ipAddress;
 		SetIpAddress();
 		NetworkManager.Singleton.StartClient();
-		HideUI();
+		HideUI(false);
 	}
 
 	IEnumerator UpdateDifficultyWhenSpawned()
@@ -90,7 +91,7 @@ public class LANManager : NetworkBehaviour
 		lanElements.SetActive(true);
 		dcHost.SetActive(false);
 		slider.SetActive(false);
-		ipText.text = "[IP Address]";
+		ipText.text = "";
 		ipAddress = "0.0.0.0";
 		DisconnectClientRpc();
 	}
@@ -102,7 +103,7 @@ public class LANManager : NetworkBehaviour
 		lanElements.SetActive(true);
 		dcClient.SetActive(false);
 		slider.SetActive(false);
-		ipText.text = "[IP Address]";
+		ipText.text = "";
 		ipAddress = "0.0.0.0";
 	}
 

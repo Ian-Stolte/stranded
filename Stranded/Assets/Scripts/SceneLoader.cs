@@ -31,8 +31,33 @@ public class SceneLoader : NetworkBehaviour
         }
         else if (scene.name == "Start Screen" && alreadyConnected)
         {
-            GameObject.Find("LAN Manager").GetComponent<LANManager>().HideUI();
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += Restart;
         }
+    }
+
+    void Restart(
+        string sceneName,
+        UnityEngine.SceneManagement.LoadSceneMode loadSceneMode,
+        List<ulong> clientsCompleted,
+        List<ulong> clientsTimedOut
+    )
+    {
+        RestartServerRpc();
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= Restart;
+    }
+
+    [Rpc(SendTo.Server)]
+    void RestartServerRpc()
+    {
+        GameObject.Find("LAN Manager").GetComponent<LANManager>().HideUI(true);
+        RestartClientRpc();
+        
+    }
+    
+    [Rpc(SendTo.NotServer)]
+    void RestartClientRpc()
+    {
+        GameObject.Find("LAN Manager").GetComponent<LANManager>().HideUI(false);
     }
 
     void DoSetup(
