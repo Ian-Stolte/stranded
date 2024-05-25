@@ -76,6 +76,12 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
+  - name: Win Game
+    clip: {fileID: 8300000, guid: 82b46a1d5295046ffa7d459215ecdc56, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
   - name: Danger 2
     clip: {fileID: 8300000, guid: 8e8d5e5c3196d41f9a644809e0c2b7d2, type: 3}
     volume: 0

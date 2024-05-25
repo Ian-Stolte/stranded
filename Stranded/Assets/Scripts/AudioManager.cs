@@ -59,7 +59,7 @@ public class AudioManager : MonoBehaviour
         {
             s.source.Stop();
         }*/
-        StartCoroutine(FadeOutAll(0.5f));
+        StartCoroutine(FadeOutAll(1));
         if (scene.name == "Multiplayer")
         {
             Play("Stranded");
@@ -80,10 +80,19 @@ public class AudioManager : MonoBehaviour
         }
         else if (scene.name == "Game Over")
         {
+            Time.timeScale = 1;
             Play("Game Over");
             Sound s = Array.Find(music, sound => sound.name == "Game Over");
             s.source.volume = 0;
             StartCoroutine(StartFade("Game Over", 2, 0.3f));
+        }
+        else if (scene.name == "Win Screen")
+        {
+            Time.timeScale = 1;
+            Play("Win Game");
+            Sound s = Array.Find(music, sound => sound.name == "Win Game");
+            s.source.volume = 0;
+            StartCoroutine(StartFade("Win Game", 2, 0.3f));
         }
     }
     

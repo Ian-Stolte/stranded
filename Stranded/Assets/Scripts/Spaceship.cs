@@ -355,10 +355,10 @@ public class Spaceship : NetworkBehaviour
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
-            g.GetComponent<PlayerStations>().enabled = false;
+            g.GetComponent<PlayerStations>().enabled = false;  
         }
         stats.causeOfDeath = cause;
-        CauseOfDeathClientRpc(cause);
+        GameOverClientRpc(cause);
         if (IsServer)
         {   
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
@@ -366,8 +366,12 @@ public class Spaceship : NetworkBehaviour
     }
 
     [Rpc(SendTo.NotServer)]
-    void CauseOfDeathClientRpc(string cause)
+    void GameOverClientRpc(string cause)
     {
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            g.GetComponent<PlayerStations>().enabled = false;  
+        }
         stats.causeOfDeath = cause;
     }
 
