@@ -91,7 +91,7 @@ public class LANManager : NetworkBehaviour
 		lanElements.SetActive(true);
 		dcHost.SetActive(false);
 		slider.SetActive(false);
-		ipText.text = "[IP Address]";
+		ipText.text = "";
 		ipAddress = "0.0.0.0";
 		DisconnectClientRpc();
 	}
@@ -103,7 +103,7 @@ public class LANManager : NetworkBehaviour
 		lanElements.SetActive(true);
 		dcClient.SetActive(false);
 		slider.SetActive(false);
-		ipText.text = "[IP Address]";
+		ipText.text = "";
 		ipAddress = "0.0.0.0";
 	}
 

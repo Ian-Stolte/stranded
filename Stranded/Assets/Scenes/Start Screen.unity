@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '[IP Address]'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfb6a5ae6e6c7fb4b92680490fd444bf, type: 2}
   m_sharedMaterial: {fileID: 2415984587624857844, guid: dfb6a5ae6e6c7fb4b92680490fd444bf, type: 2}
