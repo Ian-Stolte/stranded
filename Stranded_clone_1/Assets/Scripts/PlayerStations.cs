@@ -499,6 +499,7 @@ public class PlayerStations : NetworkBehaviour
             ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.boostSpeed*decelAmount, Mathf.Sin(rot.z)*shipScript.boostSpeed*decelAmount), ForceMode2D.Force);
             yield return new WaitForSeconds(1/60);
         }
+        yield return new WaitForSeconds(0.5f);
         shipScript.boosting = false;
     }
 }

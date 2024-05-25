@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,11 +49,11 @@ public class Spaceship : NetworkBehaviour
     public NetworkVariable<float> shipHealth;
     public int shipHealthMax;
     public NetworkVariable<int> scraps;
-    public NetworkVariable<int> radioParts;
+    public NetworkVariable<float> radioParts;
     public NetworkVariable<float> fuelAmount;
     public float fuelMax;
-    [Tooltip("How many seconds between each fuel depletion")] [SerializeField] private float depletionInterval;
-    [Tooltip("How much fuel depletes each interval")] [SerializeField] private float depletionAmount;
+    [Tooltip("How many seconds between each fuel depletion")][SerializeField] private float depletionInterval;
+    [Tooltip("How much fuel depletes each interval")][SerializeField] private float depletionAmount;
     public GameObject resourceTextPrefab;
     private float gameTime;
 
@@ -62,6 +63,19 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private GameObject speedText;
     [SerializeField] private GameObject resourceText;
     [SerializeField] private GameObject scrapText;
+    [SerializeField] private GameObject radioPartsText;
+
+    //Audio
+    [Header("Audio Variables")]
+    private AudioManager audio;
+    private float dangerPct;
+    [SerializeField] private float danger1Start;
+    [SerializeField] private float danger1Max;
+    [SerializeField] private float danger2Start;
+    [SerializeField] private float danger2Max;
+    [SerializeField] private float vignetteStart;
+    [SerializeField] private float vignetteMax;
+
 
     //References
     private Sync sync;
@@ -73,6 +87,7 @@ public class Spaceship : NetworkBehaviour
     [HideInInspector] public bool radarUnlocked;
     [HideInInspector] public int radarRange;
     [HideInInspector] public bool multipleArrows;
+    public float radioChance;
 
     //Grabber
     [HideInInspector] public bool grabberUnlocked;
@@ -81,33 +96,38 @@ public class Spaceship : NetworkBehaviour
     private float multiplierThreshold;
 
     //Upgrades
-    private float[] turnSpeeds = new float[] {1, 1.5f, 2, 2.5f};
-    private float[] thrustSpeeds = new float[] {2, 3, 3, 4.5f};
-    private float[] shieldSpeeds = new float[] {1.5f, 2, 2, 3};
-    private float[] maxSpeeds = new float[] {7, 9, 9, 12};
-    private int[] radarRanges = new int[] {75, 125, 125, 200};
-    private int[] grabberRanges = new int[] {12, 12, 15, 20};
-    private float[] grabberMultiplierThresholds = new float[] {1, 0.7f, 0.7f, 0.4f};
-    private float[] grabberSpeeds = new float[] {0.5f, 0.5f, 0.55f, 0.7f};
-    private float[] grabberRetractSpeeds = new float[] {0.2f, 0.2f, 0.25f, 0.35f};
+    private float[] turnSpeeds = new float[] { 1, 1.5f, 2, 2.5f };
+    private float[] thrustSpeeds = new float[] { 2, 3, 3, 4.5f };
+    private float[] shieldSpeeds = new float[] { 1.5f, 2, 2, 3 };
+    private float[] maxSpeeds = new float[] { 7, 9, 9, 12 };
+    private int[] radarRanges = new int[] { 75, 125, 125, 200 };
+    private int[] grabberRanges = new int[] { 12, 12, 15, 20 };
+    private float[] grabberMultiplierThresholds = new float[] { 1, 0.7f, 0.7f, 0.4f };
+    private float[] grabberSpeeds = new float[] { 0.5f, 0.5f, 0.55f, 0.7f };
+    private float[] grabberRetractSpeeds = new float[] { 0.2f, 0.2f, 0.25f, 0.35f };
 
     //Difficulty levels
-    private float[] dmgLevels = new float[] {0.5f, 1, 1.5f, 2};
-    private float[] depletionIntervals = new float[] {8, 6.5f, 5, 4};
-    private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] {(0.5f, 2), (0.5f, 2.5f), (1, 3), (1.5f, 3.5f)};
-    private (float min, float max)[] asteroidDelays = new (float min, float max)[] {(2, 5), (1, 4), (1, 3.5f), (0.5f, 3)};
-    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] {(5, 15), (10, 20), (10, 20), (15, 30)};
+    private float[] dmgLevels = new float[] { 0.5f, 1, 1.5f, 2 };
+    private float[] depletionIntervals = new float[] { 8, 6.5f, 5, 4 };
+    private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] { (0.5f, 2), (0.5f, 2.5f), (1, 3), (1.5f, 3.5f) };
+    private (float min, float max)[] asteroidDelays = new (float min, float max)[] { (2, 5), (1, 4), (1, 3.5f), (0.5f, 3) };
+    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] { (5, 15), (10, 20), (10, 20), (15, 30) };
+    private float[] radioChances = new float[] {0.10f, 0.05f, 0.035f, 0.02f};
     private int[] maxShipwrecks = new int[] {10, 10, 8, 8};
+    private int[] stormStart = new int[] {180, 180, 150, 120};
+    private (int min, int max)[] stormDelays = new (int min, int max)[] {(30, 90), (30, 90), (25, 80), (20, 70)};
 
     void Start()
     {
-        shipHealth.Value = shipHealthMax; //shows a warning that we're writing to the var before it exists--should do this on connect instead
+        shipHealth.Value = shipHealthMax;
         fuelAmount.Value = fuelMax;
         StartCoroutine(DepleteOverTime());
         
         sync = GameObject.Find("Sync Object").GetComponent<Sync>();
         shop = GameObject.Find("Shop Manager").GetComponent<ShopManager>();
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
+
+        audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
     }
 
     public void SetupDifficulty(int difficulty)
@@ -123,13 +143,17 @@ public class Spaceship : NetworkBehaviour
         wreckSpawner.minDelay = shipwreckDelays[difficulty].min;
         wreckSpawner.maxDelay = shipwreckDelays[difficulty].max;
         wreckSpawner.maxAtOnce = maxShipwrecks[difficulty];
+        radioChance = radioChances[difficulty];
+        Storm storm = GameObject.Find("Storm").GetComponent<Storm>();
+        storm.timer = stormStart[difficulty];
+        storm.minDelay = stormDelays[difficulty].min;
+        storm.maxDelay = stormDelays[difficulty].max;
     }
 
     void Update()
     {
         gameTime += Time.deltaTime;
 
-        //Only works for 1 boost charge
         boostTimer = Mathf.Max(0, boostTimer - Time.deltaTime);
         if (boostTimer == 0 && boostUnlocked)
         {
@@ -141,6 +165,14 @@ public class Spaceship : NetworkBehaviour
             boostIndicator.transform.GetChild(0).GetComponent<Image>().fillAmount = (boostCooldown-boostTimer)/boostCooldown;
             boostIndicator.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Charging...";
         }
+
+        if (dangerPct != Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax)) //if danger changes...
+        {
+            dangerPct = Mathf.Min(fuelAmount.Value/fuelMax, shipHealth.Value/shipHealthMax);
+            StartCoroutine(audio.StartFade("Danger 1", 2, danger1Max - (danger1Max/danger1Start)*dangerPct));
+            StartCoroutine(audio.StartFade("Danger 2", 2, danger2Max - (danger2Max/danger2Start)*dangerPct));
+        }
+        GameObject.Find("Vignette").GetComponent<CanvasGroup>().alpha = vignetteMax - (vignetteMax/vignetteStart)*dangerPct;
     }
 
     void FixedUpdate()
@@ -165,6 +197,7 @@ public class Spaceship : NetworkBehaviour
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
         resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected;
         scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
+        radioPartsText.GetComponent<TMPro.TextMeshProUGUI>().text = "Radio Parts: " + radioParts.Value;
     }
 
 
@@ -223,7 +256,7 @@ public class Spaceship : NetworkBehaviour
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
-                float randValue = Random.value;
+                float randValue = UnityEngine.Random.value;
                 if (randValue > multiplierThreshold)
                 {
                     multiplier = 2;
@@ -253,11 +286,18 @@ public class Spaceship : NetworkBehaviour
             {
                 player.hideGrabberInstruction = true;
                 player.HideInstructions();
-                float randValue = Random.value;
+                float randValue = UnityEngine.Random.value;
                 if (randValue > multiplierThreshold)
                 {
                     multiplier = 2;
                 }
+            }
+            //radio parts chance
+            float radioRandValue = UnityEngine.Random.value;
+            if (radarUnlocked == true && radioRandValue < radioChance) //A radio part is found
+            {
+                radioParts.Value += 1 ;
+                shop.AddRadioParts();
             }
             if (player.usedRadar)
             {
@@ -318,10 +358,10 @@ public class Spaceship : NetworkBehaviour
     {
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
-            g.GetComponent<PlayerStations>().enabled = false;
+            g.GetComponent<PlayerStations>().enabled = false;  
         }
         stats.causeOfDeath = cause;
-        CauseOfDeathClientRpc(cause);
+        GameOverClientRpc(cause);
         if (IsServer)
         {   
             NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
@@ -329,8 +369,12 @@ public class Spaceship : NetworkBehaviour
     }
 
     [Rpc(SendTo.NotServer)]
-    void CauseOfDeathClientRpc(string cause)
+    void GameOverClientRpc(string cause)
     {
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            g.GetComponent<PlayerStations>().enabled = false;  
+        }
         stats.causeOfDeath = cause;
     }
 
