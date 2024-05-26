@@ -357,23 +357,28 @@ public class Spaceship : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void GameOverServerRpc(string cause)
     {
-        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            g.GetComponent<PlayerStations>().enabled = false;  
-        }
-        stats.causeOfDeath = cause;
+        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
         GameOverClientRpc(cause);
-        NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
+        StartCoroutine(GameOverCor(cause));
     }
 
     [Rpc(SendTo.NotServer)]
     void GameOverClientRpc(string cause)
     {
+        StartCoroutine(GameOverCor(cause));
+    }
+
+    IEnumerator GameOverCor(string cause)
+    {
+        Time.timeScale = 1;
+        yield return new WaitForSeconds(0.5f);
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
             g.GetComponent<PlayerStations>().enabled = false;  
         }
         stats.causeOfDeath = cause;
+        if (IsServer)
+            NetworkManager.Singleton.SceneManager.LoadScene("Game Over", LoadSceneMode.Single);
     }
 
     // Stun

@@ -11,6 +11,7 @@ TagManager:
   - Scene
   - Network
   - Audio
+  - Fader
   layers:
   - Default
   - TransparentFX
