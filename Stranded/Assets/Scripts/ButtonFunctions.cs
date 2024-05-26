@@ -15,6 +15,19 @@ public class ButtonFunctions : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
+    public void ClickButtonServerRpc(int n)
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press " + n);
+        ClickButtonClientRpc(n);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void ClickButtonClientRpc(int n)
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press " + n);
+    }
+
+    [Rpc(SendTo.Server)]
     public void LoadSceneServerRpc(string name)
     {
         if (name == "Multiplayer")

@@ -185,8 +185,9 @@ public class ShopManager : NetworkBehaviour
         AddScraps();
         AddRadioParts();
         
-        shopMusic.source.volume = 0.4f;
-        strandedMusic.source.volume = 0;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
+        //shopMusic.source.volume = 0.4f;
+        //strandedMusic.source.volume = 0;
 //TODO: Fix fade in not working b/c paused (manually add like 0.01 every frame in Update?)
         //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0));
@@ -219,8 +220,10 @@ public class ShopManager : NetworkBehaviour
 
         AddScraps();
         AddRadioParts();
-        shopMusic.source.volume = 0.4f;
-        strandedMusic.source.volume = 0;
+
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
+        //shopMusic.source.volume = 0.4f;
+        //strandedMusic.source.volume = 0;
         //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0));
     }
@@ -240,8 +243,9 @@ public class ShopManager : NetworkBehaviour
         fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
-        shopMusic.source.volume = 0;
-        strandedMusic.source.volume = 0.4f;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
+        //shopMusic.source.volume = 0;
+        //strandedMusic.source.volume = 0.4f;
         //StartCoroutine(audio.StartFade("Shop", 1, 0f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
 
@@ -260,8 +264,9 @@ public class ShopManager : NetworkBehaviour
         fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
-        shopMusic.source.volume = 0;
-        strandedMusic.source.volume = 0.4f;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
+        //shopMusic.source.volume = 0;
+        //strandedMusic.source.volume = 0.4f;
         //StartCoroutine(audio.StartFade("Shop", 1, 0f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
     }
