@@ -56,17 +56,17 @@ public class Spaceship : NetworkBehaviour
     [Tooltip("How much fuel depletes each interval")][SerializeField] private float depletionAmount;
     public GameObject resourceTextPrefab;
     private float gameTime;
+    private bool firstWreck = true;
 
     // Text variables
     [Header("Text Variables")]
     [SerializeField] private GameObject coordText;
     [SerializeField] private GameObject speedText;
-    [SerializeField] private GameObject resourceText;
     [SerializeField] private GameObject scrapText;
     [SerializeField] private GameObject radioPartsText;
 
-    //Audio
-    [Header("Audio Variables")]
+    //Danger
+    [Header("Danger Variables")]
     private AudioManager audio;
     private float dangerPct;
     [SerializeField] private float danger1Start;
@@ -75,7 +75,6 @@ public class Spaceship : NetworkBehaviour
     [SerializeField] private float danger2Max;
     [SerializeField] private float vignetteStart;
     [SerializeField] private float vignetteMax;
-
 
     //References
     private Sync sync;
@@ -100,7 +99,7 @@ public class Spaceship : NetworkBehaviour
     private float[] thrustSpeeds = new float[] { 2, 3, 3, 4.5f };
     private float[] shieldSpeeds = new float[] { 1.5f, 2, 2, 3 };
     private float[] maxSpeeds = new float[] { 7, 9, 9, 12 };
-    private int[] radarRanges = new int[] { 75, 125, 125, 200 };
+    private int[] radarRanges = new int[] { 50, 100, 100, 200 };
     private int[] grabberRanges = new int[] { 12, 12, 15, 20 };
     private float[] grabberMultiplierThresholds = new float[] { 1, 0.7f, 0.7f, 0.4f };
     private float[] grabberSpeeds = new float[] { 0.5f, 0.5f, 0.55f, 0.7f };
@@ -128,6 +127,7 @@ public class Spaceship : NetworkBehaviour
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
+        audio.Play("Voice - Fuel Leaking");
     }
 
     public void SetupDifficulty(int difficulty)
@@ -173,6 +173,15 @@ public class Spaceship : NetworkBehaviour
             StartCoroutine(audio.StartFade("Danger 2", 2, danger2Max - (danger2Max/danger2Start)*dangerPct));
         }
         GameObject.Find("Vignette").GetComponent<CanvasGroup>().alpha = vignetteMax - (vignetteMax/vignetteStart)*dangerPct;
+
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Shipwreck"))
+        {
+            if (firstWreck && Mathf.Abs(g.transform.position.x - transform.position.x) < 27*GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize/15 && Mathf.Abs(g.transform.position.y - transform.position.y) < 15*GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize/15)
+            {
+                audio.Play("Voice - Shipwreck " + UnityEngine.Random.Range(1, 4));
+                firstWreck = false;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -195,9 +204,11 @@ public class Spaceship : NetworkBehaviour
         //show coordinates and resource/scrap count
         coordText.GetComponent<TMPro.TextMeshProUGUI>().text = "x: " + Mathf.Round(transform.position.x) + "  y: " + Mathf.Round(transform.position.y);
         speedText.GetComponent<TMPro.TextMeshProUGUI>().text = "" + Mathf.Round(speed) + " km/s";
-        resourceText.GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + stats.resourcesCollected;
         scrapText.GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scraps.Value;
-        radioPartsText.GetComponent<TMPro.TextMeshProUGUI>().text = "Radio Parts: " + radioParts.Value;
+        if (radioParts.Value > 0)
+            radioPartsText.GetComponent<TMPro.TextMeshProUGUI>().text = "Radio Parts: " + radioParts.Value;
+        else
+            radioPartsText.GetComponent<TMPro.TextMeshProUGUI>().text = "";
     }
 
 
@@ -206,7 +217,7 @@ public class Spaceship : NetworkBehaviour
     {
         if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
         {
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Collision");
+            audio.Play("Asteroid Collision");
             GameObject.Find("Screen Flash Red").GetComponent<Animator>().Play("ScreenFlash");
             // Updates the health bar
             if (IsServer)
@@ -249,7 +260,9 @@ public class Spaceship : NetworkBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Resource Collect");
+            audio.Play("Resource Collect");
+            if (UnityEngine.Random.value > 0.5f && fuelAmount.Value <= 4)
+                audio.Play("Voice - Resource " + UnityEngine.Random.Range(1, 4));
             stats.resourcesCollected++;
             float multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
@@ -279,7 +292,7 @@ public class Spaceship : NetworkBehaviour
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
         {  
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Scrap Collect");
+            audio.Play("Scrap Collect");
             stats.scrapsCollected++;
             float multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
@@ -293,10 +306,9 @@ public class Spaceship : NetworkBehaviour
                 }
             }
             //radio parts chance
-            float radioRandValue = UnityEngine.Random.value;
-            if (radarUnlocked == true && radioRandValue < radioChance) //A radio part is found
+            if (radarUnlocked == true && UnityEngine.Random.value < radioChance) //A radio part is found
             {
-                radioParts.Value += 1 ;
+                radioParts.Value += 1;
                 shop.AddRadioParts();
             }
             if (player.usedRadar)
@@ -307,7 +319,7 @@ public class Spaceship : NetworkBehaviour
             }
             if (IsServer)
             {
-                scraps.Value += collider.GetComponent<ShipwreckBehavior>().value.Value;
+                scraps.Value += collider.GetComponent<ShipwreckBehavior>().value.Value * multiplier;
                 GameObject wreckText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
                 wreckText.GetComponent<RectTransform>().anchoredPosition = new Vector2(canvasRect.width/2, canvasRect.height/2);

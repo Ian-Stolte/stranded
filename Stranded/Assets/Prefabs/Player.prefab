@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 849719965
+  GlobalObjectIdHash: 1147709489
   InScenePlacedSourceGlobalObjectIdHash: 515827363
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a25437e0767747959e236ae5bc91a1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  finishedSetup: 0
   station:
     m_InternalValue:
       utf8LengthInBytes: 0
@@ -136,6 +137,7 @@ MonoBehaviour:
         byte0060: 0
         byte0061: 0
   currentStation: 
+  sync: {fileID: 0}
   buttonPrefab: {fileID: 4117076319511684776, guid: e607fa2a6e76643cc9eaf5e92ace3ab6, type: 3}
   buttons: {fileID: 0}
   buttonCircles: {fileID: 0}
@@ -155,14 +157,6 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Steering
       m_Flags: 4
-    - m_Name: negative
-      m_Id: b7a21609-79b6-4f40-83a3-00b9f71586d4
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Steering
-      m_Flags: 8
     - m_Name: positive
       m_Id: d7b4bd65-32c8-4838-ae37-c6ce278482a5
       m_Path: <Keyboard>/a
@@ -171,5 +165,21 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Steering
       m_Flags: 8
+    - m_Name: negative
+      m_Id: b7a21609-79b6-4f40-83a3-00b9f71586d4
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Steering
+      m_Flags: 8
     m_Flags: 0
-  radarUnlocked: 1
+  grabberFired: 0
+  steerInstruction: {fileID: 0}
+  thrusterInstruction: {fileID: 0}
+  shieldInstruction: {fileID: 0}
+  grabberInstruction: {fileID: 0}
+  hideGrabberInstruction: 0
+  radarInstruction: {fileID: 0}
+  hideRadarInstruction: 0
+  usedRadar: 0

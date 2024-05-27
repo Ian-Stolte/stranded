@@ -17,6 +17,9 @@ public class Buttons : MonoBehaviour
 
     void Update()
     {
+        if (Input.mouseScrollDelta.y != 0)
+            Debug.Log(Input.mouseScrollDelta.y);
+        
         players = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < 5; i++)
             CheckInUse(i);
