@@ -62,7 +62,7 @@ public class ShopManager : NetworkBehaviour
         thrustInfo = new string[] {"Acceleration  2 → " + colorStart + "3</color>\nMax Speed  7 → " + colorStart + "9</color>", "Unlocks periodic boosts of speed", "Acceleration  3 → " + colorStart + "4.5</color>\nMax Speed  9 → " + colorStart + "12</color>", "Fully upgraded!"};
         shieldInfo = new string[] {"Speed  1.3 → " + colorStart + "2</color>", "Width  4 → " + colorStart + "6</color>", "Speed  2 → " + colorStart + "3</color>", "Fully upgraded!"};
         grabberInfo = new string[] {"30% chance of double resources", "Range  12 → " + colorStart + "15</color>\nSpeed  0.5 → " + colorStart + "0.55</color>", "Double  30% → " + colorStart + "60%</color>\nRange  15 → " + colorStart + "20</color>\nSpeed  0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
-        radarInfo = new string[] {"Range  75 → " + colorStart + "125</color>", "Points toward all shipwrecks within range", "Range  125 → " + colorStart + "200</color>", "Fully upgraded!"};
+        radarInfo = new string[] {"Range  50 → " + colorStart + "100</color>", "Points toward all shipwrecks within range", "Range  100 → " + colorStart + "200</color>", "Fully upgraded!"};
         //Initialize text values
         foreach (GameObject g in upgradePanels)
         {
@@ -185,8 +185,9 @@ public class ShopManager : NetworkBehaviour
         AddScraps();
         AddRadioParts();
         
-        shopMusic.source.volume = 0.4f;
-        strandedMusic.source.volume = 0;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
+        //shopMusic.source.volume = 0.4f;
+        //strandedMusic.source.volume = 0;
 //TODO: Fix fade in not working b/c paused (manually add like 0.01 every frame in Update?)
         //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0));
@@ -219,8 +220,10 @@ public class ShopManager : NetworkBehaviour
 
         AddScraps();
         AddRadioParts();
-        shopMusic.source.volume = 0.4f;
-        strandedMusic.source.volume = 0;
+
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
+        //shopMusic.source.volume = 0.4f;
+        //strandedMusic.source.volume = 0;
         //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0));
     }
@@ -240,8 +243,9 @@ public class ShopManager : NetworkBehaviour
         fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
-        shopMusic.source.volume = 0;
-        strandedMusic.source.volume = 0.4f;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
+        //shopMusic.source.volume = 0;
+        //strandedMusic.source.volume = 0.4f;
         //StartCoroutine(audio.StartFade("Shop", 1, 0f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
 
@@ -260,8 +264,9 @@ public class ShopManager : NetworkBehaviour
         fuelBarRectTransform.anchoredPosition = new Vector2(-730, -350); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-730, -450);
 
-        shopMusic.source.volume = 0;
-        strandedMusic.source.volume = 0.4f;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
+        //shopMusic.source.volume = 0;
+        //strandedMusic.source.volume = 0.4f;
         //StartCoroutine(audio.StartFade("Shop", 1, 0f));
         //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
     }

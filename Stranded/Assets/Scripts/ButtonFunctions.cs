@@ -15,8 +15,28 @@ public class ButtonFunctions : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server)]
+    public void ClickButtonServerRpc(int n)
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press " + n);
+        ClickButtonClientRpc(n);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void ClickButtonClientRpc(int n)
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press " + n);
+    }
+
+    [Rpc(SendTo.Server)]
     public void LoadSceneServerRpc(string name)
     {
+        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
+        StartCoroutine(LoadSceneCor(name));
+    }
+
+    IEnumerator LoadSceneCor(string name)
+    {
+        Time.timeScale = 1;
         if (name == "Multiplayer")
         {
             loadingScreen.SetActive(true);
@@ -29,6 +49,7 @@ public class ButtonFunctions : NetworkBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(0.5f);
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
             {
                 g.GetComponent<PlayerStations>().finishedSetup = false;
