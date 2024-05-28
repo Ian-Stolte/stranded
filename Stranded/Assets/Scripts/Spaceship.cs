@@ -110,9 +110,9 @@ public class Spaceship : NetworkBehaviour
     private float[] depletionIntervals = new float[] { 8, 6.5f, 5, 4 };
     private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] { (0.5f, 2), (0.5f, 2.5f), (1, 3), (1.5f, 3.5f) };
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] { (2, 5), (1, 4), (1, 3.5f), (0.5f, 3) };
-    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] { (5, 15), (10, 20), (10, 20), (15, 30) };
+    private (float min, float max)[] shipwreckDelays = new (float min, float max)[] { (15, 25), (20, 30), (20, 30), (25, 40) };
     private float[] radioChances = new float[] {0.10f, 0.05f, 0.035f, 0.02f};
-    private int[] maxShipwrecks = new int[] {10, 10, 8, 8};
+    private int[] maxShipwrecks = new int[] {8, 8, 6, 6};
     private int[] stormStart = new int[] {180, 180, 150, 120};
     private (int min, int max)[] stormDelays = new (int min, int max)[] {(30, 90), (30, 90), (25, 80), (20, 70)};
 
@@ -178,7 +178,7 @@ public class Spaceship : NetworkBehaviour
         {
             if (firstWreck && Mathf.Abs(g.transform.position.x - transform.position.x) < 27*GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize/15 && Mathf.Abs(g.transform.position.y - transform.position.y) < 15*GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize/15)
             {
-                audio.Play("Voice - Shipwreck " + UnityEngine.Random.Range(1, 4));
+                audio.Play("Voice - Shipwreck " + UnityEngine.Random.Range(1, 3));
                 firstWreck = false;
             }
         }
@@ -264,7 +264,7 @@ public class Spaceship : NetworkBehaviour
             if (UnityEngine.Random.value > 0.5f && fuelAmount.Value <= 4)
                 audio.Play("Voice - Resource " + UnityEngine.Random.Range(1, 4));
             stats.resourcesCollected++;
-            float multiplier = 1;
+            int multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
                 player.hideGrabberInstruction = true;
@@ -294,7 +294,7 @@ public class Spaceship : NetworkBehaviour
         {  
             audio.Play("Scrap Collect");
             stats.scrapsCollected++;
-            float multiplier = 1;
+            int multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
                 player.hideGrabberInstruction = true;
