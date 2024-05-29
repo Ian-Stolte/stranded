@@ -144,7 +144,7 @@ public class PlayerStations : NetworkBehaviour
             qIndicator = buttons.transform.GetChild(3).gameObject;
             qIndicator.SetActive(false);
 
-            Debug.Log("Ready to set up.");
+            /*Debug.Log("Ready to set up.");
             // Set up Thrusters to blink
             Transform targetImageTransform = buttons.transform.Find("Buttons/Thrusters");
             if (targetImageTransform != null)
@@ -163,7 +163,7 @@ public class PlayerStations : NetworkBehaviour
             else
             {
                 Debug.LogWarning("No GameObject found with the specified hierarchy path.");
-            }
+            }*/
 
             shipScript.player = this;
             GameObject.Find("Storm").GetComponent<Storm>().player = this;
