@@ -13963,7 +13963,7 @@ MonoBehaviour:
   closeShopBtn: {fileID: 929954094}
   boostsPage: {fileID: 1500946236}
   upgradesPage: {fileID: 1230652801}
-  cosmeticsPage: {fileID: 40633897}
+  radioPage: {fileID: 40633897}
   upgradePanels:
   - {fileID: 758330074}
   - {fileID: 689816657}
