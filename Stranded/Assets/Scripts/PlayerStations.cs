@@ -143,7 +143,26 @@ public class PlayerStations : NetworkBehaviour
             buttonCircles.SetActive(true);
             qIndicator = buttons.transform.GetChild(3).gameObject;
             qIndicator.SetActive(false);
-            
+
+            Transform targetImageTransform = buttons.transform.Find("buttons/Thruster");
+            if (targetImageTransform != null)
+            {
+                Image targetImage = targetImageTransform.GetComponent<Image>();
+                if (targetImage != null)
+                {
+                    targetImage.gameObject.AddComponent<ColorBlinkEffect>();
+                }
+                else
+                {
+                    Debug.LogWarning("No Image component found on the specified GameObject.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No GameObject found with the specified hierarchy path.");
+            }
+
+
             shipScript.player = this;
             GameObject.Find("Storm").GetComponent<Storm>().player = this;
             StartCoroutine(Radar());
