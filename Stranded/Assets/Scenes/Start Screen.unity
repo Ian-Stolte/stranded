@@ -3346,8 +3346,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.size
-      value: 17
+      value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[1].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0848e22aa9db6f7458af9c2b1fc6f419, type: 3}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[6].clip
       value: 
@@ -3437,6 +3441,46 @@ PrefabInstance:
       value: Voice - Resource 3
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[17].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8595372b2cfa64046bf8f4b4f5be3dda, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[17].name
+      value: Asteroid Destroy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[18].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: fdff399f06517144ea576529d9776547, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[18].name
+      value: Thrusters
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[19].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 467452e87c232184ba100662839eeca7, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[19].name
+      value: Shields
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[20].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0848e22aa9db6f7458af9c2b1fc6f419, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[20].name
+      value: Purchase 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[21].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: fdff399f06517144ea576529d9776547, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[21].name
+      value: Thrusters
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[6].pitch
       value: 1.2
       objectReference: {fileID: 0}
@@ -3497,6 +3541,26 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[17].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[18].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[19].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[20].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[21].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[6].volume
       value: 0.25
       objectReference: {fileID: 0}
@@ -3538,6 +3602,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[16].volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[17].volume
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[18].volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[19].volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[20].volume
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[21].volume
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8901916774967360150, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}

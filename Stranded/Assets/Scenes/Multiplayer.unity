@@ -4632,15 +4632,15 @@ PrefabInstance:
       objectReference: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
     - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_Color.b
-      value: 0.9529412
+      value: 0.9433962
       objectReference: {fileID: 0}
     - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_Color.g
-      value: 0.6
+      value: 0.6100521
       objectReference: {fileID: 0}
     - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_Color.r
-      value: 0.45490196
+      value: 0.48504806
       objectReference: {fileID: 0}
     - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_FillAmount
@@ -4664,7 +4664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8470870211481513142, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_Name
-      value: Resource Bar (1)
+      value: Fuel Bar
       objectReference: {fileID: 0}
     - target: {fileID: 8470870211481513142, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_IsActive
@@ -5670,7 +5670,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 491, y: 0}
+  m_AnchoredPosition: {x: 480.7, y: 27.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &876314053
@@ -7891,7 +7891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1122542979
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7908,7 +7908,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 460, y: 45}
+  m_AnchoredPosition: {x: 460, y: 27.9}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122542980
@@ -14363,7 +14363,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2142448680
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14879,9 +14879,21 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+    - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
+      propertyPath: m_Color.b
+      value: 0.12156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
+      propertyPath: m_Color.g
+      value: 0.12156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 1447290089153225068, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
+      propertyPath: m_Color.r
+      value: 0.54901963
+      objectReference: {fileID: 0}
     - target: {fileID: 8470870211481513142, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_Name
-      value: Resource Bar
+      value: Health Bar
       objectReference: {fileID: 0}
     - target: {fileID: 8470870211481513142, guid: 301e32f1092d51d4e8fa5677ed9552f1, type: 3}
       propertyPath: m_IsActive
