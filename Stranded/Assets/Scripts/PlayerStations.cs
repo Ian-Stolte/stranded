@@ -144,13 +144,16 @@ public class PlayerStations : NetworkBehaviour
             qIndicator = buttons.transform.GetChild(3).gameObject;
             qIndicator.SetActive(false);
 
-            Transform targetImageTransform = buttons.transform.Find("buttons/Thruster");
+            Debug.Log("Ready to set up.");
+            // Set up Thrusters to blink
+            Transform targetImageTransform = buttons.transform.Find("Buttons/Thrusters");
             if (targetImageTransform != null)
             {
                 Image targetImage = targetImageTransform.GetComponent<Image>();
                 if (targetImage != null)
                 {
                     targetImage.gameObject.AddComponent<ColorBlinkEffect>();
+                    Debug.Log("It worked! " + targetImage.name);
                 }
                 else
                 {
@@ -161,7 +164,6 @@ public class PlayerStations : NetworkBehaviour
             {
                 Debug.LogWarning("No GameObject found with the specified hierarchy path.");
             }
-
 
             shipScript.player = this;
             GameObject.Find("Storm").GetComponent<Storm>().player = this;

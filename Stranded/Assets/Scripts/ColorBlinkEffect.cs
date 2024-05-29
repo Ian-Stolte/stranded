@@ -3,8 +3,8 @@ using UnityEngine.UI;
  
 public class ColorBlinkEffect : MonoBehaviour
 {
-    public Color startColor = Color.green;
-    public Color endColor = Color.black;
+    public Color startColor = Color.red;
+    public Color endColor = Color.white;
     [Range(0,10)]
     public float speed = 1;
  
@@ -13,12 +13,14 @@ public class ColorBlinkEffect : MonoBehaviour
     void Awake()
     {
         imgComp = GetComponent<Image>();
+        Debug.Log("Awake");
         Blink();
     }
  
     void Blink()
     {
-        for (int i = 0; i < 5; i++)
+        Debug.Log("Blinking");
+        // for (int i = 0; i < 5; i++)
             imgComp.color = Color.Lerp(startColor, endColor, Mathf.PingPong(Time.time * speed, 1));
     }
 }
