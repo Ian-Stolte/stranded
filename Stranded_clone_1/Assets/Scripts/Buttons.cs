@@ -9,6 +9,8 @@ public class Buttons : MonoBehaviour
     private GameObject[] players;
     private Transform buttons;
     public Storm storm;
+    private string[] stationNames = new string[] { "steering", "thrusters", "shields", "grabber", "radar" };
+    private int index;
 
     void Start()
     {
@@ -17,6 +19,17 @@ public class Buttons : MonoBehaviour
 
     void Update()
     {
+        if (Input.mouseScrollDelta.y < 0)
+        {
+            index = (index + 1) % 3;
+            ChangeTo(index);
+        }
+        else if (Input.mouseScrollDelta.y > 0)
+        {
+            index = (index + 2) % 3; //same as (index - 1) % 3, except for negatives
+            ChangeTo(index);
+        }
+        
         players = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < 5; i++)
             CheckInUse(i);
@@ -24,30 +37,31 @@ public class Buttons : MonoBehaviour
         //swap between stations with number keys
         if (Input.GetKeyDown(KeyCode.Alpha1) && buttons.GetChild(0).GetComponent<Button>().interactable && !storm.disabledStations.Contains(1))
         {
-            ChangeTo("steering");
+            ChangeTo(0);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && buttons.GetChild(1).GetComponent<Button>().interactable && !storm.disabledStations.Contains(2))
         {
-            ChangeTo("thrusters");
+            ChangeTo(1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3) && buttons.GetChild(2).GetComponent<Button>().interactable && !storm.disabledStations.Contains(3))
         {
-            ChangeTo("shields");
+            ChangeTo(2);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4) && buttons.GetChild(3).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().grabberUnlocked && !storm.disabledStations.Contains(4))
         {
-            ChangeTo("grabber");
+            ChangeTo(3);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5) && buttons.GetChild(4).GetComponent<Button>().interactable && GameObject.Find("Spaceship").GetComponent<Spaceship>().radarUnlocked && !storm.disabledStations.Contains(5))
         {
-            ChangeTo("radar");
+            ChangeTo(4);
         }
     }
 
-    void ChangeTo(string station)
+    void ChangeTo(int n)
     {
         if (!GameObject.Find("Sync Object").GetComponent<Sync>().paused.Value)
         {
+            index = n;
             PlayerStations p = target.GetComponent<PlayerStations>();
             p.HideInstructions();
 
@@ -56,8 +70,8 @@ public class Buttons : MonoBehaviour
                 GameObject.Find("Sync Object").GetComponent<Sync>().WriteGrabberFiringRpc(false);
                 p.grabberFired = false;
             }
-            p.currentStation = station;
-            if (station == "radar")
+            p.currentStation = stationNames[n];
+            if (stationNames[n] == "radar")
                 p.usedRadar = true;
             if (GameObject.Find("Shop Manager").GetComponent<ShopManager>().shop.activeSelf)
                 GameObject.Find("Shop Manager").GetComponent<ShopManager>().CloseShopServerRpc();

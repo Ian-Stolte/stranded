@@ -23,7 +23,7 @@ public class StatTracker : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Game Over")
+        if (scene.name == "Game Over" || scene.name == "Win Screen")
         {
             Time.timeScale = 1;
             string formattedTime;
@@ -41,7 +41,8 @@ public class StatTracker : MonoBehaviour
             GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You survived for " + formattedTime;
             GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected;
             GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected;
-            GameObject.Find("Cause of Death").GetComponent<TMPro.TextMeshProUGUI>().text = causeOfDeath;
+            if (scene.name == "Game Over")
+                GameObject.Find("Cause of Death").GetComponent<TMPro.TextMeshProUGUI>().text = causeOfDeath;
         }
         else if (scene.name == "Multiplayer")
         {

@@ -9,6 +9,7 @@ public class Shield : NetworkBehaviour
     {
         if (collider.gameObject.tag == "Asteroid")
         {
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Destroy");
             if (IsServer)
                 collider.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }

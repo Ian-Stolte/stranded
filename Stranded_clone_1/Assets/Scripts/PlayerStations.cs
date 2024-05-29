@@ -38,6 +38,12 @@ public class PlayerStations : NetworkBehaviour
     //Thrusters
     private bool thrustersOn;
     private Vector3 oldShipPos;
+    private bool thrusterSoundPlaying;
+    private IEnumerator thrustCor;
+
+    //Shields
+    private bool shieldSoundPlaying;
+    private IEnumerator shieldCor;
 
     //Grabber
     [HideInInspector] public bool grabberFired;
@@ -143,7 +149,28 @@ public class PlayerStations : NetworkBehaviour
             buttonCircles.SetActive(true);
             qIndicator = buttons.transform.GetChild(3).gameObject;
             qIndicator.SetActive(false);
-            
+
+            /*Debug.Log("Ready to set up.");
+            // Set up Thrusters to blink
+            Transform targetImageTransform = buttons.transform.Find("Buttons/Thrusters");
+            if (targetImageTransform != null)
+            {
+                Image targetImage = targetImageTransform.GetComponent<Image>();
+                if (targetImage != null)
+                {
+                    targetImage.gameObject.AddComponent<ColorBlinkEffect>();
+                    Debug.Log("It worked! " + targetImage.name);
+                }
+                else
+                {
+                    Debug.LogWarning("No Image component found on the specified GameObject.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No GameObject found with the specified hierarchy path.");
+            }*/
+
             shipScript.player = this;
             GameObject.Find("Storm").GetComponent<Storm>().player = this;
             StartCoroutine(Radar());
@@ -256,14 +283,6 @@ public class PlayerStations : NetworkBehaviour
                         obj = grabCollider.gameObject;
                     }
                     sync.WriteGrabberCloseServerRpc(obj, true);
-                    /*if (grabScript.grabbedObj != null)
-                    {
-                        if (LayerMask.LayerToName(grabScript.grabbedObj.layer) == "Asteroid")
-                        {
-                            grabScript.grabbedObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-                            Debug.Log("Asteroid Grabbed!");
-                        }
-                    }*/
                 }
                 //retract if too far
                 else if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
@@ -357,7 +376,7 @@ public class PlayerStations : NetworkBehaviour
                 }
                 if (!shipScript.isStunned)
                 {
-                    ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>()*shipScript.turnSpeed);
+                    ship.transform.Rotate(new Vector3(0, 0, 1), steering.ReadValue<float>() * shipScript.turnSpeed);
                     if (steering.ReadValue<float>() != 0) {
                         hideSteerInstruction = true;
                         steerInstruction.SetActive(false);
@@ -381,10 +400,30 @@ public class PlayerStations : NetworkBehaviour
                 thrusterInstruction.SetActive(false);
                 thrustersOn = true;
                 Vector3 rot = (ship.transform.eulerAngles + new Vector3(0, 0, 90)) * Mathf.Deg2Rad;
-                ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z)*shipScript.thrustSpeed, Mathf.Sin(rot.z)*shipScript.thrustSpeed), ForceMode2D.Force);
+                ship.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(rot.z) * shipScript.thrustSpeed, Mathf.Sin(rot.z) * shipScript.thrustSpeed), ForceMode2D.Force);
             }
             else {
                 thrustersOn = false;
+            }
+            //thruster audio
+            if (thrustersOn || shipScript.boosting)
+            {
+                if (!thrusterSoundPlaying)
+                {
+                    if (thrustCor != null)
+                        StopCoroutine(thrustCor);
+                    thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.3f, 0.3f);
+                    StartCoroutine(thrustCor);
+                    thrusterSoundPlaying = true;
+                }
+            }
+            else if (thrusterSoundPlaying)
+            {
+                if (thrustCor != null)
+                    StopCoroutine(thrustCor);
+                thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.7f, 0f);
+                StartCoroutine(thrustCor);
+                thrusterSoundPlaying = false;
             }
             //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && (buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable || GameObject.Find("Storm").GetComponent<Storm>().disabledStations.Contains(2))))
@@ -399,6 +438,7 @@ public class PlayerStations : NetworkBehaviour
             oldShipPos = ship.transform.position;
 
             //Shields
+            bool shieldsOn = false;
             if (currentStation == "shields")
             {
                 if (!hideShieldInstruction) {
@@ -407,11 +447,30 @@ public class PlayerStations : NetworkBehaviour
                 if (!shipScript.isStunned)
                 {
                     shield.transform.RotateAround(ship.transform.localPosition, new Vector3(0, 0, steering.ReadValue<float>()), shipScript.shieldSpeed);
-                    if (steering.ReadValue<float>() != 0) {
+                    if (steering.ReadValue<float>() != 0)
+                    {
+                        //shield audio
+                        shieldsOn = true;
+                        if (!shieldSoundPlaying)
+                        {
+                            if (shieldCor != null)
+                                StopCoroutine(shieldCor);
+                            shieldCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Shields", 0.3f, 0.5f);
+                            StartCoroutine(shieldCor);
+                            shieldSoundPlaying = true;
+                        }
                         hideShieldInstruction = true;
                         shieldInstruction.SetActive(false);
                     }
                 }
+            }
+            if (!shieldsOn && shieldSoundPlaying)
+            {
+                if (shieldCor != null)
+                    StopCoroutine(shieldCor);
+                shieldCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Shields", 0.5f, 0f);
+                StartCoroutine(shieldCor);
+                shieldSoundPlaying = false;
             }
             //write shield rotation
             if (currentStation == "shields" || (IsServer && buttonCircles.transform.GetChild(2).GetComponent<Button>().interactable))

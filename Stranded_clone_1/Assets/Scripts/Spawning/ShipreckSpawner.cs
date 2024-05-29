@@ -31,7 +31,7 @@ public class ShipwreckSpawner : NetworkBehaviour
             timer -= Time.deltaTime;
             elapsedTime += Time.deltaTime;
 
-            if (timer <= 0 && GameObject.FindGameObjectsWithTag("Shipwreck").Length < maxAtOnce - Mathf.Min(2, 2*elapsedTime/600))
+            if (timer <= 0 && GameObject.FindGameObjectsWithTag("Shipwreck").Length < maxAtOnce - Mathf.Min(0, 2*(elapsedTime/300 - 1)))
             {
                 SpawnShipwreck();
             }
@@ -40,13 +40,13 @@ public class ShipwreckSpawner : NetworkBehaviour
 
     public void SpawnShipwreck()
     {
-        timer = Random.Range(minDelay, maxDelay) + Mathf.Min(5, 5*elapsedTime/600);
+        timer = Random.Range(minDelay, maxDelay) + Mathf.Min(0, 10*(elapsedTime/300 - 1));
         Vector3 distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-        distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
-        while (Physics2D.OverlapCircle(transform.position + distance, 20, LayerMask.GetMask("Shipwreck")))
+        Vector3 veloAdd = new Vector3(GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.x, GameObject.Find("Spaceship").GetComponent<Rigidbody2D>().velocity.y, 0);
+        while (Vector3.Magnitude(distance) < minDistance + Mathf.Min(0, 30*(elapsedTime/300 - 1)) || Vector3.Magnitude(distance) > maxDistance + Mathf.Min(0, 30*(elapsedTime/300 - 1)) || Physics2D.OverlapCircle(transform.position + distance, 30, LayerMask.GetMask("Shipwreck")))
         {
             distance = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-            distance = Vector3.Normalize(distance) * Random.Range(minDistance, maxDistance);
+            distance = Vector3.Normalize(distance) * (Random.Range(minDistance, maxDistance) + Mathf.Min(0, 30*(elapsedTime/300 - 1))) + veloAdd * 4; 
         }
         GameObject wreck = Instantiate(prefab, transform.position + distance, transform.rotation);
         GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);

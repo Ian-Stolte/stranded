@@ -63,6 +63,8 @@ public class AudioManager : MonoBehaviour
         if (scene.name == "Multiplayer")
         {
             Play("Stranded");
+            Play("Thrusters");
+            Play("Shields");
             Play("Shop");
             Play("Danger 1");
             Play("Danger 2");

@@ -12,6 +12,7 @@ public class SceneLoader : NetworkBehaviour
     public NetworkVariable<int> difficulty;
     private string[] difficultyText = new string[] { "Easy", "Normal", "Hard", "Expert" };
     public Color[] difficultyColors = new Color[4];
+    public bool introComplete;
 
     void OnEnable()
     {

@@ -128,6 +128,7 @@ public class LANManager : NetworkBehaviour
 	[Rpc(SendTo.Server)]
 	public void UpdateSliderServerRpc(int val)
 	{
+		GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
 		if (val != -1)
 			sliderValue = val;
 		slider.GetComponent<Slider>().value = sliderValue;
@@ -140,6 +141,7 @@ public class LANManager : NetworkBehaviour
 	[Rpc(SendTo.NotServer)]
 	public void UpdateSliderClientRpc(int val)
 	{
+		GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
 		clientInitialized = true;
 		sliderValue = val;
 		slider.GetComponent<Slider>().value = sliderValue;

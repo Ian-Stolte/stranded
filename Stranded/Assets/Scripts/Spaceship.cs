@@ -127,7 +127,7 @@ public class Spaceship : NetworkBehaviour
         stats = GameObject.Find("Stat Tracker").GetComponent<StatTracker>();
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
-        audio.Play("Voice - Fuel Leaking");
+        //audio.Play("Voice - Fuel Leaking");
     }
 
     public void SetupDifficulty(int difficulty)
@@ -178,7 +178,7 @@ public class Spaceship : NetworkBehaviour
         {
             if (firstWreck && Mathf.Abs(g.transform.position.x - transform.position.x) < 27*GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize/15 && Mathf.Abs(g.transform.position.y - transform.position.y) < 15*GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize/15)
             {
-                audio.Play("Voice - Shipwreck " + UnityEngine.Random.Range(1, 3));
+                //audio.Play("Voice - Shipwreck " + UnityEngine.Random.Range(1, 3));
                 firstWreck = false;
             }
         }
@@ -262,7 +262,7 @@ public class Spaceship : NetworkBehaviour
         {
             audio.Play("Resource Collect");
             if (UnityEngine.Random.value > 0.5f && fuelAmount.Value <= 4)
-                audio.Play("Voice - Resource " + UnityEngine.Random.Range(1, 4));
+                //audio.Play("Voice - Resource " + UnityEngine.Random.Range(1, 4));
             stats.resourcesCollected++;
             int multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
