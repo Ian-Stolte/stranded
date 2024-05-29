@@ -52,20 +52,22 @@ public class ButtonFunctions : NetworkBehaviour
                 introBackground.SetActive(true);
                 bool skip = false;
                 float i = 0;
-                while (!skip && i < 12)
+                while (!skip && i < 18f)
                 {
                     if (Input.GetMouseButtonDown(0))
                         skip = true;
                     if (i == 0)
-                        StartCoroutine(FadeText(GameObject.Find("Text 1"), 4));
-                    else if (Mathf.Abs(i-2) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 2"), 3));
-                    else if (Mathf.Abs(i-5) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 3"), 2));
-                    else if (Mathf.Abs(i-7) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 4"), 4));
+                        StartCoroutine(FadeText(GameObject.Find("Text 1"), 5));
+                    else if (Mathf.Abs(i-4) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 2"), 5));
+                    else if (Mathf.Abs(i-5.5f) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 3"), 3.5f));
                     else if (Mathf.Abs(i-9) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 5"), 3));
+                        StartCoroutine(FadeText(GameObject.Find("Text 4"), 5));
+                    else if (Mathf.Abs(i-10.5f) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 5"), 3.5f));
+                    else if (Mathf.Abs(i-13.5f) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 6"), 5));
                     i += 0.01f;
                     yield return new WaitForSeconds(0.01f);
                     
