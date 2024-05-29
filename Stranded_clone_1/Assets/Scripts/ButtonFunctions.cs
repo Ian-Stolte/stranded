@@ -37,7 +37,8 @@ public class ButtonFunctions : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void LoadSceneServerRpc(string name)
     {
-        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
+        if (name != "Multiplayer")
+            GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
         StartCoroutine(LoadSceneCor(name));
     }
 
@@ -51,18 +52,20 @@ public class ButtonFunctions : NetworkBehaviour
                 introBackground.SetActive(true);
                 bool skip = false;
                 float i = 0;
-                while (!skip && i < 7)
+                while (!skip && i < 12)
                 {
                     if (Input.GetMouseButtonDown(0))
                         skip = true;
                     if (i == 0)
-                    {
                         StartCoroutine(FadeText(GameObject.Find("Text 1"), 4));
-                    }
                     else if (Mathf.Abs(i-2) < 0.1f)
-                    {
                         StartCoroutine(FadeText(GameObject.Find("Text 2"), 3));
-                    }
+                    else if (Mathf.Abs(i-5) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 3"), 2));
+                    else if (Mathf.Abs(i-7) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 4"), 4));
+                    else if (Mathf.Abs(i-9) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 5"), 3));
                     i += 0.01f;
                     yield return new WaitForSeconds(0.01f);
                     
@@ -70,8 +73,10 @@ public class ButtonFunctions : NetworkBehaviour
                 introBackground.SetActive(false);
                 sceneLoader.introComplete = true;
             }
+            GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
             loadingScreen.SetActive(true);
             LoadingScreenClientRpc();
+            yield return new WaitForSeconds(1);
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
             {
                 g.GetComponent<PlayerStations>().enabled = true;
