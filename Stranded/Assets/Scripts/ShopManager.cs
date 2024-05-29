@@ -41,7 +41,6 @@ public class ShopManager : NetworkBehaviour
     [Header("Shop Tabs")]
     public GameObject boostsPage;
     public GameObject upgradesPage;
-    public GameObject radioPage;
 
     [Header("Upgrade Info")]
     [SerializeField] GameObject[] upgradePanels;
@@ -170,11 +169,9 @@ public class ShopManager : NetworkBehaviour
 
         GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
         GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
-        // GameObject.Find("Radio Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
         boostsPage.SetActive(false);
         upgradesPage.SetActive(true);
-        radioPage.SetActive(false);
 
         fuelBar.SetActive(false);
         healthBar.SetActive(false);
@@ -210,7 +207,6 @@ public class ShopManager : NetworkBehaviour
 
         boostsPage.SetActive(false);
         upgradesPage.SetActive(true);
-        radioPage.SetActive(false);
 
         fuelBar.SetActive(false);
         healthBar.SetActive(false);
@@ -386,7 +382,6 @@ public class ShopManager : NetworkBehaviour
         CheckPurchaseable(shipScript.scraps.Value);
         boostsPage.SetActive(tabNo == 1);
         upgradesPage.SetActive(tabNo == 2);
-        radioPage.SetActive(tabNo == 3);
         if (tabNo == 1)
         {
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
@@ -400,14 +395,6 @@ public class ShopManager : NetworkBehaviour
             GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
             GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             // GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
-            fuelBar.SetActive(false);
-            healthBar.SetActive(false);
-        }
-        else if (tabNo == 3)
-        {
-            // GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
-            GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
-            GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             fuelBar.SetActive(false);
             healthBar.SetActive(false);
         }
