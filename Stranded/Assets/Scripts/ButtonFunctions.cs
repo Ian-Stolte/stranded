@@ -52,26 +52,28 @@ public class ButtonFunctions : NetworkBehaviour
                 introBackground.SetActive(true);
                 bool skip = false;
                 float i = 0;
-                while (!skip && i < 18f)
+                while (!skip && i < 21)
                 {
                     if (Input.GetMouseButtonDown(0))
                         skip = true;
-                    if (i == 0)
+                    if (Mathf.Abs(i-0.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 1"), 5));
-                    else if (Mathf.Abs(i-4) < 0.1f)
+                    else if (Mathf.Abs(i-6f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 2"), 5));
-                    else if (Mathf.Abs(i-5.5f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 3"), 3.5f));
-                    else if (Mathf.Abs(i-9) < 0.1f)
+                    else if (Mathf.Abs(i-8f) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 3"), 3));
+                    else if (Mathf.Abs(i-11.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 4"), 5));
-                    else if (Mathf.Abs(i-10.5f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 5"), 3.5f));
                     else if (Mathf.Abs(i-13.5f) < 0.1f)
+                        StartCoroutine(FadeText(GameObject.Find("Text 5"), 3));
+                    else if (Mathf.Abs(i-16.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 6"), 5));
                     i += 0.01f;
                     yield return new WaitForSeconds(0.01f);
                     
                 }
+                if (skip)
+                    GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
                 introBackground.SetActive(false);
                 sceneLoader.introComplete = true;
             }

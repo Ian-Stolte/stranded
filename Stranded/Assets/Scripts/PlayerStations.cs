@@ -412,7 +412,7 @@ public class PlayerStations : NetworkBehaviour
                 {
                     if (thrustCor != null)
                         StopCoroutine(thrustCor);
-                    thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.3f, 0.3f);
+                    thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.5f, 0.2f);
                     StartCoroutine(thrustCor);
                     thrusterSoundPlaying = true;
                 }
