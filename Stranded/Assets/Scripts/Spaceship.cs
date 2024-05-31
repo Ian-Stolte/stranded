@@ -87,7 +87,7 @@ public class Spaceship : NetworkBehaviour
     [HideInInspector] public int radarRange;
     [HideInInspector] public bool multipleArrows;
     public float radioChance;
-
+    
     //Grabber
     [HideInInspector] public bool grabberUnlocked;
     [HideInInspector] public int grabberRange;
@@ -304,7 +304,7 @@ public class Spaceship : NetworkBehaviour
                 }
             }
             //radio parts chance
-            if (radarUnlocked == true && UnityEngine.Random.value < radioChance) //A radio part is found
+            if (radarUnlocked == true && UnityEngine.Random.value < (radioChance * GameObject.Find("Shop Manager").GetComponent<ShopManager>().upgradeMultiplier)) //A radio part is found
             {
                 radioParts.Value += 1;
                 shop.AddRadioParts();

@@ -54,6 +54,9 @@ public class ShopManager : NetworkBehaviour
     private string[] grabberInfo;
     private string[] radarInfo;
 
+    //Upgrade level for radio part collection
+    public float upgradeMultiplier;
+
     void Start()
     {
         shopPanelsGO[3].SetActive(false);
@@ -62,6 +65,7 @@ public class ShopManager : NetworkBehaviour
         shieldInfo = new string[] {"Speed  1.3 → " + colorStart + "2</color>", "Width  4 → " + colorStart + "6</color>", "Speed  2 → " + colorStart + "3</color>", "Fully upgraded!"};
         grabberInfo = new string[] {"30% chance of double resources", "Range  12 → " + colorStart + "15</color>\nSpeed  0.5 → " + colorStart + "0.55</color>", "Double  30% → " + colorStart + "60%</color>\nRange  15 → " + colorStart + "20</color>\nSpeed  0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
         radarInfo = new string[] {"Range  50 → " + colorStart + "100</color>", "Points toward all shipwrecks within range", "Range  100 → " + colorStart + "200</color>", "Fully upgraded!"};
+        upgradeMultiplier = 1; //set to one so that it doesn't set the radio parts chance to 0 if nothing is upgraded, 1 means it simply won't interfere until parts are upgraded
         //Initialize text values
         foreach (GameObject g in upgradePanels)
         {
@@ -428,7 +432,7 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - cost;
             AddScraps();
-
+            upgradeMultiplier += 0.5f; //increase upgrade count for radio part multiplier and apply factor of 0.5 to make it appropriate scaling factor for radio part chance
             upgrade.stationLevel += 1;
             int newCost = 3;
             if (upgrade.stationLevel == 1)
@@ -478,6 +482,7 @@ public class ShopManager : NetworkBehaviour
         CheckPurchaseable(shipScript.scraps.Value - cost);
 
         upgrade.stationLevel += 1;
+
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade");
         if (upgrade.stationLevel == 4)
         {
