@@ -215,7 +215,7 @@ public class Spaceship : NetworkBehaviour
     //Hit Asteroid
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Asteroid(Clone)" && !asteroidImmunity.Value)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Asteroid") && !asteroidImmunity.Value)
         {
             audio.Play("Asteroid Collision");
             GameObject.Find("Screen Flash Red").GetComponent<Animator>().Play("ScreenFlash");
@@ -405,6 +405,7 @@ public class Spaceship : NetworkBehaviour
     [Rpc(SendTo.NotServer)]
     void GameOverClientRpc(string cause)
     {
+        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
         StartCoroutine(GameOverCor(cause));
     }
 
@@ -414,6 +415,7 @@ public class Spaceship : NetworkBehaviour
         yield return new WaitForSeconds(0.5f);
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
         {
+            g.GetComponent<PlayerStations>().currentStation = "none";
             g.GetComponent<PlayerStations>().enabled = false;  
         }
         stats.causeOfDeath = cause;
