@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : NetworkBehaviour
 {
+    public NetworkVariable<bool> skip;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject introBackground;
     private SceneLoader sceneLoader;
@@ -40,6 +41,13 @@ public class ButtonFunctions : NetworkBehaviour
         if (name != "Multiplayer")
             GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
         StartCoroutine(LoadSceneCor(name));
+        LoadSceneClientRpc(name);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void LoadSceneClientRpc(string name)
+    {
+        StartCoroutine(LoadSceneCor(name));
     }
 
     IEnumerator LoadSceneCor(string name)
@@ -50,12 +58,11 @@ public class ButtonFunctions : NetworkBehaviour
             if (!sceneLoader.introComplete)
             {
                 introBackground.SetActive(true);
-                bool skip = false;
                 float i = 0;
-                while (!skip && i < 21)
+                while (!skip.Value && i < 21)
                 {
                     if (Input.GetMouseButtonDown(0))
-                        skip = true;
+                        SkipServerRpc();
                     if (Mathf.Abs(i-0.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 1"), 5));
                     else if (Mathf.Abs(i-6f) < 0.1f)
@@ -70,22 +77,21 @@ public class ButtonFunctions : NetworkBehaviour
                         StartCoroutine(FadeText(GameObject.Find("Text 6"), 5));
                     i += 0.01f;
                     yield return new WaitForSeconds(0.01f);
-                    
                 }
-                if (skip)
+                if (skip.Value)
                     GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
                 introBackground.SetActive(false);
                 sceneLoader.introComplete = true;
             }
             GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
             loadingScreen.SetActive(true);
-            LoadingScreenClientRpc();
             yield return new WaitForSeconds(1);
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
             {
                 g.GetComponent<PlayerStations>().enabled = true;
             }
-            sceneLoader.difficulty.Value = (int)GameObject.Find("Slider").GetComponent<Slider>().value;
+            if (IsServer)
+                sceneLoader.difficulty.Value = (int)GameObject.Find("Slider").GetComponent<Slider>().value;
         }
         else
         {
@@ -100,7 +106,14 @@ public class ButtonFunctions : NetworkBehaviour
             sceneLoader.alreadyConnected = true;
         }
 
-        NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
+        if (IsServer)
+            NetworkManager.Singleton.SceneManager.LoadScene(name, LoadSceneMode.Single);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void SkipServerRpc()
+    {
+        skip.Value = true;
     }
 
     private IEnumerator FadeText(GameObject text, float duration)

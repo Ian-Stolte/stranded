@@ -2437,6 +2437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65ee41ed7230c5449c4174268845f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skip:
+    m_InternalValue: 0
   loadingScreen: {fileID: 960000455}
   introBackground: {fileID: 903895092}
 --- !u!1 &1124101514

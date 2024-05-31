@@ -90,6 +90,8 @@ public class PlayerStations : NetworkBehaviour
 
     public void Setup()
     {
+        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
+
         //Naming players
         if ((IsOwner && IsServer) || (!IsOwner && !IsServer))
             name = "Player 1";

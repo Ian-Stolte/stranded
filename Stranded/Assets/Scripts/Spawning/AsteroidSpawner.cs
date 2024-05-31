@@ -5,8 +5,7 @@ using Unity.Netcode;
 
 public class AsteroidSpawner : NetworkBehaviour
 {
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private Sprite[] sprites;
+    [SerializeField] private GameObject[] prefabs;
     public float minDelay;
     public float maxDelay;
     [SerializeField] private float minDistance;
@@ -45,10 +44,8 @@ public class AsteroidSpawner : NetworkBehaviour
         {
             distance = Vector3.Normalize(distance) * Random.Range(0, maxDistance) + veloAdd * 4;
         }
-        GameObject obj = Instantiate(prefab, transform.position + distance, transform.rotation);
+        GameObject obj = Instantiate(prefabs[Random.Range(0, 2)], transform.position + distance, transform.rotation);
         //Set asteroid values
-        obj.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
-        obj.AddComponent<PolygonCollider2D>();
         float scale = Random.Range(minSize, maxSize);
         obj.transform.localScale = new Vector3(scale*Random.Range(0.5f, 1), scale*Random.Range(0.5f, 1), 1);
         var euler = transform.eulerAngles;
