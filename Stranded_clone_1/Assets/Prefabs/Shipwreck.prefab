@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7636902087907408754}
   - component: {fileID: 4173880880266427342}
   m_Layer: 7
-  m_Name: GameObject
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,8 +26,8 @@ Transform:
   m_GameObject: {fileID: 6870562114562485686}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.68769, y: 0.68769, z: 0.68769}
+  m_LocalPosition: {x: 0.012, y: -0.04, z: 0}
+  m_LocalScale: {x: 0.2646594, y: 0.2646594, z: 0.2646594}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2511348764613558365}

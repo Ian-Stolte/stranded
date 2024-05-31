@@ -577,7 +577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: But suddenly an eerie silence envelops your ship.
+  m_text: But suddenly an eerie silence envelops you.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dfb6a5ae6e6c7fb4b92680490fd444bf, type: 2}
   m_sharedMaterial: {fileID: 2415984587624857844, guid: dfb6a5ae6e6c7fb4b92680490fd444bf, type: 2}
@@ -1722,7 +1722,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -267.05304, y: 0, z: -272.99088, w: 0}
+  m_margin: {x: -216.55942, y: 0, z: -216.28265, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2437,6 +2437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65ee41ed7230c5449c4174268845f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skip:
+    m_InternalValue: 0
   loadingScreen: {fileID: 960000455}
   introBackground: {fileID: 903895092}
 --- !u!1 &1124101514
@@ -4129,7 +4131,7 @@ PrefabInstance:
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[19].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 467452e87c232184ba100662839eeca7, type: 3}
+      objectReference: {fileID: 8300000, guid: ae7f5a202c7014a4c817869b742c1324, type: 3}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[19].loop
       value: 1
@@ -4280,7 +4282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[17].volume
-      value: 0.05
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[18].volume

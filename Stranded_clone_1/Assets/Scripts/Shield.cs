@@ -9,9 +9,22 @@ public class Shield : NetworkBehaviour
     {
         if (collider.gameObject.tag == "Asteroid")
         {
-            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Destroy");
+            AsteroidSoundServerRpc();
             if (IsServer)
                 collider.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    void AsteroidSoundServerRpc()
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Destroy");
+        AsteroidSoundClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    void AsteroidSoundClientRpc()
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Asteroid Destroy");
     }
 }
