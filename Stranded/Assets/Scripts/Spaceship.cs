@@ -260,10 +260,9 @@ public class Spaceship : NetworkBehaviour
     {
         if(collider.gameObject.name == "Resource(Clone)")
         {
-            audio.Play("Resource Collect");
-            if (UnityEngine.Random.value > 0.5f && fuelAmount.Value <= 4)
+            ResourceCollectServerRpc();
+            //if (UnityEngine.Random.value > 0.5f && fuelAmount.Value <= 4)
                 //audio.Play("Voice - Resource " + UnityEngine.Random.Range(1, 4));
-            stats.resourcesCollected++;
             int multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
@@ -291,9 +290,8 @@ public class Spaceship : NetworkBehaviour
             }
         }
         if (collider.gameObject.name == "Shipwreck(Clone)")
-        {  
-            audio.Play("Scrap Collect");
-            stats.scrapsCollected++;
+        {
+            ScrapCollectServerRpc();
             int multiplier = 1;
             if (GameObject.Find("Grabber").GetComponent<Grabber>().grabbedObj == collider.gameObject)
             {
@@ -330,6 +328,36 @@ public class Spaceship : NetworkBehaviour
             }
             shop.AddScraps();
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    void ResourceCollectServerRpc()
+    {
+        audio.Play("Resource Collect");
+        stats.resourcesCollected++;
+        ResourceCollectClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    void ResourceCollectClientRpc()
+    {
+        audio.Play("Resource Collect");
+        stats.resourcesCollected++;
+    }
+
+    [Rpc(SendTo.Server)]
+    void ScrapCollectServerRpc()
+    {
+        audio.Play("Scrap Collect");
+        stats.scrapsCollected++;
+        ScrapCollectClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    void ScrapCollectClientRpc()
+    {
+        audio.Play("Scrap Collect");
+        stats.scrapsCollected++;
     }
 
     [Rpc(SendTo.NotServer)]

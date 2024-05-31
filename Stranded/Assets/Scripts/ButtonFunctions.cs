@@ -47,6 +47,8 @@ public class ButtonFunctions : NetworkBehaviour
     [Rpc(SendTo.NotServer)]
     private void LoadSceneClientRpc(string name)
     {
+        if (name != "Multiplayer")
+            GameObject.Find("Fader").GetComponent<Animator>().Play("FadeOut");
         StartCoroutine(LoadSceneCor(name));
     }
 

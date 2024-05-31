@@ -52,11 +52,11 @@ public class Storm : NetworkBehaviour
     public IEnumerator StartStorm()
     {
         doingStorm = true;
-        if (firstStorm)
+        /*if (firstStorm)
         {
             GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Voice - Storm " + Random.Range(1, 3));
             firstStorm = false;
-        }
+        }*/
         GameObject.Find("Storm Text").GetComponent<Animator>().Play("StormText");
         yield return new WaitForSeconds(4);
         GameObject.Find("Screen Flash White").GetComponent<Animator>().Play("ScreenFlashLong");
