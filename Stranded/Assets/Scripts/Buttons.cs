@@ -67,7 +67,7 @@ public class Buttons : MonoBehaviour
 
             if (p.currentStation == "grabber")
             {
-                GameObject.Find("Sync Object").GetComponent<Sync>().WriteGrabberFiringRpc(false);
+                GameObject.Find("Sync Object").GetComponent<Sync>().WriteGrabberFiringRpc(false, false);
                 p.grabberFired = false;
             }
             p.currentStation = stationNames[n];

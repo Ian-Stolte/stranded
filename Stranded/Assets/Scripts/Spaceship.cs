@@ -35,7 +35,8 @@ public class Spaceship : NetworkBehaviour
     public float boostDuration;
     public float boostCooldown;
     [HideInInspector] public float boostTimer;
-    [SerializeField] GameObject boostIndicator;
+    [SerializeField] private GameObject boostIndicator;
+    [SerializeField] public GameObject boostText;
 
     //Collision vars
     [Header("Collision Variables")]
@@ -95,7 +96,7 @@ public class Spaceship : NetworkBehaviour
     private float multiplierThreshold;
 
     //Upgrades
-    private float[] turnSpeeds = new float[] { 1, 1.5f, 2, 2.5f };
+    private float[] turnSpeeds = new float[] { 0.8f, 1.1f, 1.6f, 2.5f };
     private float[] thrustSpeeds = new float[] { 2, 3, 3, 4.5f };
     private float[] shieldSpeeds = new float[] { 1.5f, 2, 2, 3 };
     private float[] maxSpeeds = new float[] { 7, 9, 9, 12 };
@@ -111,7 +112,7 @@ public class Spaceship : NetworkBehaviour
     private (float min, float max)[] asteroidSpeeds = new (float min, float max)[] { (0.5f, 2), (0.5f, 2.5f), (1, 3), (1.5f, 3.5f) };
     private (float min, float max)[] asteroidDelays = new (float min, float max)[] { (2, 5), (1, 4), (1, 3.5f), (0.5f, 3) };
     private (float min, float max)[] shipwreckDelays = new (float min, float max)[] { (15, 25), (20, 30), (20, 30), (25, 40) };
-    private float[] radioChances = new float[] {0.10f, 0.05f, 0.035f, 0.02f};
+    private float[] radioChances = new float[] {0.1f, 0.07f, 0.05f, 0.03f};
     private int[] maxShipwrecks = new int[] {8, 8, 6, 6};
     private int[] stormStart = new int[] {180, 180, 150, 120};
     private (int min, int max)[] stormDelays = new (int min, int max)[] {(30, 90), (30, 90), (25, 80), (20, 70)};
@@ -303,12 +304,6 @@ public class Spaceship : NetworkBehaviour
                     multiplier = 2;
                 }
             }
-            //radio parts chance
-            if (radarUnlocked == true && UnityEngine.Random.value < (radioChance * GameObject.Find("Shop Manager").GetComponent<ShopManager>().upgradeMultiplier)) //A radio part is found
-            {
-                radioParts.Value += 1;
-                shop.AddRadioParts();
-            }
             if (player.usedRadar)
             {
                 player.hideRadarInstruction = true;
@@ -317,6 +312,12 @@ public class Spaceship : NetworkBehaviour
             }
             if (IsServer)
             {
+                //radio parts chance
+                if (UnityEngine.Random.value < (radioChance * GameObject.Find("Shop Manager").GetComponent<ShopManager>().upgradeMultiplier)) //A radio part is found
+                {
+                    radioParts.Value += 1;
+                    shop.AddRadioParts();
+                }
                 scraps.Value += collider.GetComponent<ShipwreckBehavior>().value.Value * multiplier;
                 GameObject wreckText = Instantiate(resourceTextPrefab, transform.position, Quaternion.identity, GameObject.Find("Canvas").transform);
                 Rect canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>().rect;
@@ -453,10 +454,11 @@ public class Spaceship : NetworkBehaviour
         {
             thrustSpeed = thrustSpeeds[level-1];
             maxSpeed = maxSpeeds[level-1];
-            if (level >= 3)
+            if (level == 3)
             {
                 boostUnlocked = true;
                 boostIndicator.SetActive(true);
+                boostText.SetActive(true);
             }
         }
         else if (type == "Shield Upgrade")

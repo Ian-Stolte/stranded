@@ -152,27 +152,6 @@ public class PlayerStations : NetworkBehaviour
             qIndicator = buttons.transform.GetChild(3).gameObject;
             qIndicator.SetActive(false);
 
-            /*Debug.Log("Ready to set up.");
-            // Set up Thrusters to blink
-            Transform targetImageTransform = buttons.transform.Find("Buttons/Thrusters");
-            if (targetImageTransform != null)
-            {
-                Image targetImage = targetImageTransform.GetComponent<Image>();
-                if (targetImage != null)
-                {
-                    targetImage.gameObject.AddComponent<ColorBlinkEffect>();
-                    Debug.Log("It worked! " + targetImage.name);
-                }
-                else
-                {
-                    Debug.LogWarning("No Image component found on the specified GameObject.");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("No GameObject found with the specified hierarchy path.");
-            }*/
-
             shipScript.player = this;
             GameObject.Find("Storm").GetComponent<Storm>().player = this;
             StartCoroutine(Radar());
@@ -222,7 +201,7 @@ public class PlayerStations : NetworkBehaviour
             {
                 if (currentStation == "grabber")
                 {
-                    sync.WriteGrabberFiringRpc(false);
+                    sync.WriteGrabberFiringRpc(false, false);
                     grabberFired = false;
                 }
                 currentStation = "none";
@@ -234,11 +213,6 @@ public class PlayerStations : NetworkBehaviour
                 buttonCircles.SetActive(true);
                 qIndicator.SetActive(false);
             }
-            /*else
-            {
-                buttonCircles.SetActive(false);
-                qIndicator.SetActive(true);
-            }*/
 
             //Thruster Boosts
             if (currentStation == "thrusters" && Input.GetMouseButtonDown(0) && !shipScript.isStunned && !sync.paused.Value && shipScript.boostCount > 0)
@@ -275,7 +249,7 @@ public class PlayerStations : NetworkBehaviour
                 if (Input.GetKeyDown(KeyCode.Space) && !grabberHasGrabbed && Vector2.Distance(grabber.transform.position, ship.transform.position) > 5 /*&& grabScript.grabberFiring.Value*/)
                 {
                     grabberHasGrabbed = true;
-                    sync.WriteGrabberFiringRpc(false);
+                    sync.WriteGrabberFiringRpc(false, true);
                     grabberFired = false;
                     Bounds b = grabber.GetComponent<BoxCollider2D>().bounds;
                     Collider2D grabCollider = Physics2D.OverlapBox(b.center, b.extents * 2, 0, LayerMask.GetMask("Resource", "Shipwreck"));
@@ -289,7 +263,7 @@ public class PlayerStations : NetworkBehaviour
                 //retract if too far
                 else if (Vector3.Distance(grabber.transform.position, ship.transform.position) > grabScript.maxDistance)
                 {
-                    sync.WriteGrabberFiringRpc(false);
+                    sync.WriteGrabberFiringRpc(false, false);
                     grabberFired = false;
                 }
                 //fire if space pressed and delay time has elapsed
@@ -307,7 +281,7 @@ public class PlayerStations : NetworkBehaviour
 
                     grabberWait = -1;
                     Vector3 rot = new Vector3(0, 0, Mathf.Atan2(mouseYChange, mouseXChange) * Mathf.Rad2Deg - 90);
-                    sync.WriteGrabberFiringRpc(true);
+                    sync.WriteGrabberFiringRpc(true, true);
                     grabberFired = true;
                     sync.WriteGrabberPosServerRpc(dir.normalized, rot);
                     sync.WriteGrabberCloseServerRpc(ship, false); //ship = nothing grabbed
@@ -320,7 +294,7 @@ public class PlayerStations : NetworkBehaviour
             }
             else if (shipScript.isStunned && grabScript.grabberFiring.Value)
             {
-                sync.WriteGrabberFiringRpc(false);
+                sync.WriteGrabberFiringRpc(false, false);
                 grabberFired = false;
             }
 
@@ -549,6 +523,7 @@ public class PlayerStations : NetworkBehaviour
         shipScript.boosting = true;
         shipScript.boostTimer = shipScript.boostCooldown;
         shipScript.boostCount -= 1;
+        shipScript.boostText.SetActive(false);
         StartCoroutine(GameObject.Find("Main Camera").GetComponent<CameraFollow>().Boost(shipScript.boostDuration));
         
         float oldMaxSpeed = shipScript.maxSpeed;

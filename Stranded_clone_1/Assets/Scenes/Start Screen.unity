@@ -2439,6 +2439,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skip:
     m_InternalValue: 0
+  introTimer:
+    m_InternalValue: 0
   loadingScreen: {fileID: 960000455}
   introBackground: {fileID: 903895092}
 --- !u!1 &1124101514
@@ -4014,7 +4016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.size
-      value: 20
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[1].clip
@@ -4143,18 +4145,38 @@ PrefabInstance:
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[20].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 0848e22aa9db6f7458af9c2b1fc6f419, type: 3}
+      objectReference: {fileID: 8300000, guid: 9e276cf24be607742a52a68e02591564, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[20].loop
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[20].name
-      value: Purchase 3
+      value: Grabber Fire
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[21].clip
       value: 
-      objectReference: {fileID: 8300000, guid: fdff399f06517144ea576529d9776547, type: 3}
+      objectReference: {fileID: 8300000, guid: 59bde0eccc042204492e33c4388f3029, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[21].loop
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[21].name
-      value: Thrusters
+      value: Grabber Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[22].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8e9c12d0fbe34bf43b9c215d09e7e647, type: 3}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[22].loop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[22].name
+      value: Storm Start
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[6].pitch
@@ -4234,6 +4256,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
       propertyPath: sfx.Array.data[21].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}
+      propertyPath: sfx.Array.data[22].pitch
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6864999391720452199, guid: d3815b4ac74ba429db39e60214cf9d6d, type: 3}

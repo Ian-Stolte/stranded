@@ -140,9 +140,26 @@ public class Sync : NetworkBehaviour
 
     //GRABBER SYNC
     [Rpc(SendTo.Server)]
-    public void WriteGrabberFiringRpc(bool firing)
+    public void WriteGrabberFiringRpc(bool firing, bool sound)
     {
         grabber.GetComponent<Grabber>().grabberFiring.Value = firing;
+        if (sound)
+        {
+            if (firing)
+                GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Grabber Fire");
+            else
+                GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Grabber Close");
+            GrabberSoundClientRpc(firing);
+        }
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void GrabberSoundClientRpc(bool firing)
+    {
+        if (firing)
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Grabber Fire");
+        else
+            GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Grabber Close");
     }
 
     [Rpc(SendTo.Server)]

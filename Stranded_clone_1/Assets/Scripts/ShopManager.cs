@@ -35,6 +35,9 @@ public class ShopManager : NetworkBehaviour
     private Sound shopMusic;
     private Sound strandedMusic;
 
+    [SerializeField] private GameObject exclamationPoint1;
+    [SerializeField] private GameObject exclamationPoint2;
+
     private RectTransform fuelBarRectTransform;
     private RectTransform healthBarRectTransform;
 
@@ -54,14 +57,18 @@ public class ShopManager : NetworkBehaviour
     private string[] grabberInfo;
     private string[] radarInfo;
 
+    //Upgrade level for radio part collection
+    public float upgradeMultiplier;
+
     void Start()
     {
         shopPanelsGO[3].SetActive(false);
-        steeringInfo = new string[] {"Speed  1 → " + colorStart + "1.5</color>", "Speed  1.5 → " + colorStart + "2</color>", "Speed  2 → " + colorStart + "2.5</color>", "Fully upgraded!" };
+        steeringInfo = new string[] {"Speed  0.8 → " + colorStart + "1.1</color>", "Speed  1.1 → " + colorStart + "1.6</color>", "Speed  1.6 → " + colorStart + "2.5</color>", "Fully upgraded!" };
         thrustInfo = new string[] {"Acceleration  2 → " + colorStart + "3</color>\nMax Speed  7 → " + colorStart + "9</color>", "Unlocks periodic boosts of speed", "Acceleration  3 → " + colorStart + "4.5</color>\nMax Speed  9 → " + colorStart + "12</color>", "Fully upgraded!"};
         shieldInfo = new string[] {"Speed  1.3 → " + colorStart + "2</color>", "Width  4 → " + colorStart + "6</color>", "Speed  2 → " + colorStart + "3</color>", "Fully upgraded!"};
         grabberInfo = new string[] {"30% chance of double resources", "Range  12 → " + colorStart + "15</color>\nSpeed  0.5 → " + colorStart + "0.55</color>", "Double  30% → " + colorStart + "60%</color>\nRange  15 → " + colorStart + "20</color>\nSpeed  0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
         radarInfo = new string[] {"Range  50 → " + colorStart + "100</color>", "Points toward all shipwrecks within range", "Range  100 → " + colorStart + "200</color>", "Fully upgraded!"};
+        upgradeMultiplier = 1;
         //Initialize text values
         foreach (GameObject g in upgradePanels)
         {
@@ -117,45 +124,11 @@ public class ShopManager : NetworkBehaviour
 
     void Update()
     {
-        //if (Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 8, LayerMask.GetMask("Shop")) && !shop.activeSelf)
-        //{
-            openShopBtn.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E) && !sync.paused.Value && !shop.activeSelf)
-            {
-                OpenShopServerRpc();
-            }
-        //}
+        openShopBtn.SetActive(true);
+        if (Input.GetKeyDown(KeyCode.E) && !sync.paused.Value && !shop.activeSelf)
+            OpenShopServerRpc();
         else if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.Escape)) && shop.activeSelf)
-        {
             CloseShopServerRpc();
-        }
-        /*else if (!Physics2D.OverlapCircle(GameObject.Find("Spaceship").transform.position, 12, LayerMask.GetMask("Shop")) && shop.activeSelf)
-        {
-            CloseShopServerRpc();
-        }
-        else
-        {
-            openShopBtn.SetActive(false);
-        }*/
-
-        //audio fade
-        /*float distance = Vector2.Distance(transform.position, GameObject.Find("Spaceship").transform.position);
-        Sound shopMusic = Array.Find(audio.music, sound => sound.name == "Shop");
-        Sound strandedMusic = Array.Find(audio.music, sound => sound.name == "Stranded");
-        if (distance < 50)
-        {
-            if (startMusic)
-            {
-                shopMusic.source.volume = 0.4f * (50 - distance)/50;
-                if (!shop.activeSelf)
-                    strandedMusic.source.volume = 0.2f + 0.2f*(distance/50);
-            }
-        }
-        else {
-            startMusic = true;
-            shopMusic.source.volume = 0;
-            strandedMusic.source.volume = 0.4f;
-        }*/
     }
     
     //OPEN SHOP
@@ -164,6 +137,7 @@ public class ShopManager : NetworkBehaviour
     {
         shop.SetActive(true);
         openShopBtn.SetActive(false);
+        exclamationPoint1.SetActive(false);
         GameObject.Find("Event System").GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         closeShopBtn.SetActive(true);
 
@@ -183,11 +157,6 @@ public class ShopManager : NetworkBehaviour
         AddRadioParts();
         
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
-        //shopMusic.source.volume = 0.4f;
-        //strandedMusic.source.volume = 0;
-//TODO: Fix fade in not working b/c paused (manually add like 0.01 every frame in Update?)
-        //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
-        //StartCoroutine(audio.StartFade("Stranded", 1, 0));
         
         sync.PauseServerRpc(false);
         OpenShopClientRpc();
@@ -198,12 +167,12 @@ public class ShopManager : NetworkBehaviour
     {
         shop.SetActive(true);
         openShopBtn.SetActive(false);
+        exclamationPoint1.SetActive(false);
         GameObject.Find("Event System").GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
         closeShopBtn.SetActive(true);
 
         GameObject.Find("Boosts Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
         GameObject.Find("Upgrades Tab").GetComponent<Image>().color = new Color32(44,44,44,255);
-        // GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
 
         boostsPage.SetActive(false);
         upgradesPage.SetActive(true);
@@ -218,10 +187,6 @@ public class ShopManager : NetworkBehaviour
         AddRadioParts();
 
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 2");
-        //shopMusic.source.volume = 0.4f;
-        //strandedMusic.source.volume = 0;
-        //StartCoroutine(audio.StartFade("Shop", 1, 0.4f));
-        //StartCoroutine(audio.StartFade("Stranded", 1, 0));
     }
 
     //CLOSE SHOP
@@ -240,10 +205,6 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(-720, -455);
 
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
-        //shopMusic.source.volume = 0;
-        //strandedMusic.source.volume = 0.4f;
-        //StartCoroutine(audio.StartFade("Shop", 1, 0f));
-        //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
 
         CloseShopClientRpc();
     }
@@ -261,10 +222,6 @@ public class ShopManager : NetworkBehaviour
         healthBarRectTransform.anchoredPosition = new Vector2(-720, -455);
 
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
-        //shopMusic.source.volume = 0;
-        //strandedMusic.source.volume = 0.4f;
-        //StartCoroutine(audio.StartFade("Shop", 1, 0f));
-        //StartCoroutine(audio.StartFade("Stranded", 1, 0.4f));
     }
 
     public void AddScraps()
@@ -275,9 +232,14 @@ public class ShopManager : NetworkBehaviour
 
     public void AddRadioParts()
     {
-        if (shipScript.radioParts.Value > 0){
+        if (shipScript.radioParts.Value > 0) {
             radioPartsObject.SetActive(true);
             radioPartsText.text = "Radio Parts: " + shipScript.radioParts.Value;
+            if (shipScript.radioParts.Value == 5)
+            {
+                exclamationPoint1.SetActive(true);
+                exclamationPoint2.SetActive(true);
+            }
         } else {
             radioPartsObject.SetActive(false);
         }
@@ -334,7 +296,7 @@ public class ShopManager : NetworkBehaviour
             }
         }
 
-        if (shipScript.radioParts.Value >= boostEffectsSO[3].baseCost){
+        if (shipScript.radioParts.Value >= 5) {
             shopPanelsGO[3].SetActive(true);
             shopPanelsGO[3].GetComponent<Button>().interactable = true;
             shopPanelsGO[3].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
@@ -347,8 +309,8 @@ public class ShopManager : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void PurchaseBoostServerRpc(int btnNo)
     {
-
-        if (btnNo != 3){
+        if (btnNo != 3)
+        {
             if (shipScript.scraps.Value >= boostEffectsSO[btnNo].baseCost)
             {
                 shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
@@ -356,7 +318,9 @@ public class ShopManager : NetworkBehaviour
                 GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
                 PurchaseBoostClientRpc(btnNo);
             }  
-        } else {
+        }
+        else 
+        {
             Debug.Log("Radio Parts: " + shipScript.radioParts.Value.ToString());
             if (shipScript.radioParts.Value >= boostEffectsSO[btnNo].baseCost)
             {
@@ -389,6 +353,7 @@ public class ShopManager : NetworkBehaviour
             // GameObject.Find("Cosmetics Tab").GetComponent<Image>().color = new Color32(72,72,72,255);
             fuelBar.SetActive(true);
             healthBar.SetActive(true);
+            exclamationPoint2.SetActive(false);
         }
         else if (tabNo == 2)
         {
@@ -428,7 +393,7 @@ public class ShopManager : NetworkBehaviour
         {
             shipScript.scraps.Value = shipScript.scraps.Value - cost;
             AddScraps();
-
+            upgradeMultiplier += 0.5f; //increase upgrade count for radio part multiplier and apply factor of 0.5 to make it appropriate scaling factor for radio part chance
             upgrade.stationLevel += 1;
             int newCost = 3;
             if (upgrade.stationLevel == 1)
@@ -478,6 +443,7 @@ public class ShopManager : NetworkBehaviour
         CheckPurchaseable(shipScript.scraps.Value - cost);
 
         upgrade.stationLevel += 1;
+
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Upgrade");
         if (upgrade.stationLevel == 4)
         {

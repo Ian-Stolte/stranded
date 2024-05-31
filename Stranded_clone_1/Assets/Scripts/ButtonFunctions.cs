@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class ButtonFunctions : NetworkBehaviour
 {
     public NetworkVariable<bool> skip;
+    public NetworkVariable<float> introTimer;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject introBackground;
     private SceneLoader sceneLoader;
@@ -60,24 +61,25 @@ public class ButtonFunctions : NetworkBehaviour
             if (!sceneLoader.introComplete)
             {
                 introBackground.SetActive(true);
-                float i = 0;
-                while (!skip.Value && i < 21)
+                introTimer.Value = 0;
+                while (!skip.Value && introTimer.Value < 21)
                 {
                     if (Input.GetMouseButtonDown(0))
                         SkipServerRpc();
-                    if (Mathf.Abs(i-0.5f) < 0.1f)
+                    if (Mathf.Abs(introTimer.Value-0.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 1"), 5));
-                    else if (Mathf.Abs(i-6f) < 0.1f)
+                    else if (Mathf.Abs(introTimer.Value-6f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 2"), 5));
-                    else if (Mathf.Abs(i-8f) < 0.1f)
+                    else if (Mathf.Abs(introTimer.Value-8f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 3"), 3));
-                    else if (Mathf.Abs(i-11.5f) < 0.1f)
+                    else if (Mathf.Abs(introTimer.Value-11.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 4"), 5));
-                    else if (Mathf.Abs(i-13.5f) < 0.1f)
+                    else if (Mathf.Abs(introTimer.Value-13.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 5"), 3));
-                    else if (Mathf.Abs(i-16.5f) < 0.1f)
+                    else if (Mathf.Abs(introTimer.Value-16.5f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 6"), 5));
-                    i += 0.01f;
+                    if (IsServer)
+                        introTimer.Value += 0.01f;
                     yield return new WaitForSeconds(0.01f);
                 }
                 if (skip.Value)
