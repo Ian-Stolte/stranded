@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class ButtonFunctions : NetworkBehaviour
 {
     public NetworkVariable<bool> skip;
+    private bool introText;
     public NetworkVariable<float> introTimer;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject introBackground;
@@ -16,6 +17,12 @@ public class ButtonFunctions : NetworkBehaviour
     void Start()
     {
         sceneLoader = GameObject.Find("Scene Loader").GetComponent<SceneLoader>();
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && introText)
+            SkipServerRpc();
     }
 
     public void SetSingleplayer()
@@ -64,10 +71,11 @@ public class ButtonFunctions : NetworkBehaviour
                 introTimer.Value = 0;
                 while (!skip.Value && introTimer.Value < 21)
                 {
-                    if (Input.GetMouseButtonDown(0))
-                        SkipServerRpc();
                     if (Mathf.Abs(introTimer.Value-0.5f) < 0.1f)
+                    {
+                        introText = true;
                         StartCoroutine(FadeText(GameObject.Find("Text 1"), 5));
+                    }
                     else if (Mathf.Abs(introTimer.Value-6f) < 0.1f)
                         StartCoroutine(FadeText(GameObject.Find("Text 2"), 5));
                     else if (Mathf.Abs(introTimer.Value-8f) < 0.1f)
@@ -86,6 +94,7 @@ public class ButtonFunctions : NetworkBehaviour
                     GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
                 introBackground.SetActive(false);
                 sceneLoader.introComplete = true;
+                introText = false;
             }
             GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
             loadingScreen.SetActive(true);

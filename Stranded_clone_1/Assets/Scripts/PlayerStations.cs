@@ -386,20 +386,12 @@ public class PlayerStations : NetworkBehaviour
             {
                 if (!thrusterSoundPlaying)
                 {
-                    if (thrustCor != null)
-                        StopCoroutine(thrustCor);
-                    thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.5f, 0.2f);
-                    StartCoroutine(thrustCor);
-                    thrusterSoundPlaying = true;
+                    ThrustSoundServerRpc(true);
                 }
             }
             else if (thrusterSoundPlaying)
             {
-                if (thrustCor != null)
-                    StopCoroutine(thrustCor);
-                thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.7f, 0f);
-                StartCoroutine(thrustCor);
-                thrusterSoundPlaying = false;
+                ThrustSoundServerRpc(false);
             }
             //write ship position & velocity
             if (currentStation == "thrusters" || (IsServer && (buttonCircles.transform.GetChild(1).GetComponent<Button>().interactable || GameObject.Find("Storm").GetComponent<Storm>().disabledStations.Contains(2))))
@@ -429,11 +421,7 @@ public class PlayerStations : NetworkBehaviour
                         shieldsOn = true;
                         if (!shieldSoundPlaying)
                         {
-                            if (shieldCor != null)
-                                StopCoroutine(shieldCor);
-                            shieldCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Shields", 0.3f, 0.5f);
-                            StartCoroutine(shieldCor);
-                            shieldSoundPlaying = true;
+                            ShieldSoundServerRpc(true);
                         }
                         hideShieldInstruction = true;
                         shieldInstruction.SetActive(false);
@@ -442,11 +430,7 @@ public class PlayerStations : NetworkBehaviour
             }
             if (!shieldsOn && shieldSoundPlaying)
             {
-                if (shieldCor != null)
-                    StopCoroutine(shieldCor);
-                shieldCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Shields", 0.5f, 0f);
-                StartCoroutine(shieldCor);
-                shieldSoundPlaying = false;
+                ShieldSoundServerRpc(false);
             }
             //write shield rotation
             if (currentStation == "shields" || (IsServer && buttonCircles.transform.GetChild(2).GetComponent<Button>().interactable))
@@ -466,6 +450,54 @@ public class PlayerStations : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.Server)]
+    private void ThrustSoundServerRpc(bool on)
+    {
+        ThrustSound(on);
+        ThrustSoundClientRpc(on);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void ThrustSoundClientRpc(bool on)
+    {
+        ThrustSound(on);
+    }
+    private void ThrustSound(bool on)
+    {
+        if (thrustCor != null)
+            StopCoroutine(thrustCor);
+        if (on)
+            thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.5f, 0.2f);
+        else
+            thrustCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Thrusters", 0.7f, 0f);
+        StartCoroutine(thrustCor);
+        thrusterSoundPlaying = on;
+    }
+
+        [Rpc(SendTo.Server)]
+    private void ShieldSoundServerRpc(bool on)
+    {
+        ShieldSound(on);
+        ShieldSoundClientRpc(on);
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void ShieldSoundClientRpc(bool on)
+    {
+        ShieldSound(on);
+    }
+    private void ShieldSound(bool on)
+    {
+        if (shieldCor != null)
+            StopCoroutine(shieldCor);
+        if (on)
+            shieldCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Shields", 0.3f, 0.5f);
+        else
+            shieldCor = GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Shields", 0.5f, 0f);
+        StartCoroutine(shieldCor);
+        shieldSoundPlaying = on;
+    }
+
     public void HideInstructions()
     {
         steerInstruction.SetActive(false);
@@ -481,7 +513,7 @@ public class PlayerStations : NetworkBehaviour
         {
             yield return new WaitForSeconds(1.5f);
             if (currentStation == "radar")
-                GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Radar");
+                PlayRadarServerRpc();
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Shipwreck"))
             {
                 obj.GetComponent<ShipwreckBehavior>().radarArrow.SetActive(false);
@@ -515,6 +547,19 @@ public class PlayerStations : NetworkBehaviour
                 }
             }
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void PlayRadarServerRpc()
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Radar");
+        PlayRadarClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void PlayRadarClientRpc()
+    {
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Radar");
     }
 
     //Boosts

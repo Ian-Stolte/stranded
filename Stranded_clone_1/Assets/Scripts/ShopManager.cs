@@ -102,8 +102,8 @@ public class ShopManager : NetworkBehaviour
 
         fuelBarRectTransform = fuelBar.GetComponent<RectTransform>();
         healthBarRectTransform = healthBar.GetComponent<RectTransform>();
-        fuelBarRectTransform.anchoredPosition = new Vector2(-720, -350); // Set initial position of resource bars
-        healthBarRectTransform.anchoredPosition = new Vector2(-720, -455);
+        fuelBarRectTransform.anchoredPosition = new Vector2(-710, -345); // Set initial position of resource bars
+        healthBarRectTransform.anchoredPosition = new Vector2(-710, -455);
 
         audio = GameObject.Find("Audio Manager").GetComponent<AudioManager>();
         shopMusic = Array.Find(audio.music, sound => sound.name == "Shop");
@@ -150,7 +150,7 @@ public class ShopManager : NetworkBehaviour
         fuelBar.SetActive(false);
         healthBar.SetActive(false);
         
-        fuelBarRectTransform.anchoredPosition = new Vector2(750, -350);
+        fuelBarRectTransform.anchoredPosition = new Vector2(750, -345);
         healthBarRectTransform.anchoredPosition = new Vector2(750, -455);
 
         AddScraps();
@@ -180,7 +180,7 @@ public class ShopManager : NetworkBehaviour
         fuelBar.SetActive(false);
         healthBar.SetActive(false);
 
-        fuelBarRectTransform.anchoredPosition = new Vector2(750, -350);
+        fuelBarRectTransform.anchoredPosition = new Vector2(750, -345);
         healthBarRectTransform.anchoredPosition = new Vector2(750, -455);
 
         AddScraps();
@@ -201,7 +201,7 @@ public class ShopManager : NetworkBehaviour
 
         fuelBar.SetActive(true);
         healthBar.SetActive(true);
-        fuelBarRectTransform.anchoredPosition = new Vector2(-720, -350); // Back to initial position of resource bars
+        fuelBarRectTransform.anchoredPosition = new Vector2(-720, -345); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-720, -455);
 
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
@@ -218,7 +218,7 @@ public class ShopManager : NetworkBehaviour
 
         fuelBar.SetActive(true);
         healthBar.SetActive(true);
-        fuelBarRectTransform.anchoredPosition = new Vector2(-720, -350); // Back to initial position of resource bars
+        fuelBarRectTransform.anchoredPosition = new Vector2(-720, -345); // Back to initial position of resource bars
         healthBarRectTransform.anchoredPosition = new Vector2(-720, -455);
 
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");

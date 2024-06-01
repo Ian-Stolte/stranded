@@ -218,8 +218,7 @@ public class Spaceship : NetworkBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Asteroid") && !asteroidImmunity.Value)
         {
-            audio.Play("Asteroid Collision");
-            GameObject.Find("Screen Flash Red").GetComponent<Animator>().Play("ScreenFlash");
+            AteroidHitServerRpc();
             // Updates the health bar
             if (IsServer)
             {
@@ -246,6 +245,21 @@ public class Spaceship : NetworkBehaviour
             if (destroyAsteroid && IsServer)
                 collision.gameObject.GetComponent<NetworkObject>().Despawn(true);
         }
+    }
+
+    [Rpc(SendTo.Server)]
+    private void AteroidHitServerRpc()
+    {
+        audio.Play("Asteroid Collision");
+        GameObject.Find("Screen Flash Red").GetComponent<Animator>().Play("ScreenFlash");
+        AsteroidHitClientRpc();
+    }
+
+    [Rpc(SendTo.NotServer)]
+    private void AsteroidHitClientRpc()
+    {
+        audio.Play("Asteroid Collision");
+        GameObject.Find("Screen Flash Red").GetComponent<Animator>().Play("ScreenFlash");
     }
 
     IEnumerator HitImmunity()
