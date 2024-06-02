@@ -19,7 +19,7 @@ public class Buttons : MonoBehaviour
 
     void Update()
     {
-        if (Input.mouseScrollDelta.y < 0)
+        /*if (Input.mouseScrollDelta.y < 0)
         {
             index = (index + 1) % 3;
             ChangeTo(index);
@@ -28,7 +28,7 @@ public class Buttons : MonoBehaviour
         {
             index = (index + 2) % 3; //same as (index - 1) % 3, except for negatives
             ChangeTo(index);
-        }
+        }*/
         
         players = GameObject.FindGameObjectsWithTag("Player");
         for (int i = 0; i < 5; i++)
@@ -99,8 +99,6 @@ public class Buttons : MonoBehaviour
                 }   
             }
         }
-        //if (storm.disabledStations.Contains(index+1))
-        //    child.GetComponent<Button>().interactable = false;
         child.GetComponent<Button>().interactable = (!inUse && !storm.disabledStations.Contains(index+1));
         child.GetChild(2).gameObject.SetActive(storm.disabledStations.Contains(index+1));
     }
