@@ -114,7 +114,7 @@ public class Spaceship : NetworkBehaviour
     private (float min, float max)[] shipwreckDelays = new (float min, float max)[] { (15, 25), (20, 30), (20, 30), (25, 40) };
     private float[] radioChances = new float[] {0.1f, 0.07f, 0.05f, 0.03f};
     private int[] maxShipwrecks = new int[] {8, 8, 6, 6};
-    private int[] stormStart = new int[] {180, 180, 150, 120};
+    private int[] stormStart = new int[] {180, 180, 150, 20};
     private (int min, int max)[] stormDelays = new (int min, int max)[] {(30, 90), (30, 90), (25, 80), (20, 70)};
 
     void Start()

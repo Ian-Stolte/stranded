@@ -20,6 +20,7 @@ public class AsteroidBehavior : NetworkBehaviour
         if (ship.GetComponent<Spaceship>().controlOfThrusters)
         {
             transform.position += speed.Value * direction.Value * Time.deltaTime;
+            //transform.position += new Vector3(0, -5, 0) * Time.deltaTime;
             if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
             {
                 GetComponent<NetworkObject>().Despawn(true);
