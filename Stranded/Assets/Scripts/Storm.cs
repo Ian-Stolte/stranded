@@ -61,7 +61,7 @@ public class Storm : NetworkBehaviour
         yield return new WaitForSeconds(4);
         GameObject.Find("Screen Flash White").GetComponent<Animator>().Play("ScreenFlashLong");
         GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Storm Start");
-        StartCoroutine(GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Storm Start", 1, 0.2f));
+        StartCoroutine(GameObject.Find("Audio Manager").GetComponent<AudioManager>().StartFade("Storm Start", 1, 0.1f));
         if (IsServer)
         {
             if (stationsUnlocked.Count == 3)

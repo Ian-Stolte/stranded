@@ -172,4 +172,9 @@ public class LANManager : NetworkBehaviour
 		transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 		transport.ConnectionData.Address = ipAddress;
 	}
+
+	public void Quit()
+	{
+		Application.Quit();
+	}
 }

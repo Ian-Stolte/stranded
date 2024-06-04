@@ -79,6 +79,8 @@ public class SceneLoader : NetworkBehaviour
             if (!g.GetComponent<PlayerStations>().IsOwner)
                 g.GetComponent<PlayerStations>().Setup();
         }
+        if (introComplete)
+            Destroy(GameObject.Find("Button Flash"));
         GameObject pauseMenu = GameObject.Find("Sync Object").GetComponent<Sync>().pauseMenu;
         pauseMenu.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = difficultyText[difficulty.Value];
         pauseMenu.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().color = difficultyColors[difficulty.Value];

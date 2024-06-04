@@ -7,22 +7,106 @@ using UnityEngine.SceneManagement;
 
 public class ButtonFunctions : NetworkBehaviour
 {
-    public NetworkVariable<bool> skip;
-    private bool introText;
+    public NetworkVariable<bool> doingText;
     public NetworkVariable<float> introTimer;
+    public NetworkVariable<float> winTimer;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject introBackground;
+    [SerializeField] private GameObject winBackground;
     private SceneLoader sceneLoader;
 
     void Start()
     {
         sceneLoader = GameObject.Find("Scene Loader").GetComponent<SceneLoader>();
+        if (SceneManager.GetActiveScene().name == "Win Screen")
+        {
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += StartWinText;
+        }
+    }
+
+
+    void StartWinText(
+        string sceneName,
+        UnityEngine.SceneManagement.LoadSceneMode loadSceneMode,
+        List<ulong> clientsCompleted,
+        List<ulong> clientsTimedOut
+    )
+    {
+        if (IsServer)
+        {
+            doingText.Value = true;
+            winTimer.Value = 0;
+        }
+        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= StartWinText;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && introText)
+        if (Input.GetMouseButtonDown(0) && doingText.Value && (winTimer.Value > 0.5f && introTimer.Value > 0.5f))
             SkipServerRpc();
+
+        if (doingText.Value)
+        {
+            if (winTimer.Value < 15 || introTimer.Value < 25)
+            {
+                if (IsServer)
+                {
+                    winTimer.Value = Mathf.Min(9999, winTimer.Value + Time.deltaTime);
+                    introTimer.Value = Mathf.Min(9999, introTimer.Value + Time.deltaTime);
+                }
+                //Win Text
+                if (Mathf.Abs(winTimer.Value-0.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 1"), 6));
+                else if (Mathf.Abs(winTimer.Value-2.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 2"), 4));
+                else if (Mathf.Abs(winTimer.Value-7.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 3"), 7.5f));
+                else if (Mathf.Abs(winTimer.Value-11f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 4"), 4));
+
+                //Intro Text
+                if (Mathf.Abs(introTimer.Value-0.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 1"), 6));
+                else if (Mathf.Abs(introTimer.Value-7f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 2"), 6));
+                else if (Mathf.Abs(introTimer.Value-9f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 3"), 4));
+                else if (Mathf.Abs(introTimer.Value-13.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 4"), 6));
+                else if (Mathf.Abs(introTimer.Value-15.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 5"), 4));
+                else if (Mathf.Abs(introTimer.Value-19.5f) < 0.05f)
+                    StartCoroutine(FadeText(GameObject.Find("Text 6"), 6));
+            }
+            else
+            {
+                EndStuffServerRpc();
+            }
+        }
+    }
+
+    [Rpc(SendTo.Server)]
+    void EndStuffServerRpc()
+    {
+        doingText.Value = false;
+        sceneLoader.introComplete = true;
+        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
+        if (winBackground != null)
+            winBackground.SetActive(false);
+        if (introBackground != null)
+            introBackground.SetActive(false);
+        EndStuffClientRpc();
+    }
+    
+    [Rpc(SendTo.NotServer)]
+    void EndStuffClientRpc()
+    {
+        sceneLoader.introComplete = true;
+        GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
+        if (winBackground != null)
+            winBackground.SetActive(false);
+        if (introBackground != null)
+            introBackground.SetActive(false);
     }
 
     public void SetSingleplayer()
@@ -68,36 +152,16 @@ public class ButtonFunctions : NetworkBehaviour
             if (!sceneLoader.introComplete)
             {
                 introBackground.SetActive(true);
-                introTimer.Value = 0;
-                while (!skip.Value && introTimer.Value < 21)
+                if (IsServer)
                 {
-                    if (Mathf.Abs(introTimer.Value-0.5f) < 0.1f)
-                    {
-                        introText = true;
-                        StartCoroutine(FadeText(GameObject.Find("Text 1"), 5));
-                    }
-                    else if (Mathf.Abs(introTimer.Value-6f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 2"), 5));
-                    else if (Mathf.Abs(introTimer.Value-8f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 3"), 3));
-                    else if (Mathf.Abs(introTimer.Value-11.5f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 4"), 5));
-                    else if (Mathf.Abs(introTimer.Value-13.5f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 5"), 3));
-                    else if (Mathf.Abs(introTimer.Value-16.5f) < 0.1f)
-                        StartCoroutine(FadeText(GameObject.Find("Text 6"), 5));
-                    if (IsServer)
-                        introTimer.Value += 0.01f;
-                    yield return new WaitForSeconds(0.01f);
+                    introTimer.Value = 0;
+                    doingText.Value = true;
                 }
-                if (skip.Value)
-                    GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
-                introBackground.SetActive(false);
-                sceneLoader.introComplete = true;
-                introText = false;
             }
-            GameObject.Find("Fader").GetComponent<Animator>().Play("FadeIn");
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => doingText.Value == false);
             loadingScreen.SetActive(true);
+            LoadingScreenClientRpc();
             yield return new WaitForSeconds(1);
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Player"))
             {
@@ -126,7 +190,10 @@ public class ButtonFunctions : NetworkBehaviour
     [Rpc(SendTo.Server)]
     private void SkipServerRpc()
     {
-        skip.Value = true;
+        winTimer.Value = 9999;
+        introTimer.Value = 9999;
+        GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Button Press 1");
+        ClickButtonClientRpc(1);
     }
 
     private IEnumerator FadeText(GameObject text, float duration)

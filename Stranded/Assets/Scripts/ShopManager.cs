@@ -315,13 +315,13 @@ public class ShopManager : NetworkBehaviour
             {
                 shipScript.scraps.Value = shipScript.scraps.Value - boostEffectsSO[btnNo].baseCost;
                 AddScraps();
+                CheckPurchaseable(shipScript.scraps.Value);
                 GameObject.Find("Audio Manager").GetComponent<AudioManager>().Play("Purchase Boost");
                 PurchaseBoostClientRpc(btnNo);
             }  
         }
         else 
         {
-            Debug.Log("Radio Parts: " + shipScript.radioParts.Value.ToString());
             if (shipScript.radioParts.Value >= boostEffectsSO[btnNo].baseCost)
             {
                 shipScript.radioParts.Value = shipScript.radioParts.Value - boostEffectsSO[btnNo].baseCost;
@@ -431,6 +431,7 @@ public class ShopManager : NetworkBehaviour
             }
             upgrade.nextLevelInfo.text = infoList[upgrade.stationLevel-1];
             shipScript.UpgradeStation(stationUpgrade, upgrade.stationLevel);
+            CheckPurchaseable(shipScript.scraps.Value);
             StationUpgradeClientRpc(stationUpgrade, cost, newCost);
         }
     }

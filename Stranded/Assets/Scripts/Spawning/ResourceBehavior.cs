@@ -30,9 +30,11 @@ public class ResourceBehavior : NetworkBehaviour
     void FixedUpdate()
     {
         transform.position += speed.Value * direction.Value * Time.deltaTime;
+        //transform.position += new Vector3(0, -5, 0) * Time.deltaTime;
         if (Vector3.Distance(transform.position, ship.transform.position) > despawnDistance && IsServer)
         {
             GetComponent<NetworkObject>().Despawn(true);
+            
         }
         if (GameObject.FindGameObjectsWithTag("Player").Length > 1)
         {
