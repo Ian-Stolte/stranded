@@ -70,14 +70,14 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
-  - name: Danger 1
-    clip: {fileID: 8300000, guid: d25d0e3f26da344f6ae00bd531f680ed, type: 3}
+  - name: Win Game
+    clip: {fileID: 8300000, guid: 82b46a1d5295046ffa7d459215ecdc56, type: 3}
     volume: 0
     pitch: 1
     loop: 1
     source: {fileID: 0}
-  - name: Win Game
-    clip: {fileID: 8300000, guid: 82b46a1d5295046ffa7d459215ecdc56, type: 3}
+  - name: Danger 1
+    clip: {fileID: 8300000, guid: d25d0e3f26da344f6ae00bd531f680ed, type: 3}
     volume: 0
     pitch: 1
     loop: 1
@@ -125,9 +125,51 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
-  - name: Button Press
+  - name: Button Press 1
     clip: {fileID: 8300000, guid: bbb68b3c012f94ef68c1ca8b54efc393, type: 3}
+    volume: 0.3
+    pitch: 1.2
+    loop: 0
+    source: {fileID: 0}
+  - name: Button Press 2
+    clip: {fileID: 8300000, guid: 0b95108a40c794820bba6b41a994828b, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Asteroid Destroy
+    clip: {fileID: 8300000, guid: 8595372b2cfa64046bf8f4b4f5be3dda, type: 3}
+    volume: 0.1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Thrusters
+    clip: {fileID: 8300000, guid: fdff399f06517144ea576529d9776547, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Shields
+    clip: {fileID: 8300000, guid: ae7f5a202c7014a4c817869b742c1324, type: 3}
+    volume: 0
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Grabber Fire
+    clip: {fileID: 8300000, guid: 9e276cf24be607742a52a68e02591564, type: 3}
     volume: 0.05
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Grabber Close
+    clip: {fileID: 8300000, guid: 59bde0eccc042204492e33c4388f3029, type: 3}
+    volume: 0.05
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Storm Start
+    clip: {fileID: 8300000, guid: 8e9c12d0fbe34bf43b9c215d09e7e647, type: 3}
+    volume: 0
     pitch: 1
     loop: 0
     source: {fileID: 0}
