@@ -37,6 +37,7 @@ public class ShopManager : NetworkBehaviour
 
     [SerializeField] private GameObject exclamationPoint1;
     [SerializeField] private GameObject exclamationPoint2;
+    private bool exclamationsShown;
 
     private RectTransform fuelBarRectTransform;
     private RectTransform healthBarRectTransform;
@@ -68,7 +69,7 @@ public class ShopManager : NetworkBehaviour
         shieldInfo = new string[] {"Speed  1.3 → " + colorStart + "2</color>", "Width  4 → " + colorStart + "6</color>", "Speed  2 → " + colorStart + "3</color>", "Fully upgraded!"};
         grabberInfo = new string[] {"30% chance of double resources", "Range  12 → " + colorStart + "15</color>\nSpeed  0.5 → " + colorStart + "0.55</color>", "Double  30% → " + colorStart + "60%</color>\nRange  15 → " + colorStart + "20</color>\nSpeed  0.55 → " + colorStart + "0.7</color>", "Fully upgraded!"};
         radarInfo = new string[] {"Range  50 → " + colorStart + "100</color>", "Points toward all shipwrecks within range", "Range  100 → " + colorStart + "200</color>", "Fully upgraded!"};
-        upgradeMultiplier = 1;
+        upgradeMultiplier = 3;
         //Initialize text values
         foreach (GameObject g in upgradePanels)
         {
@@ -235,10 +236,11 @@ public class ShopManager : NetworkBehaviour
         if (shipScript.radioParts.Value > 0) {
             radioPartsObject.SetActive(true);
             radioPartsText.text = "Radio Parts: " + shipScript.radioParts.Value;
-            if (shipScript.radioParts.Value == 5)
+            if (shipScript.radioParts.Value == 4 && !exclamationsShown)
             {
                 exclamationPoint1.SetActive(true);
                 exclamationPoint2.SetActive(true);
+                exclamationsShown = true;
             }
         } else {
             radioPartsObject.SetActive(false);
@@ -247,7 +249,7 @@ public class ShopManager : NetworkBehaviour
 
     public void LoadPanels()
     {
-        for (int i=0; i < boostEffectsSO.Length; i++)
+        for (int i = 0; i < boostEffectsSO.Length; i++)
         {
             shopPanelsGO[i].SetActive(true);
         }
@@ -256,7 +258,8 @@ public class ShopManager : NetworkBehaviour
         {
             shopPanels[i].itemName.text = boostEffectsSO[i].itemName;
             shopPanels[i].itemDescription.text = boostEffectsSO[i].itemDescription;
-            shopPanels[i].itemPrice.text =  boostEffectsSO[i].baseCost.ToString() + " Scraps";
+            if (boostEffectsSO[i].itemName != "Radio Broadcast")
+                shopPanels[i].itemPrice.text =  boostEffectsSO[i].baseCost.ToString() + " Scraps";
         }
     }
 
@@ -284,22 +287,36 @@ public class ShopManager : NetworkBehaviour
         }
         for (int i = 0; i < boostEffectsSO.Length; i++)
         {
-            if (scraps >= boostEffectsSO[i].baseCost)
+            if (i == 3)
             {
-                shopPanelsGO[i].GetComponent<Button>().interactable = true;
-                shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
+                if (shipScript.radioParts.Value >= 10)
+                {
+                    shopPanelsGO[i].GetComponent<Button>().interactable = true;
+                    shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
+                }
+                else
+                {
+                    shopPanelsGO[i].GetComponent<Button>().interactable = false;
+                    shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 0.3f;
+                }
             }
             else
             {
-                shopPanelsGO[i].GetComponent<Button>().interactable = false;
-                shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 0.3f;
+                if (scraps >= boostEffectsSO[i].baseCost)
+                {
+                    shopPanelsGO[i].GetComponent<Button>().interactable = true;
+                    shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
+                }
+                else
+                {
+                    shopPanelsGO[i].GetComponent<Button>().interactable = false;
+                    shopPanelsGO[i].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 0.3f;
+                }
             }
         }
 
-        if (shipScript.radioParts.Value >= 5) {
+        if (shipScript.radioParts.Value >= 4) {
             shopPanelsGO[3].SetActive(true);
-            shopPanelsGO[3].GetComponent<Button>().interactable = true;
-            shopPanelsGO[3].transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
         } else {
             shopPanelsGO[3].SetActive(false);
         }
