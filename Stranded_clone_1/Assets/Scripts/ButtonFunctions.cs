@@ -15,7 +15,17 @@ public class ButtonFunctions : NetworkBehaviour
     [SerializeField] private GameObject winBackground;
     private SceneLoader sceneLoader;
 
-    void Start()
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         sceneLoader = GameObject.Find("Scene Loader").GetComponent<SceneLoader>();
         if (SceneManager.GetActiveScene().name == "Win Screen")
@@ -23,7 +33,6 @@ public class ButtonFunctions : NetworkBehaviour
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += StartWinText;
         }
     }
-
 
     void StartWinText(
         string sceneName,
@@ -95,6 +104,11 @@ public class ButtonFunctions : NetworkBehaviour
             winBackground.SetActive(false);
         if (introBackground != null)
             introBackground.SetActive(false);
+        for (int i = 1; i < 7; i++)
+        {
+            if (GameObject.Find("Text " + i) != null)
+                GameObject.Find("Text " + i).SetActive(false);
+        }
         EndStuffClientRpc();
     }
     
@@ -107,6 +121,11 @@ public class ButtonFunctions : NetworkBehaviour
             winBackground.SetActive(false);
         if (introBackground != null)
             introBackground.SetActive(false);
+        for (int i = 1; i < 7; i++)
+        {
+            if (GameObject.Find("Text " + i) != null)
+                GameObject.Find("Text " + i).SetActive(false);
+        }
     }
 
     public void SetSingleplayer()

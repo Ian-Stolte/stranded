@@ -38,11 +38,17 @@ public class StatTracker : MonoBehaviour
                     seconds = "0" + seconds;
                 formattedTime = Mathf.Round(totalTime / 60) + ":" + seconds;
             }
-            GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You survived for " + formattedTime;
             GameObject.Find("Resource Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Resources: " + resourcesCollected;
             GameObject.Find("Scrap Text").GetComponent<TMPro.TextMeshProUGUI>().text = "Scraps: " + scrapsCollected;
             if (scene.name == "Game Over")
+            {
                 GameObject.Find("Cause of Death").GetComponent<TMPro.TextMeshProUGUI>().text = causeOfDeath;
+                GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You survived for " + formattedTime;
+            }
+            else
+            {
+                GameObject.Find("Total Time").GetComponent<TMPro.TextMeshProUGUI>().text = "You were stranded for " + formattedTime;
+            }
         }
         else if (scene.name == "Multiplayer")
         {
